@@ -15,13 +15,10 @@ namespace EventPlanner.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogInformation("Welcome broski!");
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

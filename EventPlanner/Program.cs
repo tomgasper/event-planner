@@ -1,5 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure logging
+builder.Logging.AddEventLog(eventLogSettings =>
+{
+    eventLogSettings.SourceName = "EventPlanner";
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
