@@ -15,7 +15,6 @@ namespace EventPlanner.Controllers
 
         public IActionResult Index()
         {
-            _logger.LogInformation("Welcome broski!");
             return View();
         }
 

@@ -4,6 +4,7 @@ using EventPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventPlanner.Migrations
 {
     [DbContext(typeof(EventPlannerDbContext))]
-    partial class EventPlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530125358_FullyRelationAddress")]
+    partial class FullyRelationAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -355,7 +357,7 @@ namespace EventPlanner.Migrations
             modelBuilder.Entity("EventPlanner.Models.City", b =>
                 {
                     b.HasOne("EventPlanner.Models.Country", "Country")
-                        .WithMany("Cities")
+                        .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -377,7 +379,7 @@ namespace EventPlanner.Migrations
             modelBuilder.Entity("EventPlanner.Models.Location", b =>
                 {
                     b.HasOne("EventPlanner.Models.Street", "Street")
-                        .WithMany("Locations")
+                        .WithMany()
                         .HasForeignKey("StreetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -388,7 +390,7 @@ namespace EventPlanner.Migrations
             modelBuilder.Entity("EventPlanner.Models.Street", b =>
                 {
                     b.HasOne("EventPlanner.Models.City", "City")
-                        .WithMany("Streets")
+                        .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -447,24 +449,9 @@ namespace EventPlanner.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EventPlanner.Models.City", b =>
-                {
-                    b.Navigation("Streets");
-                });
-
-            modelBuilder.Entity("EventPlanner.Models.Country", b =>
-                {
-                    b.Navigation("Cities");
-                });
-
             modelBuilder.Entity("EventPlanner.Models.Location", b =>
                 {
                     b.Navigation("Events");
-                });
-
-            modelBuilder.Entity("EventPlanner.Models.Street", b =>
-                {
-                    b.Navigation("Locations");
                 });
 #pragma warning restore 612, 618
         }

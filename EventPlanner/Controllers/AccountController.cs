@@ -2,32 +2,55 @@
 using Microsoft.AspNetCore.Mvc;
 using EventPlanner.Models;
 using Microsoft.AspNetCore.Authorization;
+using EventPlanner.Data;
 
 namespace EventPlanner.Controllers
 {
     public class AccountController : Controller
     {
+        private EventPlannerDbContext _context;
         private UserManager<AppUser> _userManager { get; }
         private SignInManager<AppUser> _signInManager { get; }
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, EventPlannerDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
 
-            InputUserModel inputModel = new ();
+            InputEditUserModel inputModel = new ();
             inputModel.UserName = user.UserName;
             inputModel.Email = user.Email;
             inputModel.FirstName = user.FirstName;
             inputModel.LastName = user.LastName;
 
             return View(inputModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(InputEditUserModel inputModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                user.UserName = inputModel.UserName;
+                user.Email = inputModel.Email;
+                user.FirstName = inputModel.FirstName;
+                user.LastName = inputModel.LastName;
+
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Register()
