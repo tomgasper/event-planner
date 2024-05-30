@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using EventPlanner.Models;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace EventPlanner.Controllers
 {
@@ -22,26 +22,73 @@ namespace EventPlanner.Controllers
 
         public async Task<IActionResult> Register()
         {
-            var user = new AppUser
-            {
-                UserName = "bola",
-                Email = "user@email.com"
-            };
+            return View();
+        }
 
-            var result = await _userManager.CreateAsync(user, "haslo123");
-            if (!result.Succeeded)
+        [HttpPost]
+        public async Task<IActionResult> Register(InputRegisterModel model)
+        {
+            if (ModelState.IsValid)
             {
-                foreach (var error in result.Errors)
+                var user = new AppUser
                 {
-                    ModelState.TryAddModelError(error.Code, error.Description);
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.TryAddModelError(error.Code, error.Description);
+                    }
+
+                    return LocalRedirect("/Home");
                 }
 
-                return LocalRedirect("/Home");
-            }
+                IdentityResult addToRoleAsync = await _userManager.AddToRoleAsync(user, "Member");
 
-            await _userManager.AddToRoleAsync(user, "Guest");
+                if (!addToRoleAsync.Succeeded)
+                {
+                    // Log error message
+                }
+            }
 
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Login()
+        {
+            return Index();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(InputLoginModel inputModel)
+        {
+            var result = await _signInManager.PasswordSignInAsync(
+                inputModel.UserName, inputModel.Password, false, false);
+
+            if (result.Succeeded)
+            {
+                ViewBag.Result = "success";
+                return LocalRedirect("/");
+            } else
+            {
+                ViewBag.Result = "fail";
+            }
+
+            return Index();
+        }
+
     }
 }

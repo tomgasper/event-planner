@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="~/EventPlanner.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @if (!User.Identity.IsAuthenticated)
+    {
+     <div>
+        <a asp-controller="Account" asp-action="Register">Register</a>
+        <a asp-controller="Account" asp-action="Login">Login</a>
+    </div>
+    } else {
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+    }
     <div class="main-container">
         @RenderBody()
     </div>
