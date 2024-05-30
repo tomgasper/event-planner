@@ -15,6 +15,7 @@
         <a asp-controller="Account" asp-action="Login">Login</a>
     </div>
     } else {
+        <a asp-controller="Account" asp-action="Index">@User.Identity.Name</a>
         <a asp-controller="Account" asp-action="Logout">Logout</a>
     }
     <div class="main-container">

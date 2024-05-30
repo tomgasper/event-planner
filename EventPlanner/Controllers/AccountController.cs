@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using EventPlanner.Models;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventPlanner.Controllers
 {
@@ -15,18 +15,28 @@ namespace EventPlanner.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public IActionResult Index()
+
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+
+            InputUserModel inputModel = new ();
+            inputModel.UserName = user.UserName;
+            inputModel.Email = user.Email;
+            inputModel.FirstName = user.FirstName;
+            inputModel.LastName = user.LastName;
+
+            return View(inputModel);
         }
 
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(InputRegisterModel model)
+        public async Task<IActionResult> Register(InputUserModel model)
         {
             if (ModelState.IsValid)
             {
@@ -62,9 +72,10 @@ namespace EventPlanner.Controllers
 
         public IActionResult Login()
         {
-            return Index();
+            return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -87,7 +98,7 @@ namespace EventPlanner.Controllers
                 ViewBag.Result = "fail";
             }
 
-            return Index();
+            return View();
         }
 
     }

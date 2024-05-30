@@ -1,18 +1,18 @@
-﻿@model InputRegisterModel
+﻿@model InputUserModel
 
 <form asp-action="Register" method="post">
     <div>
-        <label asp-for="FirstName">First name:</label>
+        <label asp-for="FirstName"></label>
         <input asp-for="FirstName" />
         <span asp-validation-for="FirstName"></span>
     </div>
     <div>
-        <label asp-for="LastName">First name:</label>
+        <label asp-for="LastName"></label>
         <input asp-for="LastName" />
         <span asp-validation-for="LastName"></span>
     </div>
     <div>
-        <label asp-for="UserName">Login:</label>
+        <label asp-for="UserName" ></label>
         <input asp-for="UserName" />
         <span asp-validation-for="UserName"></span>
     </div>
@@ -22,12 +22,12 @@
         <span asp-validation-for="Email"></span>
     </div>
     <div>
-        <label asp-for="Password">Password:</label>
+        <label asp-for="Password"></label>
         <input asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </div>
      <div>
-         <label asp-for="ConfirmPassword">Confirm Password:</label>
+         <label asp-for="ConfirmPassword"></label>
          <input asp-for="ConfirmPassword" />
          <span asp-validation-for="ConfirmPassword"></span>
  </div>

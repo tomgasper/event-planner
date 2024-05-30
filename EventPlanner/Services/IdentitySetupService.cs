@@ -37,7 +37,9 @@ namespace EventPlanner.Services
             var superUser = new AppUser
             {
                 UserName = _configuration["AppSettings:UserName"],
-                Email = _configuration["AppSettings:UserName"]
+                Email = _configuration["AppSettings:AdminUserEmail"],
+                FirstName = _configuration["AppSettings:FirstName"],
+                LastName = _configuration["AppSettings:LastName"],
             };
 
             string userPWD = _configuration["AppSettings:UserPassword"];

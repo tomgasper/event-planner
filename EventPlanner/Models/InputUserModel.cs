@@ -2,7 +2,7 @@
 
 namespace EventPlanner.Models
 {
-    public class InputRegisterModel
+    public class InputUserModel
     {
         [Required]
         [DataType(DataType.Text)]
@@ -14,6 +14,7 @@ namespace EventPlanner.Models
 
         [Required]
         [DataType(DataType.Text)]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required]
