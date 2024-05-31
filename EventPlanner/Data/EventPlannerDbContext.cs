@@ -14,7 +14,13 @@ namespace EventPlanner.Data
 
         }
 
-        public DbSet<Event> Events { get; set; }
+        public DbSet<Event> Event { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Country> Country { get; set; }
+        public DbSet<City> City { get; set; }
+        public DbSet<Street> Street { get; set; }
+        public DbSet<Location> Location { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

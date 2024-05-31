@@ -4,13 +4,13 @@
     <div>@ViewBag.Result</div>
 	<form asp-action="Login" method="post">
     <div>
-        <label asp-for="UserName">Login:</label>
+        <label asp-for="UserName"></label>
         <input asp-for="UserName" />
         <span asp-validation-for="UserName"></span>
     </div>
 
     <div>
-        <label asp-for="Password">Password:</label>
+        <label asp-for="Password"></label>
         <input asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </div>
