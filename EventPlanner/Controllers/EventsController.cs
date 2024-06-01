@@ -21,25 +21,35 @@ namespace EventPlanner.Controllers
             _userManager = userManager;
         }
 
-        // Helper function for populating drop down list
-        private void PopulateCategoriesDropDownList(object selectedCategory = null)
+        // Helper function for populating Category type drop down list
+        private async Task PopulateCategoriesDropDownList(object selectedCategory = null)
         {
             var categoriesQuery = from c in _context.Category
                                   orderby c.Name
                                   select c;
-            ViewBag.CategoryId = new SelectList(categoriesQuery.AsNoTracking(), "Id", "Name", selectedCategory);
+
+            var categories = await categoriesQuery.AsNoTracking().ToListAsync();
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", selectedCategory);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            if (_context.Event == null)
+            {
+                Problem("Entity set 'EventPlanner.Event' is null.");
+            }
+
+            List<Event> events = await _context.Event.ToListAsync();
+
+            return View(events);
         }
 
 		[HttpGet]
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            PopulateCategoriesDropDownList();
+            await PopulateCategoriesDropDownList();
 
             return View();
         }
@@ -106,7 +116,7 @@ namespace EventPlanner.Controllers
                     _context.ChangeTracker.Clear();
                     ModelState.AddModelError(string.Empty, "An event with the same details already exists.");
                     // Ensure the dropdown is populated
-                    PopulateCategoriesDropDownList(model.CategoryId);
+                    await PopulateCategoriesDropDownList(model.CategoryId);
                     return View(model);
                 }
 
@@ -116,7 +126,7 @@ namespace EventPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            PopulateCategoriesDropDownList(model.CategoryId);
+            await PopulateCategoriesDropDownList(model.CategoryId);
             return View(model);
         }
     }

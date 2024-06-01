@@ -18,6 +18,9 @@
         <a asp-controller="Account" asp-action="Index">@User.Identity.Name</a>
         <a asp-controller="Account" asp-action="Logout">Logout</a>
     }
+    <div class="navbar">
+        <a asp-controller="Events" asp-action="Index">Events</a>
+    </div>
     <div class="main-container">
         @RenderBody()
     </div>
