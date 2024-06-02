@@ -11,7 +11,7 @@ namespace EventPlanner.Data
     {
         public EventPlannerDbContext(DbContextOptions<EventPlannerDbContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<Event> Event { get; set; }
