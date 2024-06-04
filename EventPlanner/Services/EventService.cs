@@ -1,14 +1,15 @@
 ﻿using EventPlanner.Data;
 using EventPlanner.Models;
+using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPlanner.Services
 {
 	public class EventService : IEventService
 	{
-		private readonly EventPlannerDbContext _context;
+		private readonly IDbContext _context;
 
-		public EventService(EventPlannerDbContext context)
+		public EventService(IDbContext context)
 		{ 
 			_context = context;
 		}

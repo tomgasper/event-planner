@@ -1,6 +1,7 @@
 using EventPlanner.Data;
 using EventPlanner.Models;
 using EventPlanner.Services;
+using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,13 +15,13 @@ builder.Logging.AddEventLog(eventLogSettings =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IDbContext, EventPlannerDbContext>();
 builder.Services.AddScoped<IEventService, EventService>();
 
 // Configure Identity .NET
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
-
     options.Password.RequiredLength = 3;
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
