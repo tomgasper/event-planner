@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using EventPlanner.Services;
 
 namespace EventPlanner.Controllers
 {
@@ -13,12 +14,14 @@ namespace EventPlanner.Controllers
         private readonly ILogger<EventsController> _logger;
         private EventPlannerDbContext _context;
         private UserManager<AppUser> _userManager;
+        private readonly IEventService _eventService;
 
-        public EventsController(ILogger<EventsController> logger, EventPlannerDbContext context, UserManager<AppUser> userManager)
+        public EventsController(ILogger<EventsController> logger, EventPlannerDbContext context, UserManager<AppUser> userManager, IEventService eventService)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            _eventService = eventService;
         }
 
         // Helper function for populating Category type drop down list
@@ -35,13 +38,7 @@ namespace EventPlanner.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (_context.Event == null)
-            {
-                Problem("Entity set 'EventPlanner.Event' is null.");
-            }
-
-            List<Event> events = await _context.Event.ToListAsync();
-
+            var events = await _eventService.GetAllEventsAsync();
             return View(events);
         }
 
@@ -50,7 +47,6 @@ namespace EventPlanner.Controllers
         public async Task<IActionResult> Create()
         {
             await PopulateCategoriesDropDownList();
-
             return View();
         }
 
@@ -60,70 +56,37 @@ namespace EventPlanner.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Address constructed in a relational way so need to go through a lot of queries
-                var country = await _context.Country.FirstOrDefaultAsync(c => c.Name == model.CountryName);
-                if (country == null)
+                try
                 {
-                    country = new Country { Name = model.CountryName };
-                    _context.Country.Add(country);
-                }
+                    var location = await _eventService.GetOrCreateLocationAsync(model);
 
-                var city = await _context.City.FirstOrDefaultAsync(c => c.Name == model.CityName && c.Country.Id == country.Id);
-                if (city == null)
+					var newEvent = new Event
+					{
+						Name = model.Name,
+						CategoryId = model.CategoryId,
+						DateTime = model.DateTime,
+						Location = location,
+						MaxNumberParticipants = model.MaxNumberParticipants,
+						ImageUrl = model.ImageUrl
+					};
+
+					// Check if the same event already exists
+					if (await _eventService.EventExistsAsync(newEvent))
+					{
+						ModelState.AddModelError(string.Empty, "An event with the same details already exists.");
+						// Ensure the dropdown is populated
+						await PopulateCategoriesDropDownList(model.CategoryId);
+						return View(model);
+					}
+
+                    await _eventService.CreateEventAsync(newEvent);
+					return RedirectToAction(nameof(Index));
+				}
+                catch (Exception ex)
                 {
-                    city = new City { Name = model.CityName, Country = country };
-                    _context.City.Add(city);
-                }
-
-                var street = await _context.Street
-                    .FirstOrDefaultAsync(s => s.Name == model.StreetName && s.City.Id == city.Id);
-                if (street == null)
-                {
-                    street = new Street { Name = model.StreetName, City = city };
-                    _context.Street.Add(street);
-                }
-
-                var location = await _context.Location.FirstOrDefaultAsync(
-                    l => l.Street == street && l.PostalCode == model.PostalCode && l.BuildingNumber == model.BuildingNumber
-                    );
-
-                if (location == null)
-                {
-                    location = new Location
-                    {
-                        Street = street,
-                        PostalCode = model.PostalCode,
-                        BuildingNumber = model.BuildingNumber
-                    };
-                    _context.Add(location);
-                }
-
-                var newEvent = new Event
-                {
-                    Name = model.Name,
-                    CategoryId = model.CategoryId,
-                    DateTime = model.DateTime,
-                    Location = location,
-                    MaxNumberParticipants = model.MaxNumberParticipants,
-                    ImageUrl = model.ImageUrl
-                };
-
-                // Check if the same event already exists
-                if (_context.Event.Any(e =>
-                e.Name == newEvent.Name && e.DateTime == newEvent.DateTime && e.Location == newEvent.Location
-                ))
-                {
-                    _context.ChangeTracker.Clear();
-                    ModelState.AddModelError(string.Empty, "An event with the same details already exists.");
-                    // Ensure the dropdown is populated
-                    await PopulateCategoriesDropDownList(model.CategoryId);
-                    return View(model);
-                }
-
-                _context.Event.Add(newEvent);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                    _logger.LogError(ex, "An error occurred while creating the event.");
+                    ModelState.AddModelError(string.Empty, "An error occurred while creating the event. Please try again.");
+				}
             }
 
             await PopulateCategoriesDropDownList(model.CategoryId);

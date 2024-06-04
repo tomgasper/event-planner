@@ -14,6 +14,8 @@ builder.Logging.AddEventLog(eventLogSettings =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IEventService, EventService>();
+
 // Configure Identity .NET
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>
 {
