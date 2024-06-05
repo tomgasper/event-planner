@@ -49,7 +49,7 @@ namespace EventPlanner.Services
 				FirstName = inputModel.FirstName,
 				LastName = inputModel.LastName
 			};
-
+				
 			var result = await _userManager.CreateAsync(user, inputModel.Password);
 			return (result, user);
 		}
