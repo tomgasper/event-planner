@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using EventPlanner.Models;
 using Microsoft.AspNetCore.Authorization;
-using EventPlanner.Data;
-using EventPlanner.Services;
 using EventPlanner.Interfaces;
 
 namespace EventPlanner.Controllers
@@ -11,15 +9,12 @@ namespace EventPlanner.Controllers
     public class AccountController : Controller
     {
         private UserManager<AppUser> _userManager { get; }
-        private SignInManager<AppUser> _signInManager { get; }
-
         private IAccountService _accountService { get; }
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAccountService accountService)
+        public AccountController(UserManager<AppUser> userManager, IAccountService accountService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
-            _accountService = accountService;
+            _accountService = accountService; 
         }
 
         [Authorize]
