@@ -1,10 +1,17 @@
 ﻿@model IEnumerable<Event>
 
-<div>
+<div class="events-container">
 	@foreach (var item in Model)
 	{
 		<div class="event-container">
-			<div>@item.Name</div>
+			<div class="event-img-container"></div>
+			<div class="event-name">@item.Name</div>
+			<div class="event-host">Hosted by: ...</div>
+			<div class="event-date">@item.DateTime</div>
 		</div>
 	}
 </div>
+
+@section Styles {
+	<link href="@Url.Content("~/css/Views/EventsStyle.css")" rel="stylesheet" type="text/css" />
+}

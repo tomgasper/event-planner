@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EventPlanner.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="navbar-container">
@@ -18,14 +19,14 @@
         @if (!User.Identity.IsAuthenticated)
         {
             <div class="navbar-login">
-                <a asp-controller="Account" asp-action="Register">Register</a>
+                <a asp-controller="Account" asp-action="Register" class="button-m1">Sign up</a>
                 <a asp-controller="Account" asp-action="Login">Login</a>
             </div>
         }
         else
         {
             <div class="navbar-login">
-                <a asp-controller="Account" asp-action="Index">@User.Identity.Name</a>
+                <a asp-controller="Account" asp-action="Index" class="button-m1">@User.Identity.Name</a>
                 <a asp-controller="Account" asp-action="Logout">Logout</a>
             </div>
         }

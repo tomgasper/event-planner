@@ -35,7 +35,7 @@ namespace EventPlanner.Controllers
             ViewBag.CategoryId = new SelectList(categories, "Id", "Name", selectedCategory);
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
             var events = await _eventService.GetAllEventsAsync();
             return View(events);
