@@ -1,22 +1,21 @@
-﻿using EventPlanner.Data;
-using EventPlanner.Models;
+﻿using EventPlanner.Models;
+using EventPlanner.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using EventPlanner.Services;
 
 namespace EventPlanner.Controllers
 {
     public class EventsController : Controller
     {
         private readonly ILogger<EventsController> _logger;
-        private EventPlannerDbContext _context;
+        private IDbContext _context;
         private UserManager<AppUser> _userManager;
         private readonly IEventService _eventService;
 
-        public EventsController(ILogger<EventsController> logger, EventPlannerDbContext context, UserManager<AppUser> userManager, IEventService eventService)
+        public EventsController(ILogger<EventsController> logger, IDbContext context, UserManager<AppUser> userManager, IEventService eventService)
         {
             _logger = logger;
             _context = context;

@@ -17,6 +17,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IDbContext, EventPlannerDbContext>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Configure Identity .NET
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>

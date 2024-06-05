@@ -3,20 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using EventPlanner.Models;
 using Microsoft.AspNetCore.Authorization;
 using EventPlanner.Data;
+using EventPlanner.Services;
+using EventPlanner.Interfaces;
 
 namespace EventPlanner.Controllers
 {
     public class AccountController : Controller
     {
-        private EventPlannerDbContext _context;
         private UserManager<AppUser> _userManager { get; }
         private SignInManager<AppUser> _signInManager { get; }
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, EventPlannerDbContext context)
+        private IAccountService _accountService { get; }
+
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAccountService accountService)
         {
-            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _accountService = accountService;
         }
 
         [Authorize]
@@ -24,31 +27,19 @@ namespace EventPlanner.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-
-            InputEditUserModel inputModel = new ();
-            inputModel.UserName = user.UserName;
-            inputModel.Email = user.Email;
-            inputModel.FirstName = user.FirstName;
-            inputModel.LastName = user.LastName;
-
-            return View(inputModel);
+            InputEditUserModel inputModel = _accountService.PassInputUserInfo(user);
+			return View(inputModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Index(InputEditUserModel inputModel)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-
-                user.UserName = inputModel.UserName;
-                user.Email = inputModel.Email;
-                user.FirstName = inputModel.FirstName;
-                user.LastName = inputModel.LastName;
-
-                _context.Update(user);
-                await _context.SaveChangesAsync();
-            }
+                await _accountService.EditUserInfo(inputModel, user);
+			}
 
             return RedirectToAction(nameof(Index));
         }
@@ -59,30 +50,21 @@ namespace EventPlanner.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(InputUserModel model)
+        public async Task<IActionResult> Register(InputUserModel inputModel)
         {
             if (ModelState.IsValid)
             {
-                var user = new AppUser
+                var result = await _accountService.CreateNewUser(inputModel);
+                if (!result.Item1.Succeeded)
                 {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName
-                };
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (!result.Succeeded)
-                {
-                    foreach (var error in result.Errors)
+                    foreach (var error in result.Item1.Errors)
                     {
                         ModelState.TryAddModelError(error.Code, error.Description);
                     }
-
                     return LocalRedirect("/Home");
                 }
 
-                IdentityResult addToRoleAsync = await _userManager.AddToRoleAsync(user, "Member");
+                IdentityResult addToRoleAsync = await _accountService.AddToRoleAsync(result.Item2, "Member");
 
                 if (!addToRoleAsync.Succeeded)
                 {
@@ -101,17 +83,14 @@ namespace EventPlanner.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-
+            await _accountService.Logout();   
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(InputLoginModel inputModel)
         {
-            var result = await _signInManager.PasswordSignInAsync(
-                inputModel.UserName, inputModel.Password, false, false);
-
+            var result = await _accountService.Login(inputModel);
             if (result.Succeeded)
             {
                 ViewBag.Result = "success";

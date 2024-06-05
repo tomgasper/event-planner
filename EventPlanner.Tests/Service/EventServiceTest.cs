@@ -13,10 +13,11 @@ using EventPlanner.Tests.Helper;
 using EventPlanner.Interfaces;
 using MockQueryable;
 using MockQueryable.NSubstitute;
+using NSubstitute;
 
 namespace EventPlanner.Tests.Service
 {
-	public class EventServiceTest
+    public class EventServiceTest
 	{
 		private readonly IDbContext _context;
 		private readonly IEventService _eventService;
@@ -36,21 +37,9 @@ namespace EventPlanner.Tests.Service
 			//Arrange
 			var eventList = new List<Event>
 			{
-				new Event
-				{
-					Id = 1,
-					Name = "Event1"
-				},
-				new Event
-				{
-					Id = 2,
-					Name = "Event2"
-				},
-				new Event
-				{
-					Id = 3,
-					Name = "Event3"
-				}
+				new Event {	Id = 1,Name = "Event1" },
+				new Event { Id = 2,Name = "Event2" },
+				new Event { Id = 3,Name = "Event3" },
 			};
 
 			var mockDbSet = eventList.AsQueryable().BuildMockDbSet();
@@ -65,7 +54,7 @@ namespace EventPlanner.Tests.Service
 		}
 
 		[Fact]
-		public async Task GetOrCreateLocationAsync_ReturnsLocation()
+		public async Task GetOrCreateLocationAsync_ReturnsExistingLocation()
 		{
 			//Arrange
 			var inputModel = new InputEventModel
@@ -76,6 +65,20 @@ namespace EventPlanner.Tests.Service
 				PostalCode = "12345",
 				BuildingNumber = "10"
 			};
+			var countryList = new List<Country> { new Country { Id = 1, Name = "Country1" } };
+			var cityList = new List<City> { new City { Id = 1, Name = "City1", Country = countryList[0] } };
+			var streetList = new List<Street> { new Street { Id = 1, Name = "Street1", City = cityList[0] }, };
+			var locationList = new List<Location>{ new Location { Id = 1, Street = streetList[0], PostalCode = "12345", BuildingNumber = "10" } };
+
+			var mockCountryDbSet = countryList.AsQueryable().BuildMockDbSet();
+			var mockCityDbSet = cityList.AsQueryable().BuildMockDbSet();
+			var mockStreetDbSet = streetList.AsQueryable().BuildMockDbSet();
+			var mockLocationDbSet = locationList.AsQueryable().BuildMockDbSet();
+
+			_context.Country.Returns(mockCountryDbSet);
+			_context.City.Returns(mockCityDbSet);
+			_context.Street.Returns(mockStreetDbSet);
+			_context.Location.Returns(mockLocationDbSet);
 
 			//Act
 			var result = await _eventService.GetOrCreateLocationAsync(inputModel);
@@ -83,6 +86,42 @@ namespace EventPlanner.Tests.Service
 			//Assert
 			result.Should().NotBeNull();
 			result.Id.Should().Be(1);
+		}
+
+		[Fact]
+		public async Task GetOrCreateLocationAsync_ReturnsNewLocation()
+		{
+			//Arrange
+			var inputModel = new InputEventModel
+			{
+				CountryName = "Country1",
+				CityName = "City1",
+				StreetName = "Street1",
+				PostalCode = "12345",
+				BuildingNumber = "10"
+			};
+			var countryList = new List<Country> { new Country { Id = 1, Name = "CountryOther" } };
+			var cityList = new List<City> { new City { Id = 1, Name = "CityOther", Country = countryList[0] } };
+			var streetList = new List<Street> { new Street { Id = 1, Name = "StreetOther", City = cityList[0] }, };
+			var locationList = new List<Location> { new Location { Id = 1, Street = streetList[0], PostalCode = "12345", BuildingNumber = "10" } };
+
+			var mockCountryDbSet = countryList.AsQueryable().BuildMockDbSet();
+			var mockCityDbSet = cityList.AsQueryable().BuildMockDbSet();
+			var mockStreetDbSet = streetList.AsQueryable().BuildMockDbSet();
+			var mockLocationDbSet = locationList.AsQueryable().BuildMockDbSet();
+
+			_context.Country.Returns(mockCountryDbSet);
+			_context.City.Returns(mockCityDbSet);
+			_context.Street.Returns(mockStreetDbSet);
+			_context.Location.Returns(mockLocationDbSet);
+
+			//Act
+			var result = await _eventService.GetOrCreateLocationAsync(inputModel);
+
+			//Assert
+			result.Should().NotBeNull();
+			result.Id.Should().NotBe(1);
+			_context.Received(1).Add(Arg.Any<Location>());
 		}
 
 		[Fact]

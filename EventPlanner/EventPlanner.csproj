@@ -18,7 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="MockQueryable.NSubstitute" Version="7.0.1" />
+    <PackageReference Include="MockQueryable.NSubstitute" Version="6.0.1" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="xunit" Version="2.8.1" />
   </ItemGroup>

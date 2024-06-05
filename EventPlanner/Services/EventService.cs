@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventPlanner.Services
 {
-	public class EventService : IEventService
+    public class EventService : IEventService
 	{
 		private readonly IDbContext _context;
 
