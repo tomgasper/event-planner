@@ -4,22 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EventPlanner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EventPlanner.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @if (!User.Identity.IsAuthenticated)
-    {
-     <div>
-        <a asp-controller="Account" asp-action="Register">Register</a>
-        <a asp-controller="Account" asp-action="Login">Login</a>
-    </div>
-    } else {
-        <a asp-controller="Account" asp-action="Index">@User.Identity.Name</a>
-        <a asp-controller="Account" asp-action="Logout">Logout</a>
-    }
-    <div class="navbar">
-        <a asp-controller="Events" asp-action="Index">Events</a>
+    <div class="navbar-container">
+        <div class="navbar-logo b1-text">
+            Event Planner
+        </div>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="navbar-login">
+                <a asp-controller="Account" asp-action="Register">Register</a>
+                <a asp-controller="Account" asp-action="Login">Login</a>
+            </div>
+        }
+        else
+        {
+            <div class="navbar-login">
+                <a asp-controller="Account" asp-action="Index">@User.Identity.Name</a>
+                <a asp-controller="Account" asp-action="Logout">Logout</a>
+            </div>
+        }
     </div>
     <div class="main-container">
         @RenderBody()

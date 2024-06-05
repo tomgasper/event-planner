@@ -1,40 +1,37 @@
 ﻿@model InputUserModel
 
-<form asp-action="Register" method="post">
-    <div>
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
-    </div>
-    <div>
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
-    </div>
-    <div>
-        <label asp-for="UserName" ></label>
-        <input asp-for="UserName" />
-        <span asp-validation-for="UserName"></span>
-    </div>
-    <div>
-        <label asp-for="Email">Email:</label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-     <div>
-         <label asp-for="ConfirmPassword"></label>
-         <input asp-for="ConfirmPassword" />
-         <span asp-validation-for="ConfirmPassword"></span>
- </div>
-    <div>
-        <input type="submit" value="Submit" />
-    </div>
-</form>
+<div class="register-container">
+    <div class="register-header b2-text">Register</div>
+    <form asp-action="Register" method="post" class="generic-form">
+            <div class="input-fullwidth-container">
+                <input class="input-fullwidth" asp-for="FirstName" placeholder="First Name" />
+                <span asp-validation-for="FirstName"></span>
+        </div>
+            <div class="input-fullwidth-container">
+                <input class="input-fullwidth" asp-for="LastName" placeholder="Last Name"/>
+                <span asp-validation-for="LastName"></span>
+        </div>
+            <div class="input-fullwidth-container">
+                <input class="input-fullwidth" asp-for="UserName" placeholder="Username" />
+                <span asp-validation-for="UserName"></span>
+        </div>
+            <div class="input-fullwidth-container">
+                <input class="input-fullwidth" asp-for="Email" placeholder="Email"/>
+                <span asp-validation-for="Email"></span>
+        </div>
+            <div class="input-fullwidth-container">
+                <input class="input-fullwidth" asp-for="Password" placeholder="Password" />
+                <span asp-validation-for="Password"></span>
+        </div>
+            <div class="input-fullwidth-container">
+                <input class="input-fullwidth" asp-for="ConfirmPassword" placeholder="Confirm password" />
+                <span asp-validation-for="ConfirmPassword"></span>
+     </div>
+            <div class="submit-form">
+            <input type="submit" value="Submit" class="button-w1" />
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{
