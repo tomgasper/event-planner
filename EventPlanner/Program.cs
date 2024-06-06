@@ -3,6 +3,7 @@ using EventPlanner.Models;
 using EventPlanner.Services;
 using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IDbContext, EventPlannerDbContext>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Configure Identity .NET
@@ -58,8 +60,13 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
+    name: "Default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Index",
+    pattern: "{controller=Event}/{id?}",
+    defaults: new { controller = "Event", action = "Index"} ) ;
 
 // Create roles and super user
 using (var scope = app.Services.CreateScope())

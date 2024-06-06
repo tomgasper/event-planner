@@ -13,9 +13,9 @@ namespace EventPlanner.Controllers
         private readonly ILogger<EventsController> _logger;
         private IDbContext _context;
         private UserManager<AppUser> _userManager;
-        private readonly IEventService _eventService;
+        private readonly IEventsService _eventService;
 
-        public EventsController(ILogger<EventsController> logger, IDbContext context, UserManager<AppUser> userManager, IEventService eventService)
+        public EventsController(ILogger<EventsController> logger, IDbContext context, UserManager<AppUser> userManager, IEventsService eventService)
         {
             _logger = logger;
             _context = context;
@@ -35,9 +35,10 @@ namespace EventPlanner.Controllers
             ViewBag.CategoryId = new SelectList(categories, "Id", "Name", selectedCategory);
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int Id = 1)
         {
-            var events = await _eventService.GetAllEventsAsync();
+            var events = await _eventService.GetEventsForPageAsync(Id, 15);
+            ViewBag.PageNo = _context.Event.Count();
             return View(events);
         }
 

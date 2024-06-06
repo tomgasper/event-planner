@@ -34,7 +34,15 @@ namespace EventPlanner.Data
             return base.SaveChangesAsync(cancellationToken);
         }
 
-		public void Add<T>(T entity) where T : class
+        /*
+        public Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source)
+        {
+            return base.FirstOrDefaultAsync(source);
+        }
+        */
+
+
+        public void Add<T>(T entity) where T : class
 		{
 			base.Add(entity);
 		}

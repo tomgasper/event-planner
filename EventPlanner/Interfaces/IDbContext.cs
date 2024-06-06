@@ -13,7 +13,7 @@ namespace EventPlanner.Interfaces
 		public DbSet<Location> Location { get; set; }
 
 		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-		int SaveChanges();
+        int SaveChanges();
 		public void Add<T>(T entity) where T : class;
 		public void Update<T>(T entity) where T : class;
 		public void Remove<T>(T entity) where T : class;

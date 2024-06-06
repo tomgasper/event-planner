@@ -20,7 +20,7 @@ namespace EventPlanner.Tests.Service
     public class EventServiceTest
 	{
 		private readonly IDbContext _context;
-		private readonly IEventService _eventService;
+		private readonly IEventsService _eventService;
 
 		public EventServiceTest()
 		{
@@ -28,7 +28,7 @@ namespace EventPlanner.Tests.Service
 			_context = Substitute.For<IDbContext>();
 
 			// SUT
-			_eventService = new EventService(_context);
+			_eventService = new EventsService(_context);
 		}
 
 		[Fact]

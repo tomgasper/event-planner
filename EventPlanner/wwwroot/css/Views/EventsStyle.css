@@ -1,8 +1,15 @@
 ﻿.events-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.events-gallery {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width:90%;
+    width: 90%;
     gap: 15px 30px;
 }
 
@@ -20,4 +27,8 @@
     aspect-ratio: 1/1;
     background-color: #e6e6e6;
     border-radius: 15px;
+}
+
+.lazy {
+    background-color: red;
 }

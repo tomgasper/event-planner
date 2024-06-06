@@ -17,7 +17,7 @@ namespace EventPlanner.Tests.Controller
 		private readonly ILogger<EventsController> _logger;
 		private readonly IDbContext _context;
 		private readonly UserManager<AppUser> _userManager;
-		private readonly IEventService _eventService;
+		private readonly IEventsService _eventService;
 		private readonly EventsController _eventsController;
 
 		public EventsControllerTest()
@@ -27,7 +27,7 @@ namespace EventPlanner.Tests.Controller
 			_context = Substitute.For<IDbContext>();
 			var userStore = Substitute.For<IUserStore<AppUser>>();
 			_userManager = Substitute.For<UserManager<AppUser>>(userStore, null, null, null, null, null, null, null, null);
-			_eventService = Substitute.For<IEventService>();
+			_eventService = Substitute.For<IEventsService>();
 
 			// SUT
 			_eventsController = new EventsController(_logger, _context, _userManager, _eventService);
