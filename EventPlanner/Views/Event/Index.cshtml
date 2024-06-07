@@ -1,13 +1,34 @@
 ﻿@model EventViewModel
 
 <div class="event-page-container">
-	<div>
-		@Model.Name
-	</div>
-	<div>
-		@Model.City @Model.Street @Model.PostalCode
-	</div>
-	<div>
-		@Model.DateTime
+	<div class="event-page-header-container">
+		<div class="event-page-header-img"></div>
+		<div class="event-page-header-info-container">
+			<div class="event-page-header-info-interaction">
+				<a class="button-m1">Going button</a>
+				<a class="button-m1">Save button</a>
+			</div>
+			<div class="event-host-container">
+				<div class="event-host-avatar">
+
+				</div>
+				<div class="event-host-text">
+					@Model.Name <br/>
+					Type of host
+				</div>
+			</div>
+			<div class="event-details-container">
+				<div class="event-details-date">
+					@Model.DateTime
+				</div>
+				<div class="event-details-address">
+					@Model.Street @Model.BuidingNo @Model.City
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+
+@section Styles {
+	<link href="@Url.Content("~/css/Views/EventStyle.css")" rel="stylesheet" type="text/css" />
+}
