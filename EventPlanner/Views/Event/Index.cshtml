@@ -1,30 +1,43 @@
 ﻿@model EventViewModel
 
 <div class="event-page-container">
+	<div class="event-page-title b2-text">@Model.Name</div>
 	<div class="event-page-header-container">
 		<div class="event-page-header-img"></div>
 		<div class="event-page-header-info-container">
 			<div class="event-page-header-info-interaction">
-				<a class="button-m1">Going button</a>
-				<a class="button-m1">Save button</a>
+				<a class="button-w2 colour-1">Going!</a>
+				<a class="button-w2 colour-2">Save</a>
 			</div>
 			<div class="event-host-container">
 				<div class="event-host-avatar">
 
 				</div>
-				<div class="event-host-text">
-					@Model.Name <br/>
-					Type of host
+				<div class="event-host-text ">
+					<div class="event-host-name b1-text">
+						@Model.Name
+					</div>
+					<div class="event-host-description l1-text">
+						Type of host
+					</div>
 				</div>
 			</div>
 			<div class="event-details-container">
 				<div class="event-details-date">
+					<img src="~/img/calendar_icon.svg" />
 					@Model.DateTime
 				</div>
 				<div class="event-details-address">
+					<img src="~/img/location_icon.svg" />
 					@Model.Street @Model.BuidingNo @Model.City
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="event-page-details">
+		<div class="event-page-details-title b1-text">Details:</div>
+		<div class="event-page-details-text m1-text">
+			Here's a description of the event
 		</div>
 	</div>
 </div>

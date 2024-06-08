@@ -11,9 +11,14 @@
     gap: 2%;
 }
 
+.event-page-title {
+    margin-left: 1%;
+    margin-bottom:10px;
+}
+
 .event-page-header-img {
-    width:75%;
-    background-color:blue;
+    width: 75%;
+    background-color: #d4d4d4;
     aspect-ratio: 1.7 / 1;
     border-radius: 20px;
 }
@@ -33,10 +38,10 @@
 .event-page-header-info-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: flex-start;
     width:25%;
     flex-direction: column;
-    background-color: aqua;
     border-radius: 20px;
     gap: 3%;
 }
@@ -44,14 +49,17 @@
 .event-host-container {
     display: flex;
     flex-direction: row;
-    gap: 3%;
+    gap: 5%;
     width: 100%;
-    background-color: red;
+    background-color: #ffffff;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.08);
     border-radius: 10px;
+    padding-top: 3%;
+    padding-bottom: 3%;
 }
 
 .event-host-avatar {
-    background-color: black;
+    background-color: #d4d4d4;
     width: 23%;
     aspect-ratio: 1 / 1;
     margin-left: 5%;
@@ -62,6 +70,7 @@
 
 .event-host-text {
     display: flex;
+    gap:3%;
     flex-direction: column;
     justify-content: center;
 }
@@ -69,19 +78,26 @@
 .event-details-container {
     display: flex;
     flex-direction: column;
-    width:100%;
-    background-color: green;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.08);
     border-radius: 10px;
-    gap: 5px;
-    padding-top:3%;
-    padding-bottom:3%;
+    gap: 10px;
+    padding-top: 7%;
+    padding-bottom: 7%;
 }
 
 .event-details-date {
+    display: flex;
+    gap: 5%;
+    align-items: center;
     margin-left: 5%;
 }
 
 .event-details-address {
+    display: flex;
+    gap: 5%;
+    align-items: center;
     margin-left: 5%;
 }
 
@@ -90,6 +106,17 @@
     flex-direction: row;
     justify-content: center;
     margin-top: 2%;
-    gap: 10%;
-    width:100%;
+    gap: 5%;
+    width:90%;
+}
+
+.event-page-details {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    margin-top: 2%;
+}
+
+.event-page-details-title {
+
 }
