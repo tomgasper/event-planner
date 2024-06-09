@@ -9,7 +9,8 @@ namespace EventPlanner.Models
         public int CategoryId { get; set; }
         public DateTime DateTime { get; set; }
         public Location Location { get; set; }
-        public int MaxNumberParticipants { get; set; }
+		public ICollection<AppUser> Users { get; set; } = new List<AppUser>();
+		public int MaxNumberParticipants { get; set; }
         public string? ImageUrl { get; set; }
     }
 }

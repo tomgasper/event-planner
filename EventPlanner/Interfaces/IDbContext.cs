@@ -11,6 +11,7 @@ namespace EventPlanner.Interfaces
 		public DbSet<City> City { get; set; }
 		public DbSet<Street> Street { get; set; }
 		public DbSet<Location> Location { get; set; }
+		public DbSet<AppUser> Users { get; set; }
 
 		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         int SaveChanges();

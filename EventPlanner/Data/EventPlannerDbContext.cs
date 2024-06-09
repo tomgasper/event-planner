@@ -24,7 +24,7 @@ namespace EventPlanner.Data
         public DbSet<Street> Street { get; set; }
         public DbSet<Location> Location { get; set; }
 
-        public int SaveChanges()
+		public int SaveChanges()
         {
             return base.SaveChanges();
         }

@@ -98,5 +98,10 @@ namespace EventPlanner.Controllers
             return View();
         }
 
+        public async Task<IActionResult> ManageEvents()
+        {
+            return View();
+        }
+
     }
 }
