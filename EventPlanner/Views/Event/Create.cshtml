@@ -1,70 +1,69 @@
 ﻿@model InputEventModel
 
-<form asp-controller="Events" asp-action="Create" method="post">
+<form asp-controller="Event" asp-action="Create" method="post">
     <div asp-validation-summary="ModelOnly"></div>
-
     <div class="form-entry">
         <label asp-for="Name"></label>
-        <input asp-for="Name" />
+        <input class="input-fullwidth" asp-for="Name" />
         <span asp-validation-for="Name"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="CategoryId"></label>
-        <select asp-for="CategoryId" asp-items="ViewBag.CategoryId"></select>
+        <select class="input-fullwidth" asp-for="CategoryId" asp-items="@Model.CategoryList"></select>
         <span asp-validation-for="CategoryId"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="DateTime"></label>
-        <input asp-for="DateTime" />
+        <input class="input-fullwidth" asp-for="DateTime" />
         <span asp-validation-for="DateTime"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="StreetName"></label>
-        <input asp-for="StreetName" />
+        <input class="input-fullwidth" asp-for="StreetName" />
         <span asp-validation-for="StreetName"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="CityName"></label>
-        <input asp-for="CityName" />
+        <input class="input-fullwidth" asp-for="CityName" />
         <span asp-validation-for="CityName"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="CountryName"></label>
-        <input asp-for="CountryName" />
+        <input class ="input-fullwidth" asp-for="CountryName" />
         <span asp-validation-for="CountryName"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="PostalCode"></label>
-        <input asp-for="PostalCode" />
+        <input class="input-fullwidth" asp-for="PostalCode" />
         <span asp-validation-for="PostalCode"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="BuildingNumber"></label>
-        <input asp-for="BuildingNumber" />
+        <input class="input-fullwidth" asp-for="BuildingNumber" />
         <span asp-validation-for="BuildingNumber"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="MaxNumberParticipants"></label>
-        <input asp-for="MaxNumberParticipants" />
+        <input class="input-fullwidth" asp-for="MaxNumberParticipants" />
         <span asp-validation-for="MaxNumberParticipants"></span>
     </div>
 
     <div class="form-entry">
         <label asp-for="ImageUrl"></label>
-        <input asp-for="ImageUrl" />
+        <input class="input-fullwidth" asp-for="ImageUrl" />
         <span asp-validation-for="ImageUrl"></span>
     </div>
 
     <div>
-        <input type="submit" value="Create" />
+        <input class="button-w2" type="submit" value="Create" />
     </div>
 </form>
 

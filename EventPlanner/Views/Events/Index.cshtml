@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Event>
 
 <div class="events-container">
+    <a asp-controller="Event" asp-action="Create" class="button-m1">Add new event</a>
 	<div class="events-gallery">
 		@foreach (var item in Model)
 		{
@@ -17,8 +18,6 @@
 @section Styles {
 	<link href="@Url.Content("~/css/Views/EventsStyle.css")" rel="stylesheet" type="text/css" />
 }
-
-// Lazy loading
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {

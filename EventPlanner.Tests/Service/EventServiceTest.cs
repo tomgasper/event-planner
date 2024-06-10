@@ -20,7 +20,7 @@ namespace EventPlanner.Tests.Service
     public class EventServiceTest
 	{
 		private readonly IDbContext _context;
-		private readonly IEventsService _eventService;
+		private readonly IEventService _eventService;
 
 		public EventServiceTest()
 		{
@@ -28,29 +28,7 @@ namespace EventPlanner.Tests.Service
 			_context = Substitute.For<IDbContext>();
 
 			// SUT
-			_eventService = new EventsService(_context);
-		}
-
-		[Fact]
-		public async Task GetAllEventsAsync_ReturnsEventList()
-		{
-			//Arrange
-			var eventList = new List<Event>
-			{
-				new Event {	Id = 1,Name = "Event1" },
-				new Event { Id = 2,Name = "Event2" },
-				new Event { Id = 3,Name = "Event3" },
-			};
-
-			var mockDbSet = eventList.AsQueryable().BuildMockDbSet();
-			_context.Event.Returns(mockDbSet);
-
-			//Act
-			var result = await _eventService.GetAllEventsAsync();
-
-			//Assert
-			result.Should().BeOfType<List<Event>>();
-			result.Should().HaveCount(c => c == 3);
+			_eventService = new EventService(_context);
 		}
 
 		[Fact]

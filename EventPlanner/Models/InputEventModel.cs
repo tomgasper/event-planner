@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.Models
 {
@@ -7,7 +8,7 @@ namespace EventPlanner.Models
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
-
+        public SelectList? CategoryList { get; set; }
         [Required]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
