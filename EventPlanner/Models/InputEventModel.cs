@@ -5,6 +5,8 @@ namespace EventPlanner.Models
 {
     public class InputEventModel
     {
+        public int EventId { get; set; }
+
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }

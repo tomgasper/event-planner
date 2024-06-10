@@ -66,6 +66,23 @@ namespace EventPlanner.Data
                 b.ToTable("AppUsers");
             });
 
+            builder.Entity<Event>(e =>
+            {
+                const int adminId = 1;
+                e.Property(e => e.AuthorId).HasDefaultValue(adminId);
+
+                e.HasMany(e => e.Users)
+                .WithMany(u => u.Events);
+              
+                e.HasOne(e => e.Author)
+                .WithMany(u => u.AuthoredEvents)
+                .HasForeignKey(e => e.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+            
+
             /*
             Ignore some of the template columns in AppUser table
             builder.Entity<AppUser>(b =>

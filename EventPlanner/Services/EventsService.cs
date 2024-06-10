@@ -19,6 +19,7 @@ namespace EventPlanner.Services
 			return await _context.Event.AsNoTracking().ToListAsync();
 		}
 
+
 		public async Task<List<Event>> GetEventsForPageAsync(int pageNo, int eventsPerPage = 8)
 		{
 			if (pageNo < 0) { throw new InvalidOperationException("Page number must be 1 or higher"); }

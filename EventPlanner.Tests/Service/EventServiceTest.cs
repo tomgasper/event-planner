@@ -122,7 +122,7 @@ namespace EventPlanner.Tests.Service
 
 
 			//Act
-			await _eventService.CreateEventAsync(newEvent);
+			await _eventService.AddEventAsync(newEvent);
 
 			//Assert
 			mockDbSet.Received(1).Add(newEvent);

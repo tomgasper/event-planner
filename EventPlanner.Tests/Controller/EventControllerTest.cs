@@ -69,14 +69,14 @@ namespace EventPlanner.Tests.Controller
             _eventService.GetOrCreateLocationAsync(inputModel).Returns(location);
 
             var newEvent = new Event { Id = 1, Name="Event1" };
-            _eventService.CreateEventAsync(Arg.Any<Event>()).Returns(newEvent);
+            _eventService.AddEventAsync(Arg.Any<Event>()).Returns(newEvent);
 
             // Act
             var result = await _eventController.Create(inputModel);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
-            await _eventService.Received(1).CreateEventAsync(Arg.Is<Event>(e => e.Name == inputModel.Name));
+            await _eventService.Received(1).AddEventAsync(Arg.Is<Event>(e => e.Name == inputModel.Name));
         }
 
 
@@ -92,7 +92,7 @@ namespace EventPlanner.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>();
-            _eventService.DidNotReceive().CreateEventAsync(Arg.Any<Event>());
+            _eventService.DidNotReceive().AddEventAsync(Arg.Any<Event>());
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace EventPlanner.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>();
-            _eventService.DidNotReceive().CreateEventAsync(Arg.Any<Event>());
+            _eventService.DidNotReceive().AddEventAsync(Arg.Any<Event>());
             var modelState = _eventController.ModelState[string.Empty];
             modelState.Errors.Should().ContainSingle(e =>
             e.ErrorMessage == "An event with the same details already exists.");
