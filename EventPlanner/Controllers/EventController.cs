@@ -57,7 +57,8 @@ namespace EventPlanner.Controllers
 
             try
             {
-                Event newEvent = await _eventService.CreateEventFromInputModelAsync(model);
+                var user = await _userManager.GetUserAsync(User);
+                Event newEvent = await _eventService.CreateEventFromInputModelAsync(user, model);
 
                 // Check if the same event already exists
                 if (await _eventService.EventExistsAsync(newEvent))
@@ -87,9 +88,9 @@ namespace EventPlanner.Controllers
             int userId = Int32.Parse(_userManager.GetUserId(User));
             var fetchedEvent = await _eventService.GetFullEventAsync(id);
 
-            if (fetchedEvent == null || !_eventService.UserHasPermissionToEdit(userId, fetchedEvent.AuthorId) )
+            if (fetchedEvent == null || !_eventService.UserHasPermissionToEdit(User, userId, fetchedEvent.AuthorId) )
             {
-                return RedirectToAction("Index", "Error", new { message = "You don't have permission to edit this entry." });
+				return RedirectToAction("Index", "Error", new { message = "You don't have permission to edit this entry." });
             }
 
             InputEventModel viewModel = await _eventService.GetEventForEdit(fetchedEvent);
@@ -119,29 +120,33 @@ namespace EventPlanner.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+			int userId = Int32.Parse(_userManager.GetUserId(User));
+
+            bool deleteSuccesful = await _eventService.DeleteEventAsync(User, id, userId);
+
+			if (!deleteSuccesful)
+			{
+				return RedirectToAction("Index", "Error", new { message = "You don't have permission to delete this entry." });
+			}
+
+			return RedirectToAction("Index", "Events");
+        }
+
+        [Authorize]
         public async Task<IActionResult> AssignEventToUser(int id)
         {
-            AppUser user = await _context.Users.Include(u => u.Events).FirstOrDefaultAsync();
-            Event? eventById = _context.Event.FirstOrDefault( e => e.Id == id);
+			var userId = Int32.Parse(_userManager.GetUserId(User));
+			bool success = await _eventService.AssignEventToUserAsync(userId, id);
 
-            if (eventById == null)
-            {
-                // Event not found
-                return RedirectToAction("Index", "Error", new { message = "User not found" });
+			if (!success)
+			{
+				return RedirectToAction("Index", "Error", new { message = "Operation failed or unauthorized" });
 			}
 
-            if (user.Events != null && user.Events.Any(e => e.Id == id))
-            {
-				// User already assigned to the event
-				return RedirectToAction("Index", "Error", new { message = "Event not found" });
-			}
-
-            user.Events.Add(eventById);
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index), new { id=id } );
-        }
+			return RedirectToAction(nameof(Index), new { id = id });
+		}
 
         public async Task<IActionResult> Error()
         {

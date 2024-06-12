@@ -3,6 +3,10 @@ using EventPlanner.Interfaces;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.Transactions;
+using System.Data.Common;
 
 namespace EventPlanner.Services
 {
@@ -15,10 +19,10 @@ namespace EventPlanner.Services
             _context = context;
         }
 
-        public bool UserHasPermissionToEdit(int userId, int authorId)
+        public bool UserHasPermissionToEdit(ClaimsPrincipal user, int userId, int authorId)
         {
-            if (userId != authorId) return false;
-            else return true;
+            if (user.IsInRole("Admin")) { return true; }
+            return userId == authorId;
         }
 
         public async Task<bool> UserAssignedToEvent(AppUser user, Event fetchedEvent)
@@ -32,7 +36,28 @@ namespace EventPlanner.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateEventAsync(int eventId, int userId, InputEventModel updatedModel)
+		public async Task<bool> AssignEventToUserAsync(int userId, int eventId)
+		{
+			var user = await _context.Users.Include(u => u.Events).FirstOrDefaultAsync(u => u.Id == userId);
+			if (user == null || user.Events.Any(e => e.Id == eventId))
+			{
+				return false;
+			}
+
+			var eventToAssign = await _context.Event.FirstOrDefaultAsync(e => e.Id == eventId);
+			if (eventToAssign == null)
+			{
+				return false;
+			}
+
+			user.Events.Add(eventToAssign);
+			_context.Update(user);
+			await _context.SaveChangesAsync();
+
+			return true;
+		}
+
+		public async Task<bool> UpdateEventAsync(int eventId, int userId, InputEventModel updatedModel)
         {
             var eventToUpdate = await GetFullEventAsync(eventId);
             if (eventToUpdate == null || eventToUpdate.AuthorId != userId)
@@ -50,6 +75,20 @@ namespace EventPlanner.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> DeleteEventAsync(ClaimsPrincipal user, int eventId, int userId)
+        {
+            var fetchedEvent = _context.Event.FirstOrDefault(e => e.Id == eventId);
+
+			if (fetchedEvent == null || !UserHasPermissionToEdit(user, userId, fetchedEvent.AuthorId))
+            {
+                return false;
+            }
+
+            _context.Event.Remove(fetchedEvent);
+            await _context.SaveChangesAsync();
+            return true;
+		}
 
         public async Task<IEnumerable<Category>> GetListOfCategories()
         {
@@ -164,45 +203,45 @@ namespace EventPlanner.Services
         public async Task<Location> GetOrCreateLocationAsync(InputEventModel model)
         {
             // Address constructed in a relational way so need to go through a lot of queries
-            var country = await _context.Country.FirstOrDefaultAsync(c => c.Name == model.CountryName);
-            if (country == null)
-            {
-                country = new Country { Name = model.CountryName };
-                _context.Country.Add(country);
-            }
+				var country = await _context.Country.FirstOrDefaultAsync(c => c.Name == model.CountryName);
+				if (country == null)
+				{
+					country = new Country { Name = model.CountryName };
+					_context.Country.Add(country);
+				}
 
-            var city = await _context.City.FirstOrDefaultAsync(c => c.Name == model.CityName && c.Country.Id == country.Id);
-            if (city == null)
-            {
-                city = new City { Name = model.CityName, Country = country };
-                _context.City.Add(city);
-            }
+				var city = await _context.City.FirstOrDefaultAsync(c => c.Name == model.CityName && c.Country.Id == country.Id);
+				if (city == null)
+				{
+					city = new City { Name = model.CityName, Country = country };
+					_context.City.Add(city);
+				}
 
-            var street = await _context.Street
-                .FirstOrDefaultAsync(s => s.Name == model.StreetName && s.City.Id == city.Id);
-            if (street == null)
-            {
-                street = new Street { Name = model.StreetName, City = city };
-                _context.Street.Add(street);
-            }
+				var street = await _context.Street
+					.FirstOrDefaultAsync(s => s.Name == model.StreetName && s.City.Id == city.Id);
+				if (street == null)
+				{
+					street = new Street { Name = model.StreetName, City = city };
+					_context.Street.Add(street);
+				}
 
-            var location = await _context.Location.FirstOrDefaultAsync(
-                l => l.Street == street && l.PostalCode == model.PostalCode && l.BuildingNumber == model.BuildingNumber
-                );
+				var location = await _context.Location.FirstOrDefaultAsync(
+					l => l.Street == street && l.PostalCode == model.PostalCode && l.BuildingNumber == model.BuildingNumber
+					);
 
-            if (location == null)
-            {
-                location = new Location
-                {
-                    Street = street,
-                    PostalCode = model.PostalCode,
-                    BuildingNumber = model.BuildingNumber
-                };
-                _context.Add(location);
-            }
+				if (location == null)
+				{
+					location = new Location
+					{
+						Street = street,
+						PostalCode = model.PostalCode,
+						BuildingNumber = model.BuildingNumber
+					};
+					_context.Add(location);
+				}
 
-            return location;
-        }
+				return location;
+			}
 
         public async Task<bool> EventExistsAsync(Event newEvent)
         {
@@ -222,12 +261,20 @@ namespace EventPlanner.Services
             return newEvent;
         }
 
-        public async Task<Event> CreateEventFromInputModelAsync(InputEventModel model)
+        public async Task<Event> CreateEventFromInputModelAsync(AppUser user, InputEventModel model)
         {
-            var location = await GetOrCreateLocationAsync(model);
+            // Attach user to context if it's not already tracked
+            var attachedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id) ?? user;
+            if (_context.Entry(attachedUser).State == EntityState.Detached)
+			{
+				_context.Users.Attach(attachedUser);
+			}
+
+			var location = await GetOrCreateLocationAsync(model);
 
             var newEvent = new Event
             {
+                Author = attachedUser,
                 Name = model.Name,
                 CategoryId = model.CategoryId,
                 DateTime = model.DateTime,

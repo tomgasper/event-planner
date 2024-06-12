@@ -8,7 +8,9 @@ namespace EventPlanner.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+			migrationBuilder.Sql("INSERT INTO dbo.EventType (Name) VALUES ('In person');");
+
+			migrationBuilder.AlterColumn<string>(
                 name: "LastName",
                 table: "AppUsers",
                 type: "nvarchar(max)",

@@ -5,6 +5,9 @@ using EventPlanner.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data.Common;
 
 namespace EventPlanner.Data
 {
@@ -23,6 +26,7 @@ namespace EventPlanner.Data
         public DbSet<City> City { get; set; }
         public DbSet<Street> Street { get; set; }
         public DbSet<Location> Location { get; set; }
+        public DbSet<EventType> EventType { get; set; }
 
 		public int SaveChanges()
         {
@@ -57,6 +61,11 @@ namespace EventPlanner.Data
 			base.Remove(entity);
 		}
 
+        public EntityEntry Entry<T>(T entity) where T : class
+        {
+            return base.Entry(entity);
+        }
+
 		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -77,6 +86,11 @@ namespace EventPlanner.Data
                 e.HasOne(e => e.Author)
                 .WithMany(u => u.AuthoredEvents)
                 .HasForeignKey(e => e.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne(e => e.EventType)
+                .WithMany(et => et.Events)
+                .HasForeignKey(e => e.EventTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             });

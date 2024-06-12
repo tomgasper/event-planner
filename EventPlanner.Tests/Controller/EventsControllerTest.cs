@@ -51,7 +51,7 @@ namespace EventPlanner.Tests.Controller
 			_eventsService.GetEventsForPageAsync(1,100).Returns(eventList);
 
 			// Act
-			var result = await _eventsController.Index();
+			var result = await _eventsController.Index("","","", null, null);
 
 			// Assert
 			result.Should().BeOfType<ViewResult>()
