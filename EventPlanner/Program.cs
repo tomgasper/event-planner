@@ -20,6 +20,7 @@ builder.Services.AddScoped<IDbContext, EventPlannerDbContext>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 // Configure Identity .NET
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>

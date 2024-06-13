@@ -1,9 +1,10 @@
 ﻿@model InputEditUserModel
 
-<div class="account-index-container">
+<div class="profile-general-container">
+    <partial name="_ProfileNavbar" />
     <div class="edit-user-container">
         <div class="register-header b2-text">Edit Profile</div>
-        <form asp-action="Index" method="post" class="generic-form">
+        <form asp-action="UpdateProfile" method="post" class="generic-form">
             <div class="input-fullwidth-container">
                 <label asp-for="@Model.UserName"></label>
                 <input asp-for="@Model.UserName" value="@Model.UserName" class="input-fullwidth" />
@@ -40,11 +41,11 @@
 </div>
 
 @section Scripts {
-@{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 @section Styles {
-    <link href="@Url.Content("~/css/Views/AccountStyle.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/Views/ProfileStyle.css")" rel="stylesheet" type="text/css" />
 }

@@ -1,0 +1,26 @@
+﻿@model EventsListViewModel
+
+<div class="profile-general-container">
+	<partial name="_ProfileNavbar" />
+	<div class="profile-events-container">
+		<div asp-validation-summary="ModelOnly"></div>
+		<a asp-action="GetAttendingEvents" method="get">Attending</a>
+		<a asp-action="GetSavedEvents" method="get">Saved for later</a>
+		@foreach (var item in Model.Events)
+		{
+			<div class="list-event-entry-container">
+				@item.Name
+			</div>
+		}
+
+		<div class="pagination-container">
+		@for (int i=1; i <= Model.TotalPages; i++)
+		{
+			<a class="pagination-box" asp-action="ManageEvents" asp-route-id="@i"> @i </a>
+		}
+	</div>
+</div>
+
+@section Styles {
+	<link href="@Url.Content("~/css/Views/ProfileStyle.css")" rel="stylesheet" type="text/css" />
+}

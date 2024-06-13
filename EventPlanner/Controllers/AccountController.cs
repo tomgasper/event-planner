@@ -17,28 +17,6 @@ namespace EventPlanner.Controllers
             _accountService = accountService; 
         }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            InputEditUserModel inputModel = _accountService.PassInputUserInfo(user);
-			return View(inputModel);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Index(InputEditUserModel inputModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.GetUserAsync(User);
-                await _accountService.EditUserInfo(inputModel, user);
-			}
-
-            return RedirectToAction(nameof(Index));
-        }
-
         public IActionResult Register()
         {
             return View();
