@@ -1,44 +1,51 @@
 ﻿@model InputEditUserModel
 
-<div class="edit-user-container">
-    <div class="register-header b2-text">Edit Profile</div>
-    <form asp-action="Index" method="post" class="generic-form">
-        <div class="input-fullwidth-container">
-            <label asp-for="@Model.UserName"></label>
-            <input asp-for="@Model.UserName" value="@Model.UserName" class="input-fullwidth" />
-            <span asp-validation-for="@Model.UserName"></span>
-        </div>
-        <div class="input-fullwidth-container">
-            <label asp-for="@Model.Email"></label>
-            <input asp-for="@Model.Email" value="@Model.Email" class="input-fullwidth" />
-            <span asp-validation-for="@Model.Email"></span>
-        </div>
-        <div class="input-fullwidth-container">
-            <label asp-for="@Model.FirstName"></label>
-            <input asp-for="@Model.FirstName" value="@Model.FirstName" class="input-fullwidth" />
-            <span asp-validation-for="@Model.FirstName"></span>
-        </div>
-        <div class="input-fullwidth-container">
-            <label asp-for="@Model.LastName"></label>
-            <input asp-for="@Model.LastName" value="@Model.LastName" class="input-fullwidth" />
-            <span asp-validation-for="@Model.LastName"></span>
-        </div>
-        <div class="input-fullwidth-container" >
-            <input asp-for="@Model.Password" class="input-fullwidth" placeholder="Password"/>
-            <span asp-validation-for="@Model.Password"></span>
-        </div>
-        <div class="input-fullwidth-container" >
-            <input asp-for="@Model.ConfirmPassword" class="input-fullwidth" placeholder="Confirm password"/>
-            <span asp-validation-for="@Model.ConfirmPassword"></span>
-        </div>
-        <div class="submit-form">
-            <input type="submit" value="Save" class="button-w1" />
-        </div>
-    </form>
+<div class="account-index-container">
+    <partial name="_AccountNavbar" />
+    <div class="edit-user-container">
+        <div class="register-header b2-text">Edit Profile</div>
+        <form asp-action="Index" method="post" class="generic-form">
+            <div class="input-fullwidth-container">
+                <label asp-for="@Model.UserName"></label>
+                <input asp-for="@Model.UserName" value="@Model.UserName" class="input-fullwidth" />
+                <span asp-validation-for="@Model.UserName"></span>
+            </div>
+            <div class="input-fullwidth-container">
+                <label asp-for="@Model.Email"></label>
+                <input asp-for="@Model.Email" value="@Model.Email" class="input-fullwidth" />
+                <span asp-validation-for="@Model.Email"></span>
+            </div>
+            <div class="input-fullwidth-container">
+                <label asp-for="@Model.FirstName"></label>
+                <input asp-for="@Model.FirstName" value="@Model.FirstName" class="input-fullwidth" />
+                <span asp-validation-for="@Model.FirstName"></span>
+            </div>
+            <div class="input-fullwidth-container">
+                <label asp-for="@Model.LastName"></label>
+                <input asp-for="@Model.LastName" value="@Model.LastName" class="input-fullwidth" />
+                <span asp-validation-for="@Model.LastName"></span>
+            </div>
+            <div class="input-fullwidth-container">
+                <input asp-for="@Model.Password" class="input-fullwidth" placeholder="Password" />
+                <span asp-validation-for="@Model.Password"></span>
+            </div>
+            <div class="input-fullwidth-container">
+                <input asp-for="@Model.ConfirmPassword" class="input-fullwidth" placeholder="Confirm password" />
+                <span asp-validation-for="@Model.ConfirmPassword"></span>
+            </div>
+            <div class="submit-form">
+                <input type="submit" value="Save" class="button-w1" />
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+}
+
+@section Styles {
+    <link href="@Url.Content("~/css/Views/AccountStyle.css")" rel="stylesheet" type="text/css" />
 }

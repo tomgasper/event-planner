@@ -17,6 +17,10 @@ namespace EventPlanner.Models
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateTime { get; set; }
+        public SelectList? EventTypesList { get; set; }
+        [Required]
+        [Display(Name = "Event type")]
+        public int EventTypeId { get; set; }
         [Required]
         [DataType(DataType.Text)]
         public string StreetName { get; set; }

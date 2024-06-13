@@ -101,6 +101,17 @@ namespace EventPlanner.Services
             return categories;
         }
 
+        public async Task<IEnumerable<EventType>> GetListOfEventTypes()
+        {
+            var eventTypeQuery = from et in _context.EventType
+                                  orderby et.Name
+                                  select et;
+
+            IEnumerable<EventType> types = await eventTypeQuery.AsNoTracking().ToListAsync();
+
+            return types;
+        }
+
         public async Task<LocationViewModel> GetEventLocationAsync(Event fetchedEvent)
         {
             LocationViewModel model = new LocationViewModel();
@@ -279,11 +290,36 @@ namespace EventPlanner.Services
                 CategoryId = model.CategoryId,
                 DateTime = model.DateTime,
                 Location = location,
+                EventTypeId = model.EventTypeId,
                 MaxNumberParticipants = model.MaxNumberParticipants,
                 ImageUrl = model.ImageUrl
             };
 
             return newEvent;
+        }
+
+		public async Task<SelectList> PopulateCategoriesDropDownList(object selectedCategory = null)
+		{
+			IEnumerable<Category> categories = await GetListOfCategories();
+			var categoryList = new SelectList(categories, "Id", "Name", selectedCategory);
+
+			return categoryList;
+		}
+
+        public async Task<SelectList> PopulateEventTypesDropDownList(object selectedType = null)
+        {
+            IEnumerable<EventType> types = await GetListOfEventTypes();
+            var eventTypesList = new SelectList(types, "Id", "Name", selectedType);
+
+            return eventTypesList;
+        }
+
+        public async Task<InputEventModel> FillDropDownLists(InputEventModel viewModel, object selectedCategory, object selectedType)
+        {
+            viewModel.CategoryList = await PopulateCategoriesDropDownList(selectedCategory);
+            viewModel.EventTypesList = await PopulateEventTypesDropDownList(selectedType);
+
+            return viewModel;
         }
     }
 }

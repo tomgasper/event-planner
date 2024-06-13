@@ -20,15 +20,15 @@ namespace EventPlanner.Controllers
             _eventService = eventService;
         }
 
-        // Helper function for populating Category type drop down list
-        private async Task<InputEventModel> PopulateCategoriesDropDownList(object selectedCategory = null)
+		// Helper function for populating Category type drop down list
+		private async Task<InputEventModel> GetBlankVMWithFilledSelectLists(object selectedCategory = null, object selectedType = null)
         {
-            IEnumerable<Category> categories = await _eventService.GetListOfCategories();
-            InputEventModel viewModel = new InputEventModel();
-            viewModel.CategoryList = new SelectList(categories, "Id", "Name", selectedCategory);
+			var blankViewModel = new InputEventModel();
+            blankViewModel.CategoryList = await _eventService.PopulateCategoriesDropDownList(selectedCategory);
+            blankViewModel.EventTypesList = await _eventService.PopulateEventTypesDropDownList(selectedType);
 
-            return viewModel;
-        }
+            return blankViewModel;
+		}
 
         public async Task<IActionResult> Index(int Id)
         {
@@ -40,7 +40,7 @@ namespace EventPlanner.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            var viewModel = await PopulateCategoriesDropDownList();
+            InputEventModel viewModel = await GetBlankVMWithFilledSelectLists();
             return View(viewModel);
         }
 
@@ -51,8 +51,9 @@ namespace EventPlanner.Controllers
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError(string.Empty, "Incorrect data in form input. Please try again.");
-                await PopulateCategoriesDropDownList(model.CategoryId);
-                return View(model);
+
+                var modelFilledDropdownLists = await _eventService.FillDropDownLists(model, model.CategoryId, model.EventTypeId);
+                return View(modelFilledDropdownLists);
             }
 
             try
@@ -65,8 +66,9 @@ namespace EventPlanner.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "An event with the same details already exists.");
                     // Ensure the dropdown is populated
-                    await PopulateCategoriesDropDownList(model.CategoryId);
-                    return View(model);
+
+                    var modelFilledDropdownLists = await _eventService.FillDropDownLists(model, model.CategoryId, model.EventTypeId);
+                    return View(modelFilledDropdownLists);
                 }
 
                 var insertedEvent = await _eventService.AddEventAsync(newEvent);
@@ -75,8 +77,9 @@ namespace EventPlanner.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while creating the event. Please try again.");
-                await PopulateCategoriesDropDownList(model.CategoryId);
-                return View(model);
+
+                var modelFilledDropdownLists = await _eventService.FillDropDownLists(model, model.CategoryId, model.EventTypeId);
+                return View(modelFilledDropdownLists);
             }
         }
 
@@ -100,18 +103,18 @@ namespace EventPlanner.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, InputEventModel viewModel)
+        public async Task<IActionResult> Edit(int id, InputEventModel model)
         {
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError(string.Empty, "Incorrect data in form input. Please try again.");
-                await PopulateCategoriesDropDownList(viewModel.CategoryId);
-                return View(viewModel);
+                var modelFilledDropdownLists = await _eventService.FillDropDownLists(model, model.CategoryId, model.EventTypeId);
+                return View(modelFilledDropdownLists);
             }
 
             int userId = Int32.Parse(_userManager.GetUserId(User));
 
-            bool eventUpdated = await _eventService.UpdateEventAsync(id, userId, viewModel);
+            bool eventUpdated = await _eventService.UpdateEventAsync(id, userId, model);
             if (!eventUpdated) {
                 return RedirectToAction("Index", "Error", new { message = "Unauthorized or event not found" });
             }

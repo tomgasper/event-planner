@@ -51,6 +51,12 @@
     </div>
 
     <div class="form-entry">
+        <label asp-for="EventTypeId"></label>
+        <select class="input-fullwidth" asp-for="EventTypeId" asp-items="Model.EventTypesList"></select>
+        <span asp-validation-for="MaxNumberParticipants"></span>
+    </div>
+
+    <div class="form-entry">
         <label asp-for="MaxNumberParticipants"></label>
         <input class="input-fullwidth" asp-for="MaxNumberParticipants" />
         <span asp-validation-for="MaxNumberParticipants"></span>

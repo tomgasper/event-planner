@@ -1,0 +1,16 @@
+﻿.account-index-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width:90%;
+    gap: 5%;
+}
+
+.account-navbar-container {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    width:20%;
+    height:100%;
+    gap: 10px;
+}

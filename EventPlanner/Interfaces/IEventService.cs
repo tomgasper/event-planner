@@ -1,4 +1,5 @@
 ﻿using EventPlanner.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace EventPlanner.Interfaces
@@ -18,5 +19,10 @@ namespace EventPlanner.Interfaces
 
 		Task<bool> DeleteEventAsync(ClaimsPrincipal user, int eventId, int userId);
         Task<bool> AssignEventToUserAsync(int userId, int eventId);
-	}
+
+        Task<SelectList> PopulateCategoriesDropDownList(object selectedCategory);
+        Task<SelectList> PopulateEventTypesDropDownList(object selectedType);
+        Task<IEnumerable<EventType>> GetListOfEventTypes();
+        Task<InputEventModel> FillDropDownLists(InputEventModel viewModel, object selectedCategory, object selectedType);
+    }
 }
