@@ -8,14 +8,23 @@ namespace EventPlanner.Services
 	public class ProfileService : IProfileService
 	{
 		private IDbContext _context { get; }
-		public ProfileService(IDbContext context)
+		private IEventsService _eventsService { get; }
+		public ProfileService(IDbContext context, IEventsService eventsService)
 		{
 			_context = context;
+			_eventsService = eventsService;
 		}
 
 		public async Task<IEnumerable<Event>> GetUserEvents(int userId)
 		{
-			var retrivedUser = await _context.Users.Include(u => u.Events).AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+			var retrivedUser = await _context.Users
+				.Include(u => u.Events)
+					.ThenInclude( e => e.Location)
+						.ThenInclude( l => l.Street )
+							.ThenInclude(s => s.City)
+				.Include(u => u.Events)
+					.ThenInclude(e => e.Author)
+				.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
 
 			return retrivedUser.Events;
 		}

@@ -9,7 +9,11 @@
 		@foreach (var item in Model.Events)
 		{
 			<div class="list-event-entry-container">
-				@item.Name
+				<div class="list-event-entry-name">@item.Name</div>
+				<div class="list-event-entry-name">@item.EventType.Name</div>
+				<div class="list-event-entry-date">@item.DateTime</div>
+				<div class="list-event-entry-date">@item.Author.FirstName</div>
+				<div class="list-event-entry-date">@item.Author.LastName</div>
 			</div>
 		}
 

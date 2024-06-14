@@ -13,8 +13,10 @@ namespace EventPlanner.Models
         public int AuthorId { get; set; }
         public AppUser Author { get; set; }
         public string Name { get; set; }
-        public int CategoryId { get; set; }
-        [ForeignKey("EventType")]
+		[ForeignKey("Category")]
+		public int CategoryId { get; set; }
+		public Category Category { get; set; }
+		[ForeignKey("EventType")]
 		public int EventTypeId { get; set; }
 		public EventType EventType { get; set; }
         public DateTime DateTime { get; set; }
