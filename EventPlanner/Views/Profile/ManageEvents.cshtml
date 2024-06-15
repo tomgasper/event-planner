@@ -4,23 +4,57 @@
 	<partial name="_ProfileNavbar" />
 	<div class="profile-events-container">
 		<div asp-validation-summary="ModelOnly"></div>
-		<a asp-action="GetAttendingEvents" method="get">Attending</a>
-		<a asp-action="GetSavedEvents" method="get">Saved for later</a>
+		<div class="profile-events-controlls">
+			<form method="get">
+				<select asp-for="@Model.SortCriteriaSelected" asp-items="@Model.SortCriteria"></select>
+				@Model.SortCriteriaSelected
+				<input type="hidden" asp-for="ShowOnlyMyEvents" />
+				<input type="submit" value="Sort">
+			</form>
+			<a asp-action="ManageEvents" method="get"
+				asp-route-id="@Model.CurrentPage"
+			   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
+				asp-route-ShowOnlyMyEvents="true">Created by me</a>
+
+			<a asp-action="ManageEvents" method="get"
+			   asp-route-id="@Model.CurrentPage"
+			   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
+			   asp-route-ShowOnlyMyEvents="false">Attending</a>
+		</div>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>City</th>
+				<th>Event Type</th>
+				<th>Category</th>
+				<th>Date</th>
+				<th></th>
+			</tr>
 		@foreach (var item in Model.Events)
 		{
-			<div class="list-event-entry-container">
-				<div class="list-event-entry-name">@item.Name</div>
-				<div class="list-event-entry-name">@item.EventType.Name</div>
-				<div class="list-event-entry-date">@item.DateTime</div>
-				<div class="list-event-entry-date">@item.Author.FirstName</div>
-				<div class="list-event-entry-date">@item.Author.LastName</div>
-			</div>
+			<tr>
+				<td>@item.Name</td>
+				<td>@item.CityName</td>
+				<td>@item.EventTypeName</td>
+				<td>@item.CategoryName</td>
+				<td>@item.DateTime</td>
+				<td>
+					<a asp-action="Edit" asp-controller="Event" asp-route-id="@item.Id">Edit</a>
+					<a asp-action="Index" asp-controller="Event" asp-route-id="@item.Id">Details</a>
+					<a asp-action="Delete" asp-controller="Event" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
 		}
+		</table>
 
 		<div class="pagination-container">
 		@for (int i=1; i <= Model.TotalPages; i++)
 		{
-			<a class="pagination-box" asp-action="ManageEvents" asp-route-id="@i"> @i </a>
+				<a class="pagination-box" asp-action="ManageEvents"
+				asp-route-id="@i"
+				asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
+				asp-route-ShowOnlyMyEvents="@Model.ShowOnlyMyEvents"
+				> @i</a>
 		}
 	</div>
 </div>

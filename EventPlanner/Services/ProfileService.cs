@@ -2,31 +2,108 @@
 using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace EventPlanner.Services
 {
 	public class ProfileService : IProfileService
 	{
 		private IDbContext _context { get; }
-		private IEventsService _eventsService { get; }
 		public ProfileService(IDbContext context, IEventsService eventsService)
 		{
 			_context = context;
-			_eventsService = eventsService;
 		}
 
-		public async Task<IEnumerable<Event>> GetUserEvents(int userId)
+		public EventListEntryVM MapEventToListEntry(Event fetchedEvent)
 		{
-			var retrivedUser = await _context.Users
+			var eventListEntry = new EventListEntryVM() {
+				Id = fetchedEvent.Id,
+				Name = fetchedEvent.Name,
+				DateTime = fetchedEvent.DateTime,
+				CityName = fetchedEvent.Location.Street.City.Name,
+				CategoryName = fetchedEvent.Category.Name,
+				EventTypeName = fetchedEvent.EventType.Name,
+			};
+
+			return eventListEntry;
+		}
+
+		public IEnumerable<EventListEntryVM> MapAllEventsToVM(IEnumerable<Event> fetchedEvents)
+		{
+			var eventList = new List<EventListEntryVM>();
+
+			foreach (var fetchedEvent in fetchedEvents)
+			{
+				eventList.Add(MapEventToListEntry(fetchedEvent));
+			}
+
+			return eventList;
+		}
+
+		public async Task<IEnumerable<Event>> GetUserEvents(int userId, bool showOnlyMyEvents)
+		{
+			if (showOnlyMyEvents)
+			{
+				var eventIds = await _context.Event
+				.Where(e => e.AuthorId == userId)
+				.Select(e => e.Id)
+				.ToListAsync();
+
+				var events = await _context.Event
+					.Where(e => eventIds.Contains(e.Id))
+					.Include(e => e.Location)
+						.ThenInclude(l => l.Street)
+							.ThenInclude(s => s.City)
+					.Include(e => e.Author)
+					.Include(e => e.Category)
+					.Include(e => e.EventType)
+					.ToListAsync();
+
+				return events;
+			}
+			else
+			{
+				var retrivedUser = await _context.Users
+				.Where(u => u.Id == userId)
 				.Include(u => u.Events)
-					.ThenInclude( e => e.Location)
-						.ThenInclude( l => l.Street )
+					.ThenInclude(e => e.Location)
+						.ThenInclude(l => l.Street)
 							.ThenInclude(s => s.City)
 				.Include(u => u.Events)
 					.ThenInclude(e => e.Author)
-				.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+				.Include(u => u.Events)
+					.ThenInclude(e => e.Category)
+				.Include(u => u.Events)
+					.ThenInclude(e => e.EventType)
+				.AsNoTracking().FirstOrDefaultAsync();
 
-			return retrivedUser.Events;
+				return retrivedUser.Events;
+			}
+		}
+
+		public IEnumerable<EventListEntryVM> SortUserEvents(IEnumerable<EventListEntryVM> fetchedEvents, string sortCriteria)
+		{
+			switch(sortCriteria)
+			{
+				case "Date":
+					return fetchedEvents.OrderBy(e => e.DateTime);
+				case "Category":
+					return fetchedEvents.OrderBy(e => e.CategoryName);
+				case "Type":
+					return fetchedEvents.OrderBy(e => e.EventTypeName);
+				default:
+					return fetchedEvents;
+			}
+		}
+
+		public async Task<IEnumerable<EventListEntryVM>> GetEventsForView(int userId, string sortCriteria, bool showOnlyMyEvents)
+		{
+			IEnumerable<Event> fetchedEvents = await GetUserEvents(userId, showOnlyMyEvents);
+			IEnumerable<EventListEntryVM> eventsForView = MapAllEventsToVM(fetchedEvents);
+			IEnumerable <EventListEntryVM> sortedEventsForView = SortUserEvents(eventsForView, sortCriteria);
+
+			return sortedEventsForView;
 		}
 
 		public int GetTotalPages(int eventsNo, int eventsPerPage)
@@ -34,12 +111,12 @@ namespace EventPlanner.Services
 			return (int)Math.Ceiling(eventsNo / (double)eventsPerPage);
 		}
 
-		public IEnumerable<Event> GetEventsForPage(IEnumerable<Event> allEvents, int pageNo, int eventsPerPage)
+		public IEnumerable<EventListEntryVM> GetEventsForPage(IEnumerable<EventListEntryVM> allEvents, int pageNo, int eventsPerPage)
 		{
 			return allEvents.Skip((pageNo - 1) * eventsPerPage).Take(eventsPerPage);
 		}
 
-		public EventsListViewModel ConstructEventsListVM(IEnumerable<Event> paginatedEvents, int currPageNo, int totalPages)
+		public EventsListViewModel ConstructEventsListVM(IEnumerable<EventListEntryVM> paginatedEvents, int currPageNo, int totalPages, string sortCriteria, bool showOnlyMyEvents)
 		{
 			var model = new EventsListViewModel()
 			{
@@ -48,19 +125,40 @@ namespace EventPlanner.Services
 				TotalPages = totalPages
 			};
 
+			SetModelSortCriteria(ref model, sortCriteria, showOnlyMyEvents);
+
 			return model;
 		}
 
-		public async Task<EventsListViewModel> GetEventsForCurrentPage(int userId, int pageNo)
+		public SelectList PopulateSortDropdownList(string sortCriteriaSelected = "")
+		{
+			return new SelectList(new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Date", Value = "Date" },
+				new SelectListItem { Text = "Category", Value = "Category" },
+				new SelectListItem { Text = "Type", Value = "Type" }
+			}, "Value", "Text", sortCriteriaSelected);
+		}
+
+		public EventsListViewModel SetModelSortCriteria(ref EventsListViewModel model, string sortCriteria, bool showOnlyMyEvents)
+		{
+			model.SortCriteria = PopulateSortDropdownList(sortCriteria);
+			model.SortCriteriaSelected = sortCriteria;
+			model.ShowOnlyMyEvents = showOnlyMyEvents;
+
+			return model;
+		}
+
+		public async Task<EventsListViewModel> GetEventsForCurrentPage(int userId, int pageNo, string sortCriteria, bool showOnlyMyEvents)
 		{
 			const int EVENTS_PER_PAGE = 5;
 
-			IEnumerable<Event> events = await GetUserEvents(userId);
+			IEnumerable<EventListEntryVM> events = await GetEventsForView(userId, sortCriteria, showOnlyMyEvents);
 			int totalEvents = events.Count();
 			int totalPages = GetTotalPages(totalEvents, EVENTS_PER_PAGE);
-			IEnumerable<Event> paginatedEvents = GetEventsForPage(events, pageNo, EVENTS_PER_PAGE);
+			IEnumerable<EventListEntryVM> paginatedEvents = GetEventsForPage(events, pageNo, EVENTS_PER_PAGE);
 
-			return ConstructEventsListVM(paginatedEvents, pageNo, totalPages);
+			return ConstructEventsListVM(paginatedEvents, pageNo, totalPages, sortCriteria, showOnlyMyEvents);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using EventPlanner.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -64,14 +65,15 @@ namespace EventPlanner.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> ManageEvents(int id = 1)
+        public async Task<IActionResult> ManageEvents(int id = 1, string sortCriteriaSelected = "", bool showOnlyMyEvents = false)
         {
             var model = new EventsListViewModel();
+            model = _profileService.SetModelSortCriteria(ref model, sortCriteriaSelected, showOnlyMyEvents);
 
-            try
+			try
             {
 				int userId = Int32.Parse(_userManager.GetUserId(User));
-				model = await _profileService.GetEventsForCurrentPage(userId, id);
+				model = await _profileService.GetEventsForCurrentPage(userId, id, sortCriteriaSelected, showOnlyMyEvents);
 			}
             catch (Exception ex)
             {
