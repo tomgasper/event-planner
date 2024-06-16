@@ -16,11 +16,13 @@ builder.Logging.AddEventLog(eventLogSettings =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDbContext, EventPlannerDbContext>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<ILoginHistoryService, LoginHistoryService>();
 
 // Configure Identity .NET
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>

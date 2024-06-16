@@ -27,6 +27,7 @@ namespace EventPlanner.Data
         public DbSet<Street> Street { get; set; }
         public DbSet<Location> Location { get; set; }
         public DbSet<EventType> EventType { get; set; }
+		public DbSet<LoginHistory> LoginHistory { get; set; }
 
 		public int SaveChanges()
         {

@@ -1,7 +1,9 @@
 ﻿<div class="profile-general-container">
 	<partial name="_ProfileNavbar" />
 	<div class="profile-settings-container">
-		Settings
+		<a asp-action="Delete" asp-controller="Account">Delete account</a>
+		<a asp-action="HideProfile" asp-controller="Profile">Hide your profile</a>
+		<a asp-action="LoggingHistory" asp-controller="LogginHistory">See your logging history!</a>
 	</div>
 </div>
 

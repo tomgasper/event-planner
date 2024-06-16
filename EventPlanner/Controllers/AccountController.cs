@@ -10,11 +10,13 @@ namespace EventPlanner.Controllers
     {
         private UserManager<AppUser> _userManager { get; }
         private IAccountService _accountService { get; }
+        private ILoginHistoryService _loginHistoryService { get; }
 
-        public AccountController(UserManager<AppUser> userManager, IAccountService accountService)
+        public AccountController(UserManager<AppUser> userManager, IAccountService accountService, ILoginHistoryService loginHistoryService)
         {
             _userManager = userManager;
-            _accountService = accountService; 
+            _accountService = accountService;
+            _loginHistoryService = loginHistoryService;
         }
 
         public IActionResult Register()
@@ -63,15 +65,33 @@ namespace EventPlanner.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(InputLoginModel inputModel)
         {
-            var result = await _accountService.Login(inputModel);
-            if (result.Succeeded)
+            try
             {
-                ViewBag.Result = "success";
-                return LocalRedirect("/");
-            } else
+				var result = await _accountService.Login(inputModel);
+
+				if (result.Succeeded)
+				{
+					AppUser user = await _userManager.FindByNameAsync(inputModel.UserName);
+					await _loginHistoryService.AddLoginRecord(user.Id, true, HttpContext.Connection.RemoteIpAddress?.ToString());
+					return LocalRedirect("/");
+				}
+				else
+				{
+					string failureReason = result.IsLockedOut ? "Account locked out" : "Invalid credentials";
+					var userByLogin = await _userManager.FindByNameAsync(inputModel.UserName);
+
+                    // User exists but an incorrect password has been provided
+					if (userByLogin != null)
+					{
+                        await _loginHistoryService.AddLoginRecord(userByLogin.Id, false, HttpContext.Connection.RemoteIpAddress?.ToString(), failureReason);
+                    }
+
+                    throw new Exception(failureReason);
+                }
+			} catch
             {
-                ViewBag.Result = "fail";
-            }
+				ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+			}
 
             return View();
         }
