@@ -1,9 +1,28 @@
-﻿<div class="profile-general-container">
+﻿@model IEnumerable<LoginHistoryVM>;
+
+<div class="profile-general-container">
 	<partial name="_ProfileNavbar" />
 	<div class="profile-settings-container">
 		<a asp-action="Delete" asp-controller="Account">Delete account</a>
 		<a asp-action="HideProfile" asp-controller="Profile">Hide your profile</a>
-		<a asp-action="LoggingHistory" asp-controller="LogginHistory">See your logging history!</a>
+		<a asp-action="LoggingHistory" asp-controller="Profile">See full logging history!</a>
+		<table>
+			<tr>
+				@foreach (var prop in Model.FirstOrDefault().GetType().GetProperties())
+				{
+					<th>@prop.Name</th>
+				}
+			</tr>
+			@foreach (var item in @Model)
+			{
+				<tr>
+					@foreach (var prop in item.GetType().GetProperties())
+					{
+						<td>@prop.GetValue(item)</td>
+					}
+				</tr>
+			}
+		</table>
 	</div>
 </div>
 

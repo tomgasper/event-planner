@@ -22,7 +22,8 @@
 }
 
 .profile-settings-container {
-
+    display:flex;
+    flex-direction: column;
 }
 
 .list-event-container {

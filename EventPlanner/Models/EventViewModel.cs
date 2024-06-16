@@ -3,6 +3,7 @@
     public class EventViewModel
     {
         public int Id { get; set; }
+        public bool IsUserAuthor { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public DateTime DateTime { get; set; }

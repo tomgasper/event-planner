@@ -160,5 +160,45 @@ namespace EventPlanner.Services
 
 			return ConstructEventsListVM(paginatedEvents, pageNo, totalPages, sortCriteria, showOnlyMyEvents);
 		}
-	}
+
+        public LoginHistoryVM MapToLoginHistoryVM(LoginHistory fetchedEntry)
+        {
+            return new LoginHistoryVM
+            {
+                Id = fetchedEntry.Id,
+                LoginTime = fetchedEntry.LoginTime,
+                IPAddress = fetchedEntry.IPAddress,
+                DeviceInformation = fetchedEntry.DeviceInformation,
+                BrowserInformation = fetchedEntry.BrowserInformation,
+                LoginSuccess = fetchedEntry.LoginSuccess,
+                FailureReason = fetchedEntry.FailureReason,
+            };
+        }
+
+		public async Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId)
+		{
+			return await _context.LoginHistory.Where(lh => lh.User.Id == userId).ToListAsync();
+        }
+
+		public IEnumerable<LoginHistoryVM> MapLoginHistoriesToVM(IEnumerable<LoginHistory> fetchedLoginHistoryList)
+		{
+            List<LoginHistoryVM> loginHistoryListVM = new();
+            foreach (var loginHistory in fetchedLoginHistoryList)
+            {
+                loginHistoryListVM.Add(MapToLoginHistoryVM(loginHistory));
+            }
+
+			return loginHistoryListVM;
+        }
+
+		public async Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId)
+		{
+			IEnumerable<LoginHistory> fetchedLoginHistories = await GetLoginHistories(userId);
+			IEnumerable<LoginHistoryVM> loginHistoriesVM = MapLoginHistoriesToVM(fetchedLoginHistories);
+
+			return loginHistoriesVM;
+		}
+
+
+    }
 }

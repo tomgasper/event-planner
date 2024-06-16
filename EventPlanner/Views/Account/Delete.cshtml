@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Delete Account";
+}
+
+<div class="account-delete-container">
+    <h1>Delete Account</h1>
+    <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+
+    <form asp-action="DeleteAccount" method="post">
+        <button type="submit" class="btn btn-danger">Delete my account</button>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-default">Cancel</a>
+    </form>
+</div>
+
+@section Styles {
+    <link href="@Url.Content("~/css/Views/AccountStyle.css")" rel="stylesheet" type="text/css" />
+}

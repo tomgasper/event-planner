@@ -96,10 +96,39 @@ namespace EventPlanner.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ManageEvents()
-        {
-            return View();
-        }
+		[Authorize]
+		[HttpGet]
+		public IActionResult Delete()
+		{
+			return View();
+		}
 
-    }
+		[Authorize]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ActionName("Delete")]
+		public async Task<IActionResult> DeletePost()
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user == null)
+			{
+				ModelState.AddModelError(string.Empty, "User not found");
+				return View("NotFound");
+			}
+
+			var result = await _userManager.DeleteAsync(user);
+			if (result.Succeeded)
+			{
+				await _accountService.Logout();
+				return RedirectToAction("Index", "Home");
+			}
+
+			foreach (var error in result.Errors)
+			{
+				ModelState.AddModelError(string.Empty, error.Description);
+			}
+
+			return View();
+		}
+	}
 }

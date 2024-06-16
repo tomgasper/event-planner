@@ -85,9 +85,26 @@ namespace EventPlanner.Controllers
 			return View(model);
         }
 
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Settings()
         {
-            return View();
+            // Fetch data from db
+            // Put the data inside the ViewModel
+            // Display data in View through passed ViewModel in the controller
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                IEnumerable<LoginHistoryVM> loginHistoryVM = await _profileService.GetLoginHistoriesVM(user.Id);
+                return View(loginHistoryVM);
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get user login history");
+                ModelState.AddModelError(string.Empty, "An unexpected error occured while fetching login history.");
+                return View();
+            }
         }
+
+        
     }
 }

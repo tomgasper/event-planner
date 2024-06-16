@@ -15,5 +15,9 @@ namespace EventPlanner.Interfaces
 		IEnumerable<EventListEntryVM> SortUserEvents(IEnumerable<EventListEntryVM> fetchedEvents, string sortCriteria);
 		EventsListViewModel SetModelSortCriteria(ref EventsListViewModel model, string sortCriteriaSelected, bool showOnlyMyEvents);
 
-	}
+		LoginHistoryVM MapToLoginHistoryVM(LoginHistory fetchedEntry);
+		Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId);
+		Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId);
+
+    }
 }
