@@ -2,7 +2,11 @@
 
 <div class="register-container">
     <div class="register-header b2-text">Register</div>
-    <form asp-action="Register" method="post" class="generic-form">
+    <form asp-action="Register" asp-controller="Account" method="post" class="generic-form" enctype="multipart/form-data">
+        <div class="input-fullwidth-container">
+            <input type="file" class="input-fullwidth" asp-for="Image" placeholder="Profile picture" accept="image/*" />
+            <span asp-validation-for="Image"></span>
+        </div>
             <div class="input-fullwidth-container">
                 <input class="input-fullwidth" asp-for="FirstName" placeholder="First Name" />
                 <span asp-validation-for="FirstName"></span>
@@ -20,11 +24,11 @@
                 <span asp-validation-for="Email"></span>
         </div>
             <div class="input-fullwidth-container">
-                <input class="input-fullwidth" asp-for="Password" placeholder="Password" />
+                <input class="input-fullwidth" asp-for="Password" name="Password" placeholder="Password" />
                 <span asp-validation-for="Password"></span>
         </div>
             <div class="input-fullwidth-container">
-                <input class="input-fullwidth" asp-for="ConfirmPassword" placeholder="Confirm password" />
+                <input class="input-fullwidth" asp-for="ConfirmPassword" name="ConfirmPassword" placeholder="Confirm password" />
                 <span asp-validation-for="ConfirmPassword"></span>
      </div>
             <div class="submit-form">

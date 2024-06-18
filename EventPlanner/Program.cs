@@ -24,6 +24,7 @@ builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<ILoginHistoryService, LoginHistoryService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.Configure<FileStorageSettings>(builder.Configuration.GetSection("FileStorageSettings"));
 

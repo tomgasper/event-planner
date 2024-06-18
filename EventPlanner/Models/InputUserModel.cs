@@ -12,6 +12,9 @@ namespace EventPlanner.Models
         [DataType(DataType.Text)]
         public string LastName { get; set; }
 
+		[Display(Name = "Image")]
+		public IFormFile Image { get; set; }
+
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "User Name")]

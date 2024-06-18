@@ -12,11 +12,13 @@ namespace EventPlanner.Services
 		private readonly IDbContext _context;
 		private readonly UserManager<AppUser> _userManager;
 		private readonly SignInManager<AppUser> _signInManager;
+		private readonly IImageService _imageService;
 
-		public AccountService(UserManager<AppUser> userManager, IDbContext dbContext, SignInManager<AppUser> signInManager) {
+		public AccountService(UserManager<AppUser> userManager, IDbContext dbContext, SignInManager<AppUser> signInManager, IImageService imageService) {
 			_context = dbContext;
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_imageService = imageService;
 		}
 
 		public InputEditUserModel PassInputUserInfo(AppUser user)
@@ -42,8 +44,13 @@ namespace EventPlanner.Services
 
 		public async Task<(IdentityResult, AppUser)> CreateNewUser(InputUserModel inputModel)
 		{
+			string? uploadedImage = await _imageService.UploadImage(inputModel.Image);
+
+			if (uploadedImage == null) throw new ArgumentException("Error uploaing image!");
+
 			var user = new AppUser
 			{
+				ProfileImageUrl = uploadedImage,
 				UserName = inputModel.UserName,
 				Email = inputModel.Email,
 				FirstName = inputModel.FirstName,

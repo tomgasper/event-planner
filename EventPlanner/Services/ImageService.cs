@@ -1,11 +1,11 @@
 ﻿using EventPlanner.Configuration;
 using Microsoft.Extensions.Options;
-using
+using EventPlanner.Interfaces;
 using System.Runtime.CompilerServices;
 
 namespace EventPlanner.Services
 {
-	public class ImageService
+	public class ImageService : IImageService
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly FileStorageSettings _fileStorageSettings;

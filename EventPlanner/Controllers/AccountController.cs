@@ -25,7 +25,7 @@ namespace EventPlanner.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(InputUserModel inputModel)
+        public async Task<IActionResult> Register([Bind("Image,UserName,Email,FirstName,LastName,Password,ConfirmPassword")]InputUserModel inputModel)
         {
             if (ModelState.IsValid)
             {
@@ -45,6 +45,8 @@ namespace EventPlanner.Controllers
                 {
                     // Log error message
                 }
+
+                return View(inputModel);
             }
 
             return RedirectToAction(nameof(Index));
