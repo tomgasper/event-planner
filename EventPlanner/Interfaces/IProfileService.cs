@@ -18,6 +18,7 @@ namespace EventPlanner.Interfaces
 		LoginHistoryVM MapToLoginHistoryVM(LoginHistory fetchedEntry);
 		Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId);
 		Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId);
-
-    }
+		Task<SettingsVM> GetSettingsPageVM(int userId);
+		Task ToggleAccountVisibility(int userId);
+	}
 }

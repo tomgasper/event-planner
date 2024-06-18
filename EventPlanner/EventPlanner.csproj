@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\img\profiles\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,7 +3,8 @@ using EventPlanner.Models;
 using EventPlanner.Services;
 using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Policy;
+
+using EventPlanner.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<ILoginHistoryService, LoginHistoryService>();
+
+builder.Services.Configure<FileStorageSettings>(builder.Configuration.GetSection("FileStorageSettings"));
 
 // Configure Identity .NET
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>

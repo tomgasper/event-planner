@@ -76,6 +76,14 @@ namespace EventPlanner.Data
                 b.ToTable("AppUsers");
             });
 
+            builder.Entity<AccountSettings>(a =>
+            {
+                a.HasOne(a => a.User)
+                .WithOne(u => u.AccountSettings)
+                .HasForeignKey<AccountSettings>(a => a.UserId)
+                .IsRequired();
+            });
+
             builder.Entity<Event>(e =>
             {
                 const int adminId = 1;
@@ -95,6 +103,8 @@ namespace EventPlanner.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             });
+
+
 
             
 

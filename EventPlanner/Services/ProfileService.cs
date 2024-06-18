@@ -165,7 +165,6 @@ namespace EventPlanner.Services
         {
             return new LoginHistoryVM
             {
-                Id = fetchedEntry.Id,
                 LoginTime = fetchedEntry.LoginTime,
                 IPAddress = fetchedEntry.IPAddress,
                 DeviceInformation = fetchedEntry.DeviceInformation,
@@ -199,6 +198,34 @@ namespace EventPlanner.Services
 			return loginHistoriesVM;
 		}
 
+		public async Task<AppUser> GetUserWithAccountSettings(int userId)
+		{
+			return await _context.Users.Include(u => u.AccountSettings).Where(u => u.Id == userId).FirstOrDefaultAsync();
+		}
 
-    }
+		public async Task<SettingsVM> GetSettingsPageVM(int userId)
+		{
+			IEnumerable<LoginHistoryVM> loginHistoriesVM = await GetLoginHistoriesVM(userId);
+			AppUser? user = await GetUserWithAccountSettings(userId);
+			bool? accountIsHidden = null;
+
+			if (user != null && user.AccountSettings != null)
+			{
+				accountIsHidden = user.AccountSettings.AccountHidden;
+			}
+
+			return new SettingsVM {
+				AccountHidden = accountIsHidden,
+				LoginHistory = loginHistoriesVM,
+			};
+		}
+
+		public async Task ToggleAccountVisibility(int userId)
+		{
+			var userLoaded = await _context.Users.Include(u => u.AccountSettings).Where(u => u.Id == userId).FirstOrDefaultAsync();
+
+			userLoaded.AccountSettings.AccountHidden = !userLoaded.AccountSettings.AccountHidden;
+			await _context.SaveChangesAsync();
+		}
+	}
 }

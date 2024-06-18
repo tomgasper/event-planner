@@ -6,7 +6,7 @@ namespace EventPlanner.Interfaces
 {
     public interface IEventService
     {
-        Task<EventViewModel> GetEventForViewById(int userId, int id);
+        Task<EventViewModel> GetEventForViewById(string? userId, int id);
         Task<bool> EventExistsAsync(Event newEvent);
         Task<Event> AddEventAsync(Event newEvent);
         Task<Event> CreateEventFromInputModelAsync(AppUser user, InputEventModel model);

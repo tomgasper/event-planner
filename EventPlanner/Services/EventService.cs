@@ -148,7 +148,7 @@ namespace EventPlanner.Services
             return result;
         }
 
-        public async Task<EventViewModel> GetEventForViewById(int userId, int id)
+        public async Task<EventViewModel> GetEventForViewById(string? userId, int id)
         {
             var result = await GetFullEventAsync(id);
 
@@ -157,7 +157,7 @@ namespace EventPlanner.Services
                 EventViewModel model = new();
                 model.Id = result.Id;
                 model.Name = result.Name;
-                model.IsUserAuthor = userId == result.AuthorId;
+                model.IsUserAuthor = userId == (result.AuthorId.ToString());
                 model.Category = null;
 
                 var lookupCategory = await _context.Category.FirstOrDefaultAsync(c => c.Id == result.CategoryId);

@@ -32,7 +32,7 @@ namespace EventPlanner.Controllers
 
         public async Task<IActionResult> Index(int Id)
         {
-            int userId = Int32.Parse(_userManager.GetUserId(User));
+            string? userId = _userManager.GetUserId(User);
             EventViewModel retrievedEvent = await _eventService.GetEventForViewById(userId, Id);
             return View(retrievedEvent);
         }

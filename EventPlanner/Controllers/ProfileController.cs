@@ -1,12 +1,12 @@
 ﻿using EventPlanner.Interfaces;
 using EventPlanner.Models;
-using EventPlanner.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EventPlanner.Controllers
@@ -89,13 +89,10 @@ namespace EventPlanner.Controllers
         [HttpGet]
         public async Task<IActionResult> Settings()
         {
-            // Fetch data from db
-            // Put the data inside the ViewModel
-            // Display data in View through passed ViewModel in the controller
             try
             {
-                var user = await _userManager.GetUserAsync(User);
-                IEnumerable<LoginHistoryVM> loginHistoryVM = await _profileService.GetLoginHistoriesVM(user.Id);
+                var user = await _userManager.GetUserAsync(User) ?? throw new Exception("Couldn't retrieve user");
+                SettingsVM loginHistoryVM = await _profileService.GetSettingsPageVM(user.Id);
                 return View(loginHistoryVM);
             } catch (Exception ex)
             {
@@ -104,6 +101,28 @@ namespace EventPlanner.Controllers
                 return View();
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> HideProfile()
+        {
+            // Get logged in user
+            // Change user.accountSettings to true
+            // In another class filter out hidden profiles (event/attendending)
+
+            try
+            {
+				var user = await _userManager.GetUserAsync(User);
+				await _profileService.ToggleAccountVisibility(user.Id);
+				
+			} catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to toggle account visibility");
+				return RedirectToAction("Index", "Error", new { message = "Unauthorized or user not found" });
+			}
+
+			return RedirectToAction(nameof(Settings));
+		}
 
         
     }
