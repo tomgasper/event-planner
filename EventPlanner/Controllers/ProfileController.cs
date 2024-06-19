@@ -19,12 +19,9 @@ namespace EventPlanner.Controllers
 
         private IProfileService _profileService { get; }
 
-        private IDbContext _context { get; }
-
-        public ProfileController(UserManager<AppUser> userManager, IAccountService accountService, ILogger<ProfileController> logger, IDbContext context, IProfileService profileService)
+        public ProfileController(UserManager<AppUser> userManager, IAccountService accountService, ILogger<ProfileController> logger, IProfileService profileService)
         {
             _logger = logger;
-            _context = context;
             _userManager = userManager;
             _accountService = accountService;
             _profileService = profileService;

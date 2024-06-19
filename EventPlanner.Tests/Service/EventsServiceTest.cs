@@ -39,7 +39,7 @@ namespace EventPlanner.Tests.Service
             _context.Event.Returns(mockDbSet);
 
             // Act
-            var result = await _eventsService.GetEventsForPageAsync(1, 100);
+            var result = await _eventsService.GetEventsRangeAsync();
 
             // Assert
             result.Should().BeOfType<List<Event>>();

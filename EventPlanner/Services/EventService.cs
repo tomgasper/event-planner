@@ -112,7 +112,7 @@ namespace EventPlanner.Services
             return types;
         }
 
-        public async Task<LocationViewModel> GetEventLocationAsync(Event fetchedEvent)
+        public LocationViewModel GetEventLocation(Event fetchedEvent)
         {
             LocationViewModel model = new LocationViewModel();
             model.PostalCode = fetchedEvent.Location.PostalCode;
@@ -175,7 +175,7 @@ namespace EventPlanner.Services
                 // Address is deeply nested in relational db
                 if (result.Location != null)
                 {
-                    LocationViewModel location = await GetEventLocationAsync(result);
+                    LocationViewModel location = GetEventLocation(result);
 
                     model.PostalCode = result.Location.PostalCode;
                     model.BuidingNo = result.Location.BuildingNumber;
@@ -200,7 +200,7 @@ namespace EventPlanner.Services
                 // Address is deeply nested in relational db
                 if (fetchedEvent.Location != null)
                 {
-                    LocationViewModel location = await GetEventLocationAsync(fetchedEvent);
+                    LocationViewModel location = GetEventLocation(fetchedEvent);
 
                     model.PostalCode = fetchedEvent.Location.PostalCode;
                     model.BuildingNumber = fetchedEvent.Location.BuildingNumber;
@@ -304,7 +304,7 @@ namespace EventPlanner.Services
             return newEvent;
         }
 
-		public async Task<SelectList> PopulateCategoriesDropDownList(object selectedCategory = null)
+		public async Task<SelectList> PopulateCategoriesDropDownList(object? selectedCategory = null)
 		{
 			IEnumerable<Category> categories = await GetListOfCategories();
 			var categoryList = new SelectList(categories, "Id", "Name", selectedCategory);
@@ -312,7 +312,7 @@ namespace EventPlanner.Services
 			return categoryList;
 		}
 
-        public async Task<SelectList> PopulateEventTypesDropDownList(object selectedType = null)
+        public async Task<SelectList> PopulateEventTypesDropDownList(object? selectedType = null)
         {
             IEnumerable<EventType> types = await GetListOfEventTypes();
             var eventTypesList = new SelectList(types, "Id", "Name", selectedType);

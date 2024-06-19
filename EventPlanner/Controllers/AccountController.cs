@@ -75,7 +75,7 @@ namespace EventPlanner.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(InputLoginModel inputModel)
         {
-            bool loginSuccess = await _accountService.LoginWithLog(inputModel.UserName, inputModel.Password, HttpContext.Connection.RemoteIpAddress?.ToString());
+			bool loginSuccess = await _accountService.LoginWithLog(inputModel.UserName, inputModel.Password, HttpContext.Connection.RemoteIpAddress?.ToString());
 
             if (loginSuccess) { return LocalRedirect("/"); }
             else

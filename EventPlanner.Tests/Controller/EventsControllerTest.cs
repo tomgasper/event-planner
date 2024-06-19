@@ -48,10 +48,10 @@ namespace EventPlanner.Tests.Controller
 				new Event { Name = "Event2" }
 			};
 
-			_eventsService.GetEventsForPageAsync(1,100).Returns(eventList);
+			_eventsService.GetEventsRangeAsync().Returns(eventList);
 
 			// Act
-			var result = await _eventsController.Index("","","", null, null);
+			var result = await _eventsController.Index();
 
 			// Assert
 			result.Should().BeOfType<ViewResult>()

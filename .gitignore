@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# User-specific folders
+EventPlanner/wwwroot/img/profiles
+
 # User-specific files
 *.rsuser
 *.suo

@@ -19,6 +19,8 @@ namespace EventPlanner.Tests.Service
 		private readonly UserManager<AppUser> _userManager;
 		private readonly SignInManager<AppUser> _signInManager;
 		private readonly IAccountService _accountService;
+		private readonly ILoginHistoryService _loginHistoryService;
+		private readonly IImageService _imageService;
 
 		public AccountServiceTest()
 		{
@@ -27,10 +29,12 @@ namespace EventPlanner.Tests.Service
 			var userStore = Substitute.For<IUserStore<AppUser>>();
 			_userManager = Substitute.For<UserManager<AppUser>>(userStore, null, null, null, null, null, null, null, null);
 			_signInManager = Substitute.For<SignInManager<AppUser>>(
-				_userManager, Substitute.For<IHttpContextAccessor>(), Substitute.For<IUserClaimsPrincipalFactory<AppUser>>(), null, null, null, null);
+			_userManager, Substitute.For<IHttpContextAccessor>(), Substitute.For<IUserClaimsPrincipalFactory<AppUser>>(), null, null, null, null);
+			_loginHistoryService = Substitute.For<LoginHistoryService>();
+			_imageService = Substitute.For<IImageService>();
 
 			// SUT
-			_accountService = new AccountService(_userManager, _context, _signInManager);
+			_accountService = new AccountService(_userManager, _context, _signInManager, _imageService, _loginHistoryService);
 		}
 
 		[Fact]

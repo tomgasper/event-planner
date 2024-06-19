@@ -20,21 +20,21 @@ namespace EventPlanner.Data
 
         // Adhering to IDbContext Interface
 
-        public DbSet<Event> Event { get; set; }
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Country> Country { get; set; }
-        public DbSet<City> City { get; set; }
-        public DbSet<Street> Street { get; set; }
-        public DbSet<Location> Location { get; set; }
-        public DbSet<EventType> EventType { get; set; }
-		public DbSet<LoginHistory> LoginHistory { get; set; }
+        public DbSet<Event> Event { get; set; } = null!;
+        public DbSet<Category> Category { get; set; } = null!;
+        public DbSet<Country> Country { get; set; } = null!;
+        public DbSet<City> City { get; set; } = null!;
+        public DbSet<Street> Street { get; set; } = null!;
+        public DbSet<Location> Location { get; set; } = null!;
+        public DbSet<EventType> EventType { get; set; } = null!;
+        public DbSet<LoginHistory> LoginHistory { get; set; } = null!;
 
-		public int SaveChanges()
+		public new int SaveChanges()
         {
             return base.SaveChanges();
         }
 
-		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+		public new Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return base.SaveChangesAsync(cancellationToken);
         }
@@ -47,22 +47,22 @@ namespace EventPlanner.Data
         */
 
 
-        public void Add<T>(T entity) where T : class
+        public new void Add<T>(T entity) where T : class
 		{
 			base.Add(entity);
 		}
 
-		public void Update<T>(T entity) where T : class
+		public new void Update<T>(T entity) where T : class
 		{
 			base.Update(entity);
 		}
 
-		public void Remove<T>(T entity) where T : class
+		public new void Remove<T>(T entity) where T : class
 		{
 			base.Remove(entity);
 		}
 
-        public EntityEntry Entry<T>(T entity) where T : class
+        public new EntityEntry Entry<T>(T entity) where T : class
         {
             return base.Entry(entity);
         }

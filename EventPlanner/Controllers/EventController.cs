@@ -21,7 +21,7 @@ namespace EventPlanner.Controllers
         }
 
 		// Helper function for populating Category type drop down list
-		private async Task<InputEventModel> GetBlankVMWithFilledSelectLists(object selectedCategory = null, object selectedType = null)
+		private async Task<InputEventModel> GetBlankVMWithFilledSelectLists(object? selectedCategory = null, object? selectedType = null)
         {
 			var blankViewModel = new InputEventModel();
             blankViewModel.CategoryList = await _eventService.PopulateCategoriesDropDownList(selectedCategory);
