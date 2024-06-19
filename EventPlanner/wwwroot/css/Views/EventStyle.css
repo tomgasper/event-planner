@@ -120,3 +120,14 @@
 .event-page-details-title {
 
 }
+
+.event-datils-users {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.event-datils-users img {
+    max-width: 20%;
+}

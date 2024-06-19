@@ -39,6 +39,12 @@
 					<img src="~/img/location_icon.svg" />
 					@Model.Street @Model.BuidingNo @Model.City
 				</div>
+				<div class="event-datils-users">
+					@foreach (var user in Model.UsersAttending)
+					{
+						<img src="@user.ProfileImageUrl" />
+					}
+				</div>
 			</div>
 		</div>
 	</div>

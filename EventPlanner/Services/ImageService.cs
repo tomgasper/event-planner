@@ -17,19 +17,24 @@ namespace EventPlanner.Services
 
 		public async Task<string?> UploadImage(IFormFile file)
 		{
-			string? filePath = null;
+			string? localFilePath = null;
 			if (file != null && file.Length > 0)
 			{
 				var fileName = Path.GetFileName(file.FileName);
-				filePath = Path.Combine(_env.WebRootPath, _fileStorageSettings.ProfileImagesPath, fileName);
+				localFilePath = Path.Combine(_fileStorageSettings.ProfileImagesPath, fileName);
+				var filePath = Path.Combine(_env.WebRootPath, localFilePath);
+				
 
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
 				{
 					await file.CopyToAsync(fileStream);
 				}
+
+				// Make the path relative
+				localFilePath = Path.Combine("/", localFilePath);
 			}
 
-			return filePath;
+			return localFilePath;
 		}
 	}
 }

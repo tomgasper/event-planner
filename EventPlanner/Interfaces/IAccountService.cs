@@ -10,7 +10,8 @@ namespace EventPlanner.Interfaces
 		public Task<(IdentityResult, AppUser)> CreateNewUser(InputUserModel inputModel);
 		public Task<IdentityResult> AddToRoleAsync(AppUser user, string nameRole);
 		public Task<int> EditUserInfo(InputEditUserModel inputModel, AppUser user);
-		public Task<SignInResult> Login(InputLoginModel inputModel);
-		public Task Logout();
+		public Task<SignInResult> Login(string userName, string password);
+		Task<bool> LoginWithLog(string userName, string password, string ipAddress);
+        public Task Logout();
 	}
 }

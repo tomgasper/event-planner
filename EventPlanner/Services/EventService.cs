@@ -142,7 +142,11 @@ namespace EventPlanner.Services
         public async Task<Event?> GetFullEventAsync(int id)
         {
             var result = await _context.Event
-                .Include("Location").Include("Location.Street").Include("Location.Street.City").Include("Location.Street.City.Country")
+                .Include("Users")
+                .Include("Location")
+                .Include("Location.Street")
+                .Include("Location.Street.City")
+                .Include("Location.Street.City.Country")
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             return result;
@@ -159,6 +163,7 @@ namespace EventPlanner.Services
                 model.Name = result.Name;
                 model.IsUserAuthor = userId == (result.AuthorId.ToString());
                 model.Category = null;
+                model.UsersAttending = result.Users;
 
                 var lookupCategory = await _context.Category.FirstOrDefaultAsync(c => c.Id == result.CategoryId);
 

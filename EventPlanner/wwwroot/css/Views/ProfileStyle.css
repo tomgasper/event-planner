@@ -46,3 +46,14 @@
 th {
     text-align: left;
 }
+
+.edit-profile-picture-container {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width:50%;
+}
+
+.edit-profile-picture-container img {
+    max-width: 100%;
+}

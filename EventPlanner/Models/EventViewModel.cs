@@ -14,5 +14,6 @@
         public string BuidingNo { get; set; }
         public int MaxNumberParticipants { get; set; }
         public string? ImageUrl { get; set; }
+        public IEnumerable<AppUser> UsersAttending { get; set; }
     }
 }
