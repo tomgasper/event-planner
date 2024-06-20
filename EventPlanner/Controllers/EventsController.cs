@@ -29,7 +29,7 @@ namespace EventPlanner.Controllers
         {
 			try
             {
-                var eventsAndDefaulSearchInfo = await _eventsService.GetEventsForIndex();
+                EventsViewModel eventsAndDefaulSearchInfo = await _eventsService.GetEventsForIndex();
 				return View(eventsAndDefaulSearchInfo);
 
 			} catch (Exception ex)

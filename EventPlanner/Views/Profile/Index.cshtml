@@ -4,7 +4,8 @@
     <partial name="_ProfileNavbar" />
     <div class="edit-user-container">
         <div class="register-header b2-text">Edit Profile</div>
-        <form asp-action="UpdateProfile" method="post" class="generic-form">
+        <div asp-validation-summary="ModelOnly"></div>
+        <form asp-action="Index" method="post" class="generic-form">
             <div class="edit-profile-picture-container">
                 <img src="@Model.ImageUrl" />
                 <input type="file" value="Change" accept="image/*" />

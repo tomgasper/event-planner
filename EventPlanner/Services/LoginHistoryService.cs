@@ -17,15 +17,25 @@ namespace EventPlanner.Interfaces
 			_httpContextAccessor = httpContextAccessor;
 			uaParser = Parser.GetDefault();
 		}
+
+		public string GetDeviceInfo(ClientInfo clientInfo)
+		{
+			return $"{clientInfo.Device.Family} {clientInfo.Device.Brand} {clientInfo.Device.Model}";
+        }
+
+		public string GetBrowserInfo(ClientInfo clientInfo)
+		{
+			return $"{clientInfo.UA.Family} {clientInfo.UA.Major}.{clientInfo.UA.Minor}";
+        }
+
 		public async Task AddLoginRecord(int userId, bool isSuccess, string ipAddress, string failureReason = "")
 		{
-			var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
 			var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
 			var clientInfo = uaParser.Parse(userAgent);
-
-			var deviceInfo = $"{clientInfo.Device.Family} {clientInfo.Device.Brand} {clientInfo.Device.Model}";
-			var browserInfo = $"{clientInfo.UA.Family} {clientInfo.UA.Major}.{clientInfo.UA.Minor}";
+			var deviceInfo = GetDeviceInfo(clientInfo);
+			var browserInfo = GetBrowserInfo(clientInfo); 
 
 			var loginHistory = new LoginHistory
 			{

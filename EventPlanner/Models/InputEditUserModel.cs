@@ -11,7 +11,7 @@ namespace EventPlanner.Models
         public string LastName { get; set; }
 
         [DataType(DataType.Url)]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         [DataType(DataType.Text)]
         [Display(Name = "User Name")]

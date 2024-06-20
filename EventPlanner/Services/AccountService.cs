@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
+using EventPlanner.Exceptions;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace EventPlanner.Services
@@ -45,6 +47,7 @@ namespace EventPlanner.Services
 			user.Email = inputModel.Email;
 			user.FirstName = inputModel.FirstName;
 			user.LastName = inputModel.LastName;
+			user.ProfileImageUrl = inputModel.ImageUrl ?? user.ProfileImageUrl;
 		}
 
 		public async Task<(IdentityResult, AppUser)> CreateNewUser(InputUserModel inputModel)
@@ -87,9 +90,13 @@ namespace EventPlanner.Services
 
 		public async Task<bool> LoginWithLog(string userName, string password, string ipAddress)
 		{
-            var result = await Login(userName, password);
             AppUser user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+				return false;
+            }
 
+            var result = await Login(userName, password);
             if (result.Succeeded)
             {
                 await _loginHistoryService.AddLoginRecord(user.Id, true, ipAddress);
@@ -100,10 +107,7 @@ namespace EventPlanner.Services
                 string failureReason = result.IsLockedOut ? "Account locked out" : "Invalid credentials";
 
                 // User exists but an incorrect password has been provided
-                if (user != null)
-                {
-                    await _loginHistoryService.AddLoginRecord(user.Id, false, ipAddress, failureReason);
-                }
+                await _loginHistoryService.AddLoginRecord(user.Id, false, ipAddress, failureReason);
 
 				return false;
             }

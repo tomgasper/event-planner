@@ -10,6 +10,8 @@ using EventPlanner.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 
 namespace EventPlanner.Tests.Service
 {
@@ -30,7 +32,7 @@ namespace EventPlanner.Tests.Service
 			_userManager = Substitute.For<UserManager<AppUser>>(userStore, null, null, null, null, null, null, null, null);
 			_signInManager = Substitute.For<SignInManager<AppUser>>(
 			_userManager, Substitute.For<IHttpContextAccessor>(), Substitute.For<IUserClaimsPrincipalFactory<AppUser>>(), null, null, null, null);
-			_loginHistoryService = Substitute.For<LoginHistoryService>();
+			_loginHistoryService = Substitute.For<ILoginHistoryService>();
 			_imageService = Substitute.For<IImageService>();
 
 			// SUT
@@ -108,5 +110,77 @@ namespace EventPlanner.Tests.Service
 			user.LastName.Should().Be(inputModel.LastName);
 			await _context.Received(1).SaveChangesAsync();
 		}
-	}
+
+		[Fact]
+		public async Task LoginWithLog_ShouldLoginUser()
+		{
+			// Arrange
+			string userName = "User";
+			string password = "Password";
+			string IpAddress = "127.0.0.1";
+
+			var foundUser = new AppUser()
+			{
+				Id = 1,
+				UserName = userName
+			};
+
+			_userManager.FindByNameAsync(userName).Returns(foundUser);
+            _signInManager.PasswordSignInAsync(userName, password, Arg.Any<bool>(), Arg.Any<bool>()).Returns(SignInResult.Success);
+			_loginHistoryService.AddLoginRecord(Arg.Any<int>(), true, IpAddress).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _accountService.LoginWithLog(userName, password, IpAddress);
+
+			// Assert
+			result.Should().BeTrue();
+			await _signInManager.Received(1).PasswordSignInAsync(userName, password, Arg.Any<bool>(), Arg.Any<bool>());
+		}
+
+        [Fact]
+        public async Task LoginWithLog_ShouldLogUserLogin_OnLoginSuccess()
+        {
+            // Arrange
+            string userName = "User";
+            string password = "Password";
+            string IpAddress = "127.0.0.1";
+
+            var foundUser = new AppUser()
+            {
+                Id = 1,
+                UserName = userName
+            };
+
+            _userManager.FindByNameAsync(userName).Returns(foundUser);
+            _signInManager.PasswordSignInAsync(userName, password, Arg.Any<bool>(), Arg.Any<bool>()).Returns(SignInResult.Success);
+            _loginHistoryService.AddLoginRecord(Arg.Any<int>(), true, IpAddress).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _accountService.LoginWithLog(userName, password, IpAddress);
+
+            // Assert
+            await _loginHistoryService.Received(1).AddLoginRecord(Arg.Any<int>(), true, Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task LoginWithLog_ShouldLogUserLogin_OnIncorrectUsername()
+        {
+            // Arrange
+            string userName = "User";
+            string password = "Password";
+            string IpAddress = "127.0.0.1";
+
+            _userManager.FindByNameAsync(userName).ReturnsNull();
+            _signInManager.PasswordSignInAsync(userName, password, Arg.Any<bool>(), Arg.Any<bool>()).Returns(SignInResult.Success);
+            _loginHistoryService.AddLoginRecord(Arg.Any<int>(), true, IpAddress).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _accountService.LoginWithLog(userName, password, IpAddress);
+
+			// Assert
+			result.Should().Be(false);
+            await _loginHistoryService.Received(0).AddLoginRecord(Arg.Any<int>(), Arg.Any<bool>(), Arg.Any<string>());
+            await _signInManager.Received(0).PasswordSignInAsync(userName, password, Arg.Any<bool>(), Arg.Any<bool>());
+        }
+    }
 }

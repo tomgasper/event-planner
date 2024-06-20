@@ -38,11 +38,12 @@ namespace EventPlanner.Controllers
 
         [Authorize]
         [HttpPost]
+        [ActionName("Index")]
         public async Task<IActionResult> UpdateProfile(InputEditUserModel model)
         {
             if(!ModelState.IsValid)
             {
-                return View(nameof(Index), model);
+                return View(model);
             }
 
             try
@@ -57,7 +58,7 @@ namespace EventPlanner.Controllers
                 return View(nameof(Index), model);
             }
 
-            return View(nameof(Index),model);
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize]

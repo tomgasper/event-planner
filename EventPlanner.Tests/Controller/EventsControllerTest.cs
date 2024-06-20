@@ -48,14 +48,19 @@ namespace EventPlanner.Tests.Controller
 				new Event { Name = "Event2" }
 			};
 
-			_eventsService.GetEventsRangeAsync().Returns(eventList);
+			var viewModel = new EventsViewModel()
+			{
+				Events = eventList
+			};
+
+			_eventsService.GetEventsForIndex().Returns(viewModel);
 
 			// Act
 			var result = await _eventsController.Index();
 
 			// Assert
 			result.Should().BeOfType<ViewResult>()
-				.Which.Model.Should().BeAssignableTo<IEnumerable<Event>>().Which.Should().HaveCount(2);
+				.Which.Model.Should().BeAssignableTo<EventsViewModel>();
 		}
     }
 }

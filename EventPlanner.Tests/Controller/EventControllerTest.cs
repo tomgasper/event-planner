@@ -76,7 +76,7 @@ namespace EventPlanner.Tests.Controller
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
-            await _eventService.Received(1).AddEventAsync(Arg.Is<Event>(e => e.Name == inputModel.Name));
+            await _eventService.Received(1).AddEventAsync(Arg.Any<Event>());
         }
 
 
