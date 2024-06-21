@@ -1,1 +1,15 @@
-﻿<div>@ViewBag.Message</div>
+﻿@model ErrorViewModel
+
+<div class="error-page-container">
+<h2>Error</h2>
+<p>@Model.Message</p>
+@if (!string.IsNullOrEmpty(Model.Detail))
+{
+    <p>Details: @Model.Detail</p>
+}
+</div>
+
+
+@section Styles {
+    <link href="@Url.Content("~/css/Views/ErrorStyle.css")" rel="stylesheet" type="text/css" />
+}

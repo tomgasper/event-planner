@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+using EventPlanner.Exceptions;
+
 namespace EventPlanner.Controllers
 {
     public class EventsController : Controller
@@ -27,28 +29,14 @@ namespace EventPlanner.Controllers
 
         public async Task<IActionResult> Index()
         {
-			try
-            {
-                EventsViewModel eventsAndDefaulSearchInfo = await _eventsService.GetEventsForIndex();
-				return View(eventsAndDefaulSearchInfo);
-
-			} catch (Exception ex)
-            {
-                return RedirectToAction("Index", "Error", new { message = "Error occured while processing your request. Please try again!" });
-            }
+            EventsViewModel eventsAndDefaulSearchInfo = await _eventsService.GetEventsForIndex();
+			return View(eventsAndDefaulSearchInfo);
         }
 
 		public async Task<IActionResult> Search(EventsViewModel input)
         {
-            try
-            {
-				var viewModel = await _eventsService.SearchEvents(input);
-				return View(viewModel);
-			}
-			catch (Exception ex)
-			{
-				return RedirectToAction("Index", "Error", new { message = "Error occured while processing your request. Please try again!" });
-			}
+			var viewModel = await _eventsService.SearchEvents(input);
+			return View(viewModel);
         }
     }
 }
