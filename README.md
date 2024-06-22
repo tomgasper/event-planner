@@ -1,24 +1,29 @@
 # EventPlanner
 
-EventPlanner is a web application built with ASP.NET MVC, Entity Framework, and .NET Identity. It allows users to create, manage, and view events. The application also supports user authentication and authorization.
+EventPlanner is a web application built with ASP.NET MVC, Entity Framework, and .NET Identity. The app provides an interface for users to create, manage, and discover various types of events.
+
+It includes search functionality that allows users to filter events based on specific criteria.
+
+The application also features a user profile page where users can manage their own events and adjust settings related to their account.
 
 ## Features
 
 - [x] User registration and authentication using .NET Identity
-- [x] Role-based access control
-- [ ] Manage event locations with relational data (country, city, street, location)
-- [ ] Create, read, update, and delete events
-- [ ] List of categories with dropdown selection
-- [ ] Notifications for existing events with the same details
-- [ ] Asynchronous data fetching and processing
+- [x] Register, login, and manage user profiles.
+- [x] Upload user profile
+- [x] Create, read, update, and delete events
+- [x] Event Managment page
+- [x] List of categories with dropdown selection
+- [x] Profile Settings (Account Delection, Account Visibility and Login History)
+- [ ] Responsive design
 
 ## Technologies Used
 
 - ASP.NET MVC
 - Entity Framework Core
 - .NET Identity
-- Bootstrap (for UI styling)
 - SQL Server (default database)
+- xUnit, FluentAssertions, NSubstitute
 
 ## Getting Started
 
