@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using FluentAssertions;
+using System.Security.Claims;
 
 namespace EventPlanner.Tests.Controller
 {
@@ -64,9 +65,16 @@ namespace EventPlanner.Tests.Controller
 				FirstName = "Firstname",
 				LastName = "Lastname"
 			};
+			var user = new AppUser
+			{
+				UserName = "Username1",
+				Email = "email@email.com"
+            };
 
-			// Act
-			var result = await _profileController.UpdateProfile(inputModel);
+			_userManager.GetUserAsync(Arg.Any<ClaimsPrincipal>()).Returns(user);
+
+            // Act
+            var result = await _profileController.UpdateProfile(inputModel);
 
 			// Assert
 			result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");

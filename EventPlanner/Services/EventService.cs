@@ -119,7 +119,7 @@ namespace EventPlanner.Services
             model.BuildingNumber = fetchedEvent.Location.BuildingNumber;
             model.StreetName = null;
             model.CityName = null;
-            model.CountryName = null;
+            model.CountryName = null; 
 
             if (fetchedEvent.Location.Street != null)
             {
@@ -188,7 +188,7 @@ namespace EventPlanner.Services
             return null;
         }
 
-        public async Task<InputEventModel> GetEventForEdit(Event? fetchedEvent)
+        public async Task<InputEventModel?> GetEventForEdit(Event? fetchedEvent)
         {
             if (fetchedEvent != null)
             {

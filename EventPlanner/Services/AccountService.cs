@@ -75,6 +75,11 @@ namespace EventPlanner.Services
 			return await _userManager.AddToRoleAsync(user, nameRole);
 		}
 
+		public async Task<IdentityResult> DeleteUserAsync(AppUser user)
+		{
+            return await _userManager.DeleteAsync(user);
+        }
+
 		public async Task<int> EditUserInfo(InputEditUserModel inputModel, AppUser user)
 		{
 			PassInputUserInfo(inputModel, ref user);

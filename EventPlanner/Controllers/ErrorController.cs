@@ -32,6 +32,10 @@ namespace EventPlanner.Controllers
                     detail = String.Empty;
                     _logger.LogWarning("Hit the error page with no exception information.");
                     break;
+                case UserManagementException:
+                    message = "Invalid user management operation";
+                    detail = exception.Message;
+                    break;
                 case InvalidInputException:
                     message = "Invalid input provided";
                     detail = exception.Message;

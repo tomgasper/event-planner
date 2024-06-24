@@ -12,12 +12,14 @@ namespace EventPlanner.Controllers
         private UserManager<AppUser> _userManager { get; }
         private IAccountService _accountService { get; }
         private ILoginHistoryService _loginHistoryService { get; }
+        private ILogger<AccountController> _logger;
 
-        public AccountController(UserManager<AppUser> userManager, IAccountService accountService, ILoginHistoryService loginHistoryService)
+        public AccountController(UserManager<AppUser> userManager, IAccountService accountService, ILoginHistoryService loginHistoryService, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _accountService = accountService;
             _loginHistoryService = loginHistoryService;
+            _logger = logger;
         }
 
         public IActionResult Register()
@@ -44,7 +46,13 @@ namespace EventPlanner.Controllers
 
                 if (!addToRoleAsync.Succeeded)
                 {
-                    // Log error message
+                    var deletionResult = await _accountService.DeleteUserAsync(result.Item2);
+                    if (!deletionResult.Succeeded)
+                    {
+                        _logger.LogError("Failed to delete user {UserId} after failed role assignment", result.Item2.Id);
+                        throw new UserManagementException($"Failed to delete user {result.Item2.Id} after failed role assignment");
+                    }
+                    throw new UserManagementException($"Failed to assign role to {result.Item2.Id} when creating a new user");
                 }
 
                 // Auto login user

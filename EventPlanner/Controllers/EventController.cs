@@ -57,31 +57,21 @@ namespace EventPlanner.Controllers
                 return View(modelFilledDropdownLists);
             }
 
-            try
+            
+            var user = await _userManager.GetUserAsync(User);
+            Event newEvent = await _eventService.CreateEventFromInputModelAsync(user, model);
+
+            // Check if the same event already exists
+            if (await _eventService.EventExistsAsync(newEvent))
             {
-                var user = await _userManager.GetUserAsync(User);
-                Event newEvent = await _eventService.CreateEventFromInputModelAsync(user, model);
-
-                // Check if the same event already exists
-                if (await _eventService.EventExistsAsync(newEvent))
-                {
-                    ModelState.AddModelError(string.Empty, "An event with the same details already exists.");
-                    // Ensure the dropdown is populated
-
-                    var modelFilledDropdownLists = await _eventService.FillDropDownLists(model, model.CategoryId, model.EventTypeId);
-                    return View(modelFilledDropdownLists);
-                }
-
-                var insertedEvent = await _eventService.AddEventAsync(newEvent);
-                return RedirectToAction(nameof(Index), new { id = insertedEvent.Id });
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An error occurred while creating the event. Please try again.");
-
+                ModelState.AddModelError(string.Empty, "An event with the same details already exists.");
+                // Ensure the dropdown is populated
                 var modelFilledDropdownLists = await _eventService.FillDropDownLists(model, model.CategoryId, model.EventTypeId);
                 return View(modelFilledDropdownLists);
             }
+
+            var insertedEvent = await _eventService.AddEventAsync(newEvent);
+            return RedirectToAction(nameof(Index), new { id = insertedEvent.Id });
         }
 
         [HttpGet]
