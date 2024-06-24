@@ -1,10 +1,10 @@
 ﻿using EventPlanner.Data;
-using EventPlanner.Models;
 using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
+using EventPlanner.Models.Events;
 
 namespace EventPlanner.Services
 {

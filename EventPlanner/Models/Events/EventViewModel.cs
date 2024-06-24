@@ -1,4 +1,6 @@
-﻿namespace EventPlanner.Models
+﻿using EventPlanner.Models.User;
+
+namespace EventPlanner.Models.Events
 {
     public class EventViewModel
     {

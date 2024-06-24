@@ -1,10 +1,10 @@
 using EventPlanner.Data;
-using EventPlanner.Models;
 using EventPlanner.Services;
 using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 using EventPlanner.Configuration;
+using EventPlanner.Models.User;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EventPlanner.Models
+namespace EventPlanner.Models.User
 {
     public class InputEditUserModel
     {

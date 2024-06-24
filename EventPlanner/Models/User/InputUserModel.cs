@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EventPlanner.Models
+namespace EventPlanner.Models.User
 {
     public class InputUserModel
     {
@@ -12,8 +12,8 @@ namespace EventPlanner.Models
         [DataType(DataType.Text)]
         public string LastName { get; set; }
 
-		[Display(Name = "Image")]
-		public IFormFile Image { get; set; }
+        [Display(Name = "Image")]
+        public IFormFile Image { get; set; }
 
         [Required]
         [DataType(DataType.Text)]

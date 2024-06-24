@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace EventPlanner.Models
+namespace EventPlanner.Models.User
 {
     public class AppUserRole : IdentityRole<int>
     {

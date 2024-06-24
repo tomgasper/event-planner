@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace EventPlanner.Models
+namespace EventPlanner.Models.Events
 {
     public class InputEventModel
     {

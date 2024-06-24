@@ -1,6 +1,7 @@
 ﻿using EventPlanner.Data;
 using EventPlanner.Interfaces;
 using EventPlanner.Models;
+using EventPlanner.Models.Profile;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -8,10 +9,11 @@ using System.Collections.Generic;
 using EventPlanner.Exceptions;
 
 using Microsoft.AspNetCore.Authorization;
+using EventPlanner.Models.User;
 
 namespace EventPlanner.Services
 {
-	public class AccountService : IAccountService
+    public class AccountService : IAccountService
 	{
 		private readonly IDbContext _context;
 		private readonly UserManager<AppUser> _userManager;

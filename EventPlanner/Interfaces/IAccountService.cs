@@ -1,9 +1,9 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace EventPlanner.Interfaces
 {
-	public interface IAccountService
+    public interface IAccountService
 	{
 		InputEditUserModel PassInputUserInfo(AppUser user);
 		public void PassInputUserInfo(InputEditUserModel inputModel, ref AppUser user);

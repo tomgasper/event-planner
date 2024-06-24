@@ -1,4 +1,4 @@
-﻿namespace EventPlanner.Models
+﻿namespace EventPlanner.Models.Location
 {
     public class City
     {

@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
 using Microsoft.Extensions.Logging;
+using EventPlanner.Models.User;
 
 namespace EventPlanner.Tests.Controller
 {
-	public class AccountControllerTest
+    public class AccountControllerTest
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IAccountService _accountService;

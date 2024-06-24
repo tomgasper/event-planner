@@ -1,5 +1,4 @@
-﻿using EventPlanner.Models;
-using EventPlanner.Interfaces;
+﻿using EventPlanner.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using EventPlanner.Exceptions;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Events;
 
 namespace EventPlanner.Controllers
 {

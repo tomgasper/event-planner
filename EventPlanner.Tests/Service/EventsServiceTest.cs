@@ -1,5 +1,4 @@
-﻿using EventPlanner.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MockQueryable.NSubstitute;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using EventPlanner.Interfaces;
 using EventPlanner.Services;
 
 using FluentAssertions;
+using EventPlanner.Models.Events;
 
 namespace EventPlanner.Tests.Service
 {

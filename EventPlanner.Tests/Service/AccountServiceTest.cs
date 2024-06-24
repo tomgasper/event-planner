@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using EventPlanner.Interfaces;
 using EventPlanner.Models;
+using EventPlanner.Models.User;
 using EventPlanner.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,7 @@ using NSubstitute.ReturnsExtensions;
 
 namespace EventPlanner.Tests.Service
 {
-	public class AccountServiceTest
+    public class AccountServiceTest
 	{
 		private readonly IDbContext _context;
 		private readonly UserManager<AppUser> _userManager;

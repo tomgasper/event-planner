@@ -1,4 +1,4 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.Events;
 
 namespace EventPlanner.Interfaces
 {

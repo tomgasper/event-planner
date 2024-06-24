@@ -1,5 +1,6 @@
 ﻿using EventPlanner.Interfaces;
-using EventPlanner.Models;
+using EventPlanner.Models.Events;
+using EventPlanner.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

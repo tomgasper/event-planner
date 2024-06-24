@@ -1,4 +1,6 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.Events;
+using EventPlanner.Models.Location;
+using EventPlanner.Models.User;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 

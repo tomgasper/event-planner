@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using EventPlanner.Models;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.NSubstitute;
 using NSubstitute;
 using FluentAssertions;
 using UAParser;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Profile;
 
 namespace EventPlanner.Tests.Service
 {

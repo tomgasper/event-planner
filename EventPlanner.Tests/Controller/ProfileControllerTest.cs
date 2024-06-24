@@ -1,6 +1,5 @@
 ﻿using EventPlanner.Controllers;
 using EventPlanner.Interfaces;
-using EventPlanner.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +7,11 @@ using Microsoft.Extensions.Logging;
 
 using FluentAssertions;
 using System.Security.Claims;
+using EventPlanner.Models.User;
 
 namespace EventPlanner.Tests.Controller
 {
-	public class ProfileControllerTest
+    public class ProfileControllerTest
 	{
 		private readonly IAccountService _accountService;
 		private readonly UserManager<AppUser> _userManager;

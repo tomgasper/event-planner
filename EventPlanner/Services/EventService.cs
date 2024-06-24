@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Transactions;
 using System.Data.Common;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Events;
+using EventPlanner.Models.Location;
 
 namespace EventPlanner.Services
 {

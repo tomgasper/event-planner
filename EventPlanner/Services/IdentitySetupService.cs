@@ -1,4 +1,4 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace EventPlanner.Services

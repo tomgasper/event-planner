@@ -1,4 +1,4 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.Profile;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using UAParser;

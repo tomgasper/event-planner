@@ -1,8 +1,9 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.Events;
+using EventPlanner.Models.Profile;
 
 namespace EventPlanner.Interfaces
 {
-	public interface IProfileService
+    public interface IProfileService
 	{
 		Task<IEnumerable<Event>> GetUserEvents(int userId, bool showOnlyMyEvents);
 		int GetTotalPages(int eventsNo, int eventsPerPage);

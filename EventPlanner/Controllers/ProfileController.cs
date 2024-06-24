@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using EventPlanner.Interfaces;
-using EventPlanner.Models;
 using EventPlanner.Exceptions;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Profile;
+using EventPlanner.Models.Events;
 
 namespace EventPlanner.Controllers
 {

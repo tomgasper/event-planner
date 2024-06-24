@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using EventPlanner.Models;
 using Microsoft.AspNetCore.Authorization;
 using EventPlanner.Interfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
+using EventPlanner.Models.User;
 
 namespace EventPlanner.Controllers
 {

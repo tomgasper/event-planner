@@ -1,10 +1,11 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.Location;
+using EventPlanner.Models.User;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
-namespace EventPlanner.Models
+namespace EventPlanner.Models.Events
 {
     public class Event
     {
@@ -13,16 +14,16 @@ namespace EventPlanner.Models
         public int AuthorId { get; set; }
         public AppUser Author { get; set; } = null!;
         public string Name { get; set; } = null!;
-		[ForeignKey("Category")]
-		public int CategoryId { get; set; }
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
-		[ForeignKey("EventType")]
-		public int EventTypeId { get; set; }
-		public EventType EventType { get; set; } = null!;
+        [ForeignKey("EventType")]
+        public int EventTypeId { get; set; }
+        public EventType EventType { get; set; } = null!;
         public DateTime DateTime { get; set; }
-        public Location Location { get; set; } = null!;
-		public ICollection<AppUser> Users { get; set; } = new List<AppUser>();
-		public int MaxNumberParticipants { get; set; }
+        public EventPlanner.Models.Location.Location Location { get; set; } = null!;
+        public ICollection<AppUser> Users { get; set; } = new List<AppUser>();
+        public int MaxNumberParticipants { get; set; }
         public string? ImageUrl { get; set; }
     }
 }

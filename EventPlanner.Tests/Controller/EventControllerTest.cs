@@ -7,6 +7,9 @@ using MockQueryable.NSubstitute;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Events;
+using EventPlanner.Models.Location;
 
 namespace EventPlanner.Tests.Controller
 {

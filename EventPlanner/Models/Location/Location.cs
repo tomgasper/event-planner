@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EventPlanner.Models.Events;
 
-namespace EventPlanner.Models
+namespace EventPlanner.Models.Location
 {
     public class Location
     {
@@ -12,6 +13,6 @@ namespace EventPlanner.Models
 
         public virtual Street Street { get; set; }
 
-        public virtual ICollection<Event> Events { get;}
+        public virtual ICollection<Event> Events { get; }
     }
 }

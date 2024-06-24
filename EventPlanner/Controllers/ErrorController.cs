@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Diagnostics;
 using System;
-using EventPlanner.Models;
+using EventPlanner.Models.Error;
 using Microsoft.AspNetCore.Authorization;
 using EventPlanner.Exceptions;
 

@@ -1,11 +1,14 @@
-﻿using EventPlanner.Models;
+﻿using EventPlanner.Models.Events;
+using EventPlanner.Models.Location;
+using EventPlanner.Models.Profile;
+using EventPlanner.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data.Common;
 
 namespace EventPlanner.Interfaces
 {
-	public interface IDbContext
+    public interface IDbContext
 	{
 		public DbSet<Event> Event { get; set; }
 		public DbSet<Category> Category { get; set; }

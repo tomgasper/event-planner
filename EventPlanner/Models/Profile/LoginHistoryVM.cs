@@ -1,4 +1,4 @@
-﻿namespace EventPlanner.Models
+﻿namespace EventPlanner.Models.Profile
 {
     public class LoginHistoryVM
     {

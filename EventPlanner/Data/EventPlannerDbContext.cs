@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection.Emit;
-using EventPlanner.Models;
 using EventPlanner.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -8,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data.Common;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Events;
+using EventPlanner.Models.Location;
+using EventPlanner.Models.Profile;
 
 namespace EventPlanner.Data
 {

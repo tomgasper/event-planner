@@ -1,4 +1,4 @@
-namespace EventPlanner.Models
+namespace EventPlanner.Models.Error
 {
     public class ErrorViewModel
     {

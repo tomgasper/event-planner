@@ -1,6 +1,5 @@
 ﻿using EventPlanner.Controllers;
 using EventPlanner.Data;
-using EventPlanner.Models;
 using EventPlanner.Interfaces;
 
 using FluentAssertions;
@@ -9,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MockQueryable.NSubstitute;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Events;
 
 namespace EventPlanner.Tests.Controller
 {

@@ -1,13 +1,15 @@
-﻿using EventPlanner.Models;
-using EventPlanner.Interfaces;
+﻿using EventPlanner.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using EventPlanner.Models.User;
+using EventPlanner.Models.Events;
+using EventPlanner.Models.Profile;
 
 namespace EventPlanner.Services
 {
-	public class ProfileService : IProfileService
+    public class ProfileService : IProfileService
 	{
 		private IDbContext _context { get; }
 		public ProfileService(IDbContext context, IEventsService eventsService)
