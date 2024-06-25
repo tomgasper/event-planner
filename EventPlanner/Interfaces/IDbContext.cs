@@ -24,6 +24,7 @@ namespace EventPlanner.Interfaces
         int SaveChanges();
 		public void Add<T>(T entity) where T : class;
 		public void Update<T>(T entity) where T : class;
+		public void Attach<T>(T entity) where T : class;
 		public void Remove<T>(T entity) where T : class;
 
 		public EntityEntry Entry<T>(T entity) where T : class;

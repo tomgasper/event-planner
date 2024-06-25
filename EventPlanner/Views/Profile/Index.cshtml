@@ -1,15 +1,33 @@
 ﻿@model EventPlanner.Models.User.InputEditUserModel;
 
+@{
+    ViewData["Title"] = "Account Settings";
+}
+
 <div class="profile-general-container">
     <partial name="_ProfileNavbar" />
     <div class="edit-user-container">
-        <div class="register-header b2-text">Edit Profile</div>
+        <div class="profile-general-header">Edit Profile</div>
         <div asp-validation-summary="ModelOnly"></div>
-        <form asp-action="Index" method="post" class="generic-form">
+        <form asp-action="Index" method="post" class="generic-form" enctype="multipart/form-data">
             <div class="edit-profile-picture-container">
-                <img src="@Model.ImageUrl" />
-                <input type="file" value="Change" accept="image/*" />
-            </div>
+                    <div class="edit-profile-picture-label">Profile Picture</div>
+                    <div class="edit-profile-picture">
+                        <div class="profile-picture-container">
+                            <img src="@Model.ImageUrl" />
+                        </div>
+                    <label asp-for="ImageFile" class="custom-file-upload">
+                            Change Picture
+                        </label>
+                        <input asp-for="ImageFile" type="file" accept="image/*" />
+                        @if (!String.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <a asp-action="DeletePicture" asp-controller="Profile" class="custom-file-upload">
+                                Delete Picture
+                            </a>
+                        }
+                    </div>
+                </div>
             <div class="input-fullwidth-container">
                 <label asp-for="@Model.UserName"></label>
                 <input asp-for="@Model.UserName" value="@Model.UserName" class="input-fullwidth" />

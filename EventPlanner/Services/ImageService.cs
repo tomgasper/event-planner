@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using EventPlanner.Interfaces;
 using System.Runtime.CompilerServices;
 
+using EventPlanner.Exceptions;
+
 namespace EventPlanner.Services
 {
 	public class ImageService : IImageService
@@ -36,5 +38,18 @@ namespace EventPlanner.Services
 
 			return localFilePath;
 		}
-	}
+
+        public void DeleteImage(string imageUrl)
+        {
+			if (string.IsNullOrEmpty(imageUrl))
+				throw new InvalidInputException("Trying to delete image with null path.");
+
+            var filePath = Path.Combine(_env.WebRootPath, imageUrl.TrimStart('/'));
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
+			else throw new NotFoundException($"Couldn't delete the image: {filePath}. The image doesn't exist.");
+        }
+    }
 }

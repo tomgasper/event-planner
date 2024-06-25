@@ -1,5 +1,9 @@
 ﻿@model EventPlanner.Models.User.InputUserModel;
 
+@{
+    ViewData["Title"] = "Register";
+}
+
 <div class="register-container">
     <div class="register-header b2-text">Register</div>
     <form asp-action="Register" asp-controller="Account" method="post" class="generic-form" enctype="multipart/form-data">

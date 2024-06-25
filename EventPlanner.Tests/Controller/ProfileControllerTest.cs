@@ -43,7 +43,13 @@ namespace EventPlanner.Tests.Controller
 				FirstName = "Firstname",
 				LastName = "Lastname"
 			};
-			_accountService.PassInputUserInfo(Arg.Any<AppUser>()).Returns(inputModel);
+			var user = new AppUser
+            {
+                UserName = "Username1",
+                Email = "email@email.com"
+            };
+            _userManager.GetUserAsync(Arg.Any<ClaimsPrincipal>()).Returns(user);
+            _accountService.PassInputUserInfo(Arg.Any<AppUser>()).Returns(inputModel);
 
 			// Act
 			var result = await _profileController.Index();

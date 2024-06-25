@@ -1,5 +1,6 @@
 ﻿using EventPlanner.Models.Events;
 using EventPlanner.Models.Profile;
+using EventPlanner.Models.User;
 
 namespace EventPlanner.Interfaces
 {
@@ -7,7 +8,7 @@ namespace EventPlanner.Interfaces
 	{
 		Task<IEnumerable<Event>> GetUserEvents(int userId, bool showOnlyMyEvents);
 		int GetTotalPages(int eventsNo, int eventsPerPage);
-		EventsListViewModel ConstructEventsListVM(IEnumerable<EventListEntryVM> paginatedEvents, int currPageNo, int totalPages, string sortCriteria, bool showOnlyMyEvents);
+		EventsListViewModel ConstructEventsListVM(int userId, IEnumerable<EventListEntryVM> paginatedEvents, int currPageNo, int totalPages, string sortCriteria, bool showOnlyMyEvents);
 		Task<EventsListViewModel> GetEventsForCurrentPage(int userId, int pageNo, string sortCriteria, bool showOnlyMyEvents);
 		EventListEntryVM MapEventToListEntry(Event fetchedEvent);
 		IEnumerable<EventListEntryVM> MapAllEventsToVM(IEnumerable<Event> fetchedEvents);
@@ -21,5 +22,7 @@ namespace EventPlanner.Interfaces
 		Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId);
 		Task<SettingsVM> GetSettingsPageVM(int userId);
 		Task ToggleAccountVisibility(int userId);
-	}
+		public Task DeleteUserPicture(AppUser user);
+
+    }
 }

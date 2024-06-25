@@ -4,59 +4,91 @@
 	<partial name="_ProfileNavbar" />
 	<div class="profile-events-container">
 		<div asp-validation-summary="ModelOnly"></div>
+		<div class="profile-general-header">Manage Events</div>
 		<div class="profile-events-controlls">
-			<form method="get">
-				<select asp-for="@Model.SortCriteriaSelected" asp-items="@Model.SortCriteria"></select>
-				@Model.SortCriteriaSelected
+			<form class="profile-events-sort" method="get">
+				<div>Sort by:</div>
+				<select class="custom-select m0-text" asp-for="@Model.SortCriteriaSelected" asp-items="@Model.SortCriteria"></select>
 				<input type="hidden" asp-for="ShowOnlyMyEvents" />
-				<input type="submit" value="Sort">
+				<input class="button-m0-select" type="submit" value="Sort">
 			</form>
-			<a asp-action="ManageEvents" method="get"
-				asp-route-id="@Model.CurrentPage"
-			   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
-				asp-route-ShowOnlyMyEvents="true">Created by me</a>
+			<div class="profile-events-ownership">
+				@if (Model.ShowOnlyMyEvents == true)
+				{
+					<div class="button-m0"> Created by me </div>
 
-			<a asp-action="ManageEvents" method="get"
-			   asp-route-id="@Model.CurrentPage"
-			   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
-			   asp-route-ShowOnlyMyEvents="false">Attending</a>
+					<a class="button-m0-select" asp-action="ManageEvents" method="get"
+					   asp-route-id="1"
+					   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
+					asp-route-ShowOnlyMyEvents="false">Attending</a>
+				} else
+				{
+					<a class="button-m0-select" asp-action="ManageEvents" method="get"
+					   asp-route-id="1"
+					   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
+					   asp-route-ShowOnlyMyEvents="true">Created by me</a>
+
+					<div class="button-m0"> Attending </div>
+				}
+			</div>
 		</div>
-		<table>
-			<tr>
-				<th>Name</th>
-				<th>City</th>
-				<th>Event Type</th>
-				<th>Category</th>
-				<th>Date</th>
-				<th></th>
-			</tr>
-		@foreach (var item in Model.Events)
-		{
-			<tr>
-				<td>@item.Name</td>
-				<td>@item.CityName</td>
-				<td>@item.EventTypeName</td>
-				<td>@item.CategoryName</td>
-				<td>@item.DateTime</td>
-				<td>
-					<a asp-action="Edit" asp-controller="Event" asp-route-id="@item.Id">Edit</a>
-					<a asp-action="Index" asp-controller="Event" asp-route-id="@item.Id">Details</a>
-					<a asp-action="Delete" asp-controller="Event" asp-route-id="@item.Id">Delete</a>
-				</td>
-			</tr>
-		}
-		</table>
+		<div class="profile-events-table">
+			<table class="fl-table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>City</th>
+						<th>Event Type</th>
+						<th>Category</th>
+						<th>Date</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Events)
+					{
+						<tr>
+							<td>@item.Name</td>
+							<td>@item.CityName</td>
+							<td>@item.EventTypeName</td>
+							<td>@item.CategoryName</td>
+							<td>@item.DateTime</td>
+							<td>
+								@if (item.AuthorId == Model.UserId)
+								{
+									<a asp-action="Edit" asp-controller="Event" asp-route-id="@item.Id"> <img src="~/img/icons/edit.svg" /></a>
+									<a asp-action="Index" asp-controller="Event" asp-route-id="@item.Id"><img src="~/img/icons/event_note.svg" /></a>
+									<a asp-action="Delete" asp-controller="Event" asp-route-id="@item.Id"><img src="~/img/icons/delete.svg" /></a>
+								} else
+								{
+									
+									<a asp-action="Index" asp-controller="Event" asp-route-id="@item.Id">
+										<img src="~/img/icons/event_note.svg" />
+									</a>
+								}
+							</td>
+						</tr>
 
-		<div class="pagination-container">
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="pagination-container m0-text">
 		@for (int i=1; i <= Model.TotalPages; i++)
 		{
-				<a class="pagination-box" asp-action="ManageEvents"
-				asp-route-id="@i"
-				asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
-				asp-route-ShowOnlyMyEvents="@Model.ShowOnlyMyEvents"
-				> @i</a>
+			if (i == @Model.CurrentPage)
+				{
+					<div class="pagination-page-selected">@i</div>
+				} else
+				{
+					<a class="pagination-box" asp-action="ManageEvents"
+					   asp-route-id="@i"
+					   asp-route-SortCriteriaSelected="@Model.SortCriteriaSelected"
+					   asp-route-ShowOnlyMyEvents="@Model.ShowOnlyMyEvents"> @i</a>
+				}
 		}
 	</div>
+</div>
 </div>
 
 @section Styles {

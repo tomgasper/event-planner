@@ -1,5 +1,14 @@
 ﻿<div class="profile-navbar-container">
-	<a asp-action="Index" asp-controller="Profile" >Account Home</a>
-	<a asp-action="ManageEvents" asp-controller="Profile">Manage Events</a>
-	<a asp-action="Settings" asp-controller="Profile">Settings</a>
+	<div class="profile-navbar-entry">
+		<img src="~/img/account_2.svg" />
+		<a class="b0-text" asp-action="Index" asp-controller="Profile">Account Home</a>
+	</div>
+	<div class="profile-navbar-entry">
+		<img src="~/img/event.svg" />
+		<a class="b0-text" asp-action="ManageEvents" asp-controller="Profile">Manage Events</a>
+	</div>
+	<div class="profile-navbar-entry">
+		<img src="~/img/settings.svg" />
+		<a class="b0-text" asp-action="Settings" asp-controller="Profile">Settings</a>
+	</div>
 </div>

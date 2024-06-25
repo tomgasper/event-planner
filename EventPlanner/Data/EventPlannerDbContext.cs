@@ -65,6 +65,11 @@ namespace EventPlanner.Data
 			base.Remove(entity);
 		}
 
+        public new void Attach<T>(T entity) where T : class
+        {
+            base.Attach(entity);
+        }
+
         public new EntityEntry Entry<T>(T entity) where T : class
         {
             return base.Entry(entity);

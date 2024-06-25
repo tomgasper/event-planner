@@ -30,7 +30,7 @@ namespace EventPlanner.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User) ?? throw new NotFoundException("User not found for profile edit operation");
             InputEditUserModel inputModel = _accountService.PassInputUserInfo(user);
             return View(inputModel);
         }
@@ -83,5 +83,17 @@ namespace EventPlanner.Controllers
             
 	        return RedirectToAction(nameof(Settings));
 		}
+
+        [Authorize]
+        [HttpGet]
+
+        public async Task<IActionResult> DeletePicture()
+        {
+            AppUser user = await _userManager.GetUserAsync(User) ?? throw new NotFoundException("User not found for toggle hide profile operation.");
+
+            await _profileService.DeleteUserPicture(user);
+           
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -43,13 +43,15 @@ namespace EventPlanner.Services
 			return inputModel;
 		}
 
-		public void PassInputUserInfo(InputEditUserModel inputModel, ref AppUser user)
+		public async Task MapInputUserInfo(InputEditUserModel inputModel, AppUser user)
 		{
+			string? newImgUrl = await UpdateUserProfileImage(user, inputModel.ImageFile);
+
 			user.UserName = inputModel.UserName;
 			user.Email = inputModel.Email;
 			user.FirstName = inputModel.FirstName;
 			user.LastName = inputModel.LastName;
-			user.ProfileImageUrl = inputModel.ImageUrl ?? user.ProfileImageUrl;
+			user.ProfileImageUrl = newImgUrl ?? user.ProfileImageUrl;
 		}
 
 		public async Task<(IdentityResult, AppUser)> CreateNewUser(InputUserModel inputModel)
@@ -84,7 +86,7 @@ namespace EventPlanner.Services
 
 		public async Task<int> EditUserInfo(InputEditUserModel inputModel, AppUser user)
 		{
-			PassInputUserInfo(inputModel, ref user);
+			await MapInputUserInfo(inputModel, user);
 			_context.Update(user);
 			return await _context.SaveChangesAsync();
 		}
@@ -118,6 +120,22 @@ namespace EventPlanner.Services
 
 				return false;
             }
+        }
+
+        public async Task<string?> UpdateUserProfileImage(AppUser user, IFormFile newImageFile)
+        {
+            if (user == null || newImageFile == null) return null;
+
+            // Delete the old image if a new one is uploaded
+            if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+            {
+                _imageService.DeleteImage(user.ProfileImageUrl);
+            }
+
+            // Upload the new image and update the user's image URL
+            var imageUrl = await _imageService.UploadImage(newImageFile);
+
+            return imageUrl;
         }
 
         public async Task Logout()

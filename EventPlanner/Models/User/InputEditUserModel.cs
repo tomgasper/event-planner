@@ -12,6 +12,7 @@ namespace EventPlanner.Models.User
 
         [DataType(DataType.Url)]
         public string? ImageUrl { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [DataType(DataType.Text)]
         [Display(Name = "User Name")]

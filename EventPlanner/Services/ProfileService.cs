@@ -6,21 +6,26 @@ using System.Collections.Generic;
 using EventPlanner.Models.User;
 using EventPlanner.Models.Events;
 using EventPlanner.Models.Profile;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace EventPlanner.Services
 {
     public class ProfileService : IProfileService
 	{
 		private IDbContext _context { get; }
-		public ProfileService(IDbContext context, IEventsService eventsService)
+		private IImageService _imageService { get; }
+
+		public ProfileService(IDbContext context, IImageService imageService)
 		{
 			_context = context;
+			_imageService = imageService;
 		}
 
 		public EventListEntryVM MapEventToListEntry(Event fetchedEvent)
 		{
 			var eventListEntry = new EventListEntryVM() {
 				Id = fetchedEvent.Id,
+				AuthorId = fetchedEvent.AuthorId,
 				Name = fetchedEvent.Name,
 				DateTime = fetchedEvent.DateTime,
 				CityName = fetchedEvent.Location.Street.City.Name,
@@ -118,10 +123,11 @@ namespace EventPlanner.Services
 			return allEvents.Skip((pageNo - 1) * eventsPerPage).Take(eventsPerPage);
 		}
 
-		public EventsListViewModel ConstructEventsListVM(IEnumerable<EventListEntryVM> paginatedEvents, int currPageNo, int totalPages, string sortCriteria, bool showOnlyMyEvents)
+		public EventsListViewModel ConstructEventsListVM(int userId, IEnumerable<EventListEntryVM> paginatedEvents, int currPageNo, int totalPages, string sortCriteria, bool showOnlyMyEvents)
 		{
 			var model = new EventsListViewModel()
 			{
+				UserId = userId,
 				Events = paginatedEvents,
 				CurrentPage = currPageNo,
 				TotalPages = totalPages
@@ -153,14 +159,14 @@ namespace EventPlanner.Services
 
 		public async Task<EventsListViewModel> GetEventsForCurrentPage(int userId, int pageNo, string sortCriteria, bool showOnlyMyEvents)
 		{
-			const int EVENTS_PER_PAGE = 5;
+			const int EVENTS_PER_PAGE = 10;
 
 			IEnumerable<EventListEntryVM> events = await GetEventsForView(userId, sortCriteria, showOnlyMyEvents);
 			int totalEvents = events.Count();
 			int totalPages = GetTotalPages(totalEvents, EVENTS_PER_PAGE);
 			IEnumerable<EventListEntryVM> paginatedEvents = GetEventsForPage(events, pageNo, EVENTS_PER_PAGE);
 
-			return ConstructEventsListVM(paginatedEvents, pageNo, totalPages, sortCriteria, showOnlyMyEvents);
+			return ConstructEventsListVM(userId, paginatedEvents, pageNo, totalPages, sortCriteria, showOnlyMyEvents);
 		}
 
         public LoginHistoryVM MapToLoginHistoryVM(LoginHistory fetchedEntry)
@@ -229,5 +235,16 @@ namespace EventPlanner.Services
 			userLoaded.AccountSettings.AccountHidden = !userLoaded.AccountSettings.AccountHidden;
 			await _context.SaveChangesAsync();
 		}
+
+		public async Task DeleteUserPicture(AppUser user)
+		{
+            _imageService.DeleteImage(user.ProfileImageUrl!);
+
+			user.ProfileImageUrl = null;
+
+			_context.Attach<AppUser>(user);
+			_context.Entry(user).Property("ProfileImageUrl").IsModified = true;
+			await _context.SaveChangesAsync();
+        }
 	}
 }
