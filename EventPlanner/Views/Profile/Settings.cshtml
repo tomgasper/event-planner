@@ -7,43 +7,63 @@
 <div class="profile-general-container">
 	<partial name="_ProfileNavbar" />
 	<div class="profile-settings-container">
-		<a asp-action="Delete" asp-controller="Account">Delete account</a>
-		<div>Account status: @if (@Model.AccountHidden == true)
-			{
-				<div>Hidden</div>
-			} else
-			{
-				<div>Not hidden</div>
-			}
+		<div class="profile-general-header">
+			Settings
 		</div>
-		<form asp-action="HideProfile" asp-controller="Profile" method="post">
-			@if (Model.AccountHidden == true)
-			{
-				<input class="button-m1" type="submit" value="Make your profile visible" />
-			}
-			else
-			{
-				<input class="button-m1" type="submit" value="Hide your profile" />
-			}
-		</form>
-		<a asp-action="LoggingHistory" asp-controller="Profile">See full logging history!</a>
-		<table>
-			<tr>
-				@foreach (var prop in @Model.LoginHistory.FirstOrDefault().GetType().GetProperties())
+		<div class="profile-delete-account">
+			Delete your account: 
+			<a asp-action="Delete" asp-controller="Account" class="button-m0-red">Delete account</a>
+		</div>
+		<div class="profile-hide-profile">
+			<div>
+				Account status: @if (@Model.AccountHidden == true)
 				{
-					<th>@prop.Name</th>
+					<div class="profile-hidden-status">Hidden</div>
 				}
-			</tr>
-			@foreach (var item in @Model.LoginHistory)
-			{
-				<tr>
-					@foreach (var prop in item.GetType().GetProperties())
+				else
+				{
+					<div class="profile-hidden-status">Not hidden</div>
+				}
+			</div>
+			<form asp-action="HideProfile" asp-controller="Profile" method="post">
+				@if (Model.AccountHidden == true)
+				{
+					<input class="button-m0" type="submit" value="Make your profile visible" />
+				}
+				else
+				{
+					<input class="button-m0" type="submit" value="Hide your profile" />
+				}
+			</form>
+		</div>
+		<div class="profile-login-history">
+			<div class="profile-login-history-text">Login history:</div>
+			<table class="fl-table">
+				<thead>
+					<tr>
+						<th>Login time</th>
+						<th>IP Address</th>
+						<th>Device Information</th>
+						<th>Browser</th>
+						<th>Login Succeeded</th>
+						<th>Failure Reason</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in @Model.LoginHistory)
 					{
-						<td>@prop.GetValue(item)</td>
+						<tr>
+							<td>@item.LoginTime</td>
+							<td>@item.IPAddress</td>
+							<td>@item.DeviceInformation</td>
+							<td>@item.BrowserInformation</td>
+							<td>@item.LoginSuccess</td>
+							<td>@item.FailureReason</td>
+						</tr>
 					}
-				</tr>
-			}
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 

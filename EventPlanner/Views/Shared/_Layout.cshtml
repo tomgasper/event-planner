@@ -13,10 +13,11 @@
 </head>
 <body>
     <div class="navbar-container">
-        <div class="navbar-logo b1-text">
+
+        <a asp-action="Index" asp-controller="Events" class="navbar-logo b1-text">
             Event Planner
-        </div>
-        @if (!User.Identity.IsAuthenticated)
+        </a>
+        @if ( User.Identity == null || !User.Identity.IsAuthenticated)
         {
             <div class="navbar-login">
                 <a asp-controller="Account" asp-action="Register" class="button-m1">Sign up</a>

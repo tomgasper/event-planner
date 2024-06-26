@@ -18,8 +18,8 @@ namespace EventPlanner.Interfaces
 		EventsListViewModel SetModelSortCriteria(ref EventsListViewModel model, string sortCriteriaSelected, bool showOnlyMyEvents);
 
 		LoginHistoryVM MapToLoginHistoryVM(LoginHistory fetchedEntry);
-		Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId);
-		Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId);
+		Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId, int numberOfLastEntries);
+		Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId, int numberOfLastEntries);
 		Task<SettingsVM> GetSettingsPageVM(int userId);
 		Task ToggleAccountVisibility(int userId);
 		public Task DeleteUserPicture(AppUser user);

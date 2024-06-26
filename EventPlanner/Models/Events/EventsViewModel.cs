@@ -6,12 +6,18 @@ namespace EventPlanner.Models.Events
 {
     public class EventsViewModel
     {
-        public string SearchName { get; set; }
-        public string SearchCity { get; set; }
-        public DateTime? SearchDate { get; set; }
-        public SelectList? SearchCategories { get; set; }
+		[Display(Name = "Event Name")]
+		public string SearchName { get; set; }
+		[Display(Name = "City")]
+		public string SearchCity { get; set; }
+        [DataType(DataType.Date)]
+		[Display(Name = "City")]
+		public DateTime? SearchDate { get; set; }
+		[Display(Name = "Category")]
+		public SelectList? SearchCategories { get; set; }
         public int? SearchCategoryId { get; set; }
-        public SelectList? SearchEventTypes { get; set; }
+		[Display(Name = "Type")]
+		public SelectList? SearchEventTypes { get; set; }
         public int? SearchEventTypeId { get; set; }
         public IEnumerable<Event> Events { get; set; }
     }

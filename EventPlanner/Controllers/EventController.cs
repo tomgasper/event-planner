@@ -142,11 +142,5 @@ namespace EventPlanner.Controllers
 
 			return RedirectToAction(nameof(Index), new { id = id });
 		}
-
-        public async Task<IActionResult> Error()
-        {
-            return View();
-        }
-
     }
 }

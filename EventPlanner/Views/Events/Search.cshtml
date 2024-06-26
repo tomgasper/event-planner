@@ -8,26 +8,30 @@
 	<div class="events-search-bar">
 		<div asp-validation-summary="ModelOnly"></div>
 		<form asp-action="Search" asp-controller="Events" method="get">
-			<label asp-for="SearchName">Name</label>
-			<input asp-for="SearchName" />
+			<div class="events-search-top">
+				<input asp-for="SearchName" class="input-search-wide" placeholder="Name of the event" />
 
-			<label asp-for="SearchCity">Location</label>
-			<input asp-for="SearchCity" />
+				<input asp-for="SearchCity" class="input-search" placeholder="Location" />
 
-			<label asp-for="SearchDate">Date</label>
-			<input asp-for="SearchDate" />
+				<label asp-for="SearchDate">Date:</label>
+				<input asp-for="SearchDate" class="input-search" placeholder="Date" />
 
-			<label asp-for="SearchCategories">Category</label>
-			<select asp-for="SearchCategoryId" asp-items="@Model.SearchCategories">
-			</select>
+				<label asp-for="SearchCategories">Category:</label>
+				<select asp-for="SearchCategoryId" asp-items="@Model.SearchCategories" class="input-search-narrow" placeholder="Date">
+				</select>
 
-			<label asp-for="SearchEventTypes"></label>
-			<select asp-for="SearchEventTypeId" asp-items="@Model.SearchEventTypes">
-			</select>
-
-			<div>
-				<input type="submit" value="Search" />
+				<label asp-for="SearchEventTypes">Type:</label>
+				<select asp-for="SearchEventTypeId" asp-items="@Model.SearchEventTypes" class="input-search-narrow">
+				</select>
+				<div class="events-serach-button-container">
+					<button type="submit"><img src="~/img/icons/search.svg" /></button>
+				</div>
 			</div>
+
+			<div class="events-search-bottom">
+				
+			</div>
+			
 		</form>
 	</div>
 	<a asp-controller="Event" asp-action="Create" class="button-m1">Add new event</a>

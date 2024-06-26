@@ -1,12 +1,21 @@
-﻿namespace EventPlanner.Models.Profile
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace EventPlanner.Models.Profile
 {
     public class LoginHistoryVM
     {
+        [Display(Name = "Login Time")]
         public DateTime? LoginTime { get; set; }
-        public string? IPAddress { get; set; }
-        public string? DeviceInformation { get; set; }
-        public string? BrowserInformation { get; set; }
-        public bool? LoginSuccess { get; set; }
-        public string? FailureReason { get; set; }
+		[DisplayName("IP Address")]
+		public string? IPAddress { get; set; }
+		[DisplayName("Device")]
+		public string? DeviceInformation { get; set; }
+		[DisplayName("Browser")]
+		public string? BrowserInformation { get; set; }
+		[DisplayName("Login Succeeded")]
+		public bool? LoginSuccess { get; set; }
+		[DisplayName("Failure Reason")]
+		public string? FailureReason { get; set; }
     }
 }

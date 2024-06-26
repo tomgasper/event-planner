@@ -56,6 +56,20 @@
 .profile-settings-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 60vh;
+    gap: 5px;
+}
+
+.profile-settings-container a {
+    text-decoration: none;
+}
+
+.profile-delete-account {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    align-items: center;
 }
 
 .profile-general-header {
@@ -64,6 +78,21 @@
     margin-bottom: 3%;
     font-weight: 600;
     font-size: 32px;
+}
+
+.profile-hide-profile {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+}
+
+.profile-hidden-status {
+    color: #5f2eea;
+}
+
+.profile-login-history-text {
+    margin-top: 2px;
+    margin-bottom: 5px;
 }
 
 .list-event-container {
@@ -118,7 +147,6 @@ th {
 .profile-picture-container label {
     color:white;
 }
-
 
 .profile-picture-container img {
     width: 100%;

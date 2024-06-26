@@ -182,9 +182,9 @@ namespace EventPlanner.Services
             };
         }
 
-		public async Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId)
+		public async Task<IEnumerable<LoginHistory>> GetLoginHistories(int userId, int numberOfLastEntries)
 		{
-			return await _context.LoginHistory.Where(lh => lh.User.Id == userId).ToListAsync();
+			return await _context.LoginHistory.Where(lh => lh.User.Id == userId).OrderByDescending((e) => e.LoginTime).Skip(0).Take(numberOfLastEntries).ToListAsync();
         }
 
 		public IEnumerable<LoginHistoryVM> MapLoginHistoriesToVM(IEnumerable<LoginHistory> fetchedLoginHistoryList)
@@ -198,9 +198,9 @@ namespace EventPlanner.Services
 			return loginHistoryListVM;
         }
 
-		public async Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId)
+		public async Task<IEnumerable<LoginHistoryVM>> GetLoginHistoriesVM(int userId, int numberOfLastEntries)
 		{
-			IEnumerable<LoginHistory> fetchedLoginHistories = await GetLoginHistories(userId);
+			IEnumerable<LoginHistory> fetchedLoginHistories = await GetLoginHistories(userId, numberOfLastEntries);
 			IEnumerable<LoginHistoryVM> loginHistoriesVM = MapLoginHistoriesToVM(fetchedLoginHistories);
 
 			return loginHistoriesVM;
@@ -213,7 +213,8 @@ namespace EventPlanner.Services
 
 		public async Task<SettingsVM> GetSettingsPageVM(int userId)
 		{
-			IEnumerable<LoginHistoryVM> loginHistoriesVM = await GetLoginHistoriesVM(userId);
+			const int MAX_LOGIN_HISTORIES = 10;
+			IEnumerable<LoginHistoryVM> loginHistoriesVM = await GetLoginHistoriesVM(userId, MAX_LOGIN_HISTORIES);
 			AppUser? user = await GetUserWithAccountSettings(userId);
 			bool? accountIsHidden = null;
 

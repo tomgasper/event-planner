@@ -113,6 +113,8 @@ input {
     margin-bottom: 20%;
 }
 
+/* Buttons */
+
 .button-m0-select {
     display: flex;
     justify-content: center;
@@ -130,6 +132,21 @@ input {
 
 .button-m0-select:hover {
     cursor: pointer;
+}
+
+.button-m0-red {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 30px;
+    color: #f44b4b;
+    text-align: center;
+    border-radius: 10px;
+    max-width: fit-content;
+    background-color: #f7dede;
+    border: 1.5px solid #f9c7c7;
 }
 
 .button-w1 {
@@ -169,14 +186,15 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-left:20px;
-    padding-right:20px;
+    padding-left: 20px;
+    padding-right: 20px;
     height: 30px;
     background-color: #5f2eea;
     color: white;
     text-align: center;
     border-radius: 10px;
-    max-width: fit-content; 
+    max-width: fit-content;
+    cursor: pointer;
 }
 
 .button-m1:hover {
