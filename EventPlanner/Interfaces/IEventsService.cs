@@ -1,4 +1,5 @@
 ﻿using EventPlanner.Models.Events;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EventPlanner.Interfaces
 {
@@ -12,7 +13,8 @@ namespace EventPlanner.Interfaces
 
         EventsSearchCriteria MapInputToCriteria(EventsViewModel viewModel);
         Task<EventsViewModel> SearchEvents(EventsViewModel inputViewModel);
-
-        Task<EventsViewModel> GetEventsForIndex();
+        SelectList CreateCategorySelectList(IEnumerable<Category> categories, int? searchCategoryId);
+        SelectList CreateTypeSelectList(IEnumerable<EventType> types, int? searchTypeId);
+		Task<EventsViewModel> GetEventsForIndex();
 	}
 }

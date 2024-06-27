@@ -27,7 +27,13 @@ input {
     align-items: center;
 }
 
-.navbar-login {
+.navbar-text {
+    font-size: 17px;
+    color: #3b3b3b;
+    font-weight: 400;
+}
+
+.navbar-right {
     display: flex;
     margin-left:auto;
     margin-right:3%;
@@ -48,6 +54,11 @@ input {
 .navbar {
     display: flex;
     flex-direction: row;
+}
+
+.vertical-line {
+    background-color: #adadad;
+    width:1.5px;
 }
 
 .b2-text {

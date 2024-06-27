@@ -19,16 +19,18 @@
         </a>
         @if ( User.Identity == null || !User.Identity.IsAuthenticated)
         {
-            <div class="navbar-login">
+            <div class="navbar-right">
                 <a asp-controller="Account" asp-action="Register" class="button-m1">Sign up</a>
-                <a asp-controller="Account" asp-action="Login">Login</a>
+                <a asp-controller="Account" asp-action="Login" class="navbar-text">Login</a>
             </div>
         }
         else
         {
-            <div class="navbar-login">
+            <div class="navbar-right">
+                <a asp-controller="Event" asp-action="Create" class="navbar-text">Creat event</a>
+                <div class="vertical-line"></div>
                 <a asp-controller="Profile" asp-action="Index" class="button-m1">@User.Identity.Name</a>
-                <a asp-controller="Account" asp-action="Logout">Logout</a>
+                <a asp-controller="Account" asp-action="Logout" class="navbar-text">Logout</a>
             </div>
         }
     </div>

@@ -74,18 +74,12 @@ namespace EventPlanner.Services
 			}
 			*/
 
-			if (criteria.SearchCategoryId.HasValue)
+			if (criteria.SearchCategoryId.HasValue && criteria.SearchCategoryId > 0)
 			{
 				eventsQuery = eventsQuery.Where(e => e.CategoryId == criteria.SearchCategoryId.Value );
 			}
 
-			if (criteria.SearchCategoryId.HasValue && await _context.Category.AnyAsync(c => c.Id == criteria.SearchCategoryId.Value) )
-			{
-				eventsQuery = eventsQuery.Where(e => e.CategoryId == criteria.SearchCategoryId.Value);
-			}
-
-			if (criteria.SearchEventTypeId.HasValue &&
-				await _context.EventType.AnyAsync(t => t.Id == criteria.SearchEventTypeId.Value))
+			if (criteria.SearchEventTypeId.HasValue && criteria.SearchEventTypeId > 0)
 			{
 				eventsQuery = eventsQuery.Where(e => e.EventTypeId == criteria.SearchEventTypeId.Value);
 			}
@@ -107,6 +101,20 @@ namespace EventPlanner.Services
 			return criteria;
 		}
 
+		public SelectList CreateCategorySelectList(IEnumerable<Category> categories, int? searchCategoryId)
+		{
+			return new SelectList(
+			new[] { new Category { Id = 0, Name = "Any" } }.Concat(categories),
+			"Id", "Name", searchCategoryId);
+		}
+
+		public SelectList CreateTypeSelectList(IEnumerable<EventType> types, int? searchTypeId)
+		{
+			return new SelectList(
+			new[] { new EventType { Id = 0, Name = "Any" } }.Concat(types),
+			"Id", "Name", searchTypeId);
+		}
+
 		public async Task<EventsViewModel> SearchEvents(EventsViewModel inputViewModel)
 		{
 			EventsSearchCriteria criteria = MapInputToCriteria(inputViewModel);
@@ -119,8 +127,8 @@ namespace EventPlanner.Services
 				SearchName = criteria.SearchName,
 				SearchCity = criteria.SearchCity,
 				SearchDate = criteria.SearchDate,
-				SearchCategories = new SelectList(categories, "Id", "Name", criteria.SearchCategoryId),
-				SearchEventTypes = new SelectList(types, "Id", "Name", criteria.SearchEventTypeId),
+				SearchCategories = CreateCategorySelectList(categories,criteria.SearchCategoryId),
+				SearchEventTypes = CreateTypeSelectList(types, criteria.SearchEventTypeId),
 				Events = await eventsQuery.ToListAsync()
 			};
 
