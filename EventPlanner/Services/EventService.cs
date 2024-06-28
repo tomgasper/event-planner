@@ -11,6 +11,8 @@ using EventPlanner.Models.User;
 using EventPlanner.Models.Events;
 using EventPlanner.Models.Location;
 
+using EventPlanner.Exceptions;
+
 namespace EventPlanner.Services
 {
     public class EventService : IEventService
@@ -39,25 +41,28 @@ namespace EventPlanner.Services
             await _context.SaveChangesAsync();
         }
 
-		public async Task<bool> AssignEventToUserAsync(int userId, int eventId)
+		public async Task AssignEventToUserAsync(int userId, int eventId)
 		{
 			var user = await _context.Users.Include(u => u.Events).FirstOrDefaultAsync(u => u.Id == userId);
-			if (user == null || user.Events.Any(e => e.Id == eventId))
+			if (user == null)
 			{
-				return false;
+                throw new UserManagementException("Couldn't retrieve the current user");
 			}
+
+            if (user.Events.Any(e => e.Id == eventId))
+            {
+                throw new InvalidInputException("Current user is already assigned to this event.");
+            }
 
 			var eventToAssign = await _context.Event.FirstOrDefaultAsync(e => e.Id == eventId);
 			if (eventToAssign == null)
 			{
-				return false;
+                throw new NotFoundException("Couldn't retrieve the current event");
 			}
 
 			user.Events.Add(eventToAssign);
 			_context.Update(user);
 			await _context.SaveChangesAsync();
-
-			return true;
 		}
 
 		public async Task<bool> UpdateEventAsync(int eventId, int userId, InputEventModel updatedModel)
@@ -155,7 +160,7 @@ namespace EventPlanner.Services
             return result;
         }
 
-        public async Task<EventViewModel> GetEventForViewById(string? userId, int id)
+        public async Task<EventViewModel> GetEventForViewById(string userId, int id)
         {
             var result = await GetFullEventAsync(id);
 
@@ -163,6 +168,7 @@ namespace EventPlanner.Services
             {
                 EventViewModel model = new();
                 model.Id = result.Id;
+                model.UserId = Int32.Parse(userId);
                 model.Name = result.Name;
                 model.IsUserAuthor = userId == (result.AuthorId.ToString());
                 model.Category = null;

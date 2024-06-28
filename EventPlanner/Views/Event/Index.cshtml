@@ -18,8 +18,16 @@
 		<div class="event-page-header-img"></div>
 		<div class="event-page-header-info-container">
 			<div class="event-page-header-info-interaction">
-				<a asp-action="AssignEventToUser" asp-route-id="@Model.Id" class="button-w2 colour-1">Going!</a>
-				<a class="button-w2 colour-2">Save</a>
+				
+				@if (Model.UsersAttending.Any( u => u.Id == Model.UserId))
+				{
+					<div class="event-page-already-assigned">You're signed up for this event!</div>
+				} else
+				{
+					<a asp-action="AssignEventToUser" asp-route-id="@Model.Id" class="button-w2 colour-1">Going!</a>
+					/* Save functionality not implemnted yet*/
+					<a class="button-w2 colour-2">Save</a>
+				}
 			</div>
 			<div class="event-host-container">
 				<div class="event-host-avatar">

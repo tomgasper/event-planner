@@ -2,9 +2,11 @@
 
 namespace EventPlanner.Models.Events
 {
+    // To do disable going button when attending already
     public class EventViewModel
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
         public bool IsUserAuthor { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }

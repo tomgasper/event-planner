@@ -1,4 +1,5 @@
-﻿using EventPlanner.Interfaces;
+﻿using EventPlanner.Exceptions;
+using EventPlanner.Interfaces;
 using EventPlanner.Models.Events;
 using EventPlanner.Models.User;
 using Microsoft.AspNetCore.Authorization;
@@ -33,8 +34,8 @@ namespace EventPlanner.Controllers
 
         public async Task<IActionResult> Index(int Id)
         {
-            string? userId = _userManager.GetUserId(User);
-            EventViewModel retrievedEvent = await _eventService.GetEventForViewById(userId, Id);
+            string userId = _userManager.GetUserId(User) ?? throw new UserManagementException("User not found for choosen Event display.");
+			EventViewModel retrievedEvent = await _eventService.GetEventForViewById(userId, Id);
             return View(retrievedEvent);
         }
 
@@ -117,7 +118,8 @@ namespace EventPlanner.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-			int userId = Int32.Parse(_userManager.GetUserId(User));
+            string userIdString = _userManager.GetUserId(User) ?? throw new UserManagementException("User not found for delete Event operation.");
+			int userId = Int32.Parse(userIdString);
 
             bool deleteSuccesful = await _eventService.DeleteEventAsync(User, id, userId);
 
@@ -133,12 +135,7 @@ namespace EventPlanner.Controllers
         public async Task<IActionResult> AssignEventToUser(int id)
         {
 			var userId = Int32.Parse(_userManager.GetUserId(User));
-			bool success = await _eventService.AssignEventToUserAsync(userId, id);
-
-			if (!success)
-			{
-				return RedirectToAction("Index", "Error", new { message = "Operation failed or unauthorized" });
-			}
+			await _eventService.AssignEventToUserAsync(userId, id);
 
 			return RedirectToAction(nameof(Index), new { id = id });
 		}

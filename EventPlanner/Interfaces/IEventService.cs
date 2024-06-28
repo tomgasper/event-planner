@@ -8,7 +8,7 @@ namespace EventPlanner.Interfaces
 {
     public interface IEventService
     {
-        Task<EventViewModel> GetEventForViewById(string? userId, int id);
+        Task<EventViewModel> GetEventForViewById(string userId, int id);
 		public LocationViewModel GetEventLocation(Event fetchedEvent);
 		Task<bool> EventExistsAsync(Event newEvent);
         Task<Event> AddEventAsync(Event newEvent);
@@ -21,7 +21,7 @@ namespace EventPlanner.Interfaces
         bool UserHasPermissionToEdit(ClaimsPrincipal user, int userId, int authorId);
 
 		Task<bool> DeleteEventAsync(ClaimsPrincipal user, int eventId, int userId);
-        Task<bool> AssignEventToUserAsync(int userId, int eventId);
+        Task AssignEventToUserAsync(int userId, int eventId);
 
         Task<SelectList> PopulateCategoriesDropDownList(object? selectedCategory);
         Task<SelectList> PopulateEventTypesDropDownList(object? selectedType);
