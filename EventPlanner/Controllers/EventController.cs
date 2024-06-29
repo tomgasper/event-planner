@@ -134,10 +134,20 @@ namespace EventPlanner.Controllers
         [Authorize]
         public async Task<IActionResult> AssignEventToUser(int id)
         {
-			var userId = Int32.Parse(_userManager.GetUserId(User));
-			await _eventService.AssignEventToUserAsync(userId, id);
+			var userId = _userManager.GetUserId(User) ?? throw new UserManagementException("User not found when trying to assign for an event");
+			await _eventService.AssignEventToUserAsync(Int32.Parse(userId), id);
 
 			return RedirectToAction(nameof(Index), new { id = id });
 		}
-    }
+
+        [Authorize]
+		public async Task<IActionResult> UnenrollUserFromEvent(int id)
+        {
+            var userId = _userManager.GetUserId(User) ?? throw new UserManagementException("User not found for removing from event's participants list.");
+
+            await _eventService.UnenrollUserFromEvent(Int32.Parse(userId), id);
+
+            return RedirectToAction(nameof(Index), new { id });
+		}
+	}
 }

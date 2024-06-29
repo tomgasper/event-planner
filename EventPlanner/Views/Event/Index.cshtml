@@ -22,6 +22,7 @@
 				@if (Model.UsersAttending.Any( u => u.Id == Model.UserId))
 				{
 					<div class="event-page-already-assigned">You're signed up for this event!</div>
+					<a asp-action="EnenrollUserFromEvent" asp-route-id="@Model.Id" class="button-w2 colour-1">Unenroll</a>
 				} else
 				{
 					<a asp-action="AssignEventToUser" asp-route-id="@Model.Id" class="button-w2 colour-1">Going!</a>

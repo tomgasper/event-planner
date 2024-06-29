@@ -15,7 +15,7 @@ The application also features a user profile page where users can manage their o
 - [x] Event Managment page
 - [x] List of categories with dropdown selection
 - [x] Profile Settings (Account Delection, Account Visibility and Login History)
-- [ ] Responsive design
+- [ ] Responsive UI (to do)
 
 ## Technologies Used
 

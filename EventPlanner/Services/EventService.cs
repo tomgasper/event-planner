@@ -41,6 +41,12 @@ namespace EventPlanner.Services
             await _context.SaveChangesAsync();
         }
 
+		// To do add option for unassigning user from event
+        public async Task UnenrollUserFromEvent(int userId, int eventId)
+        {
+
+        }
+
 		public async Task AssignEventToUserAsync(int userId, int eventId)
 		{
 			var user = await _context.Users.Include(u => u.Events).FirstOrDefaultAsync(u => u.Id == userId);
