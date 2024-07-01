@@ -6,6 +6,12 @@ It includes search functionality that allows users to filter events based on spe
 
 The application also features a user profile page where users can manage their own events and adjust settings related to their account.
 
+![Events page](https://github.com/tomgasper/event-planner/blob/master/Screenshots/page_1.jpg?raw=true)
+
+![Event details page](https://github.com/tomgasper/event-planner/blob/master/Screenshots/page_2.jpg?raw=true)
+
+![Events list](https://github.com/tomgasper/event-planner/blob/master/Screenshots/page_4.jpg?raw=true)
+
 ## Features
 
 - [x] User registration and authentication using .NET Identity
