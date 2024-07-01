@@ -54,10 +54,13 @@ namespace EventPlanner.Tests.Controller
 				Events = eventList
 			};
 
-			_eventsService.GetEventsForIndex().Returns(viewModel);
+			var inputModel = new EventsViewModel();
+
+
+            _eventsService.SearchEvents(Arg.Any<EventsViewModel>()).Returns(viewModel);
 
 			// Act
-			var result = await _eventsController.Index();
+			var result = await _eventsController.Index(inputModel);
 
 			// Assert
 			result.Should().BeOfType<ViewResult>()
