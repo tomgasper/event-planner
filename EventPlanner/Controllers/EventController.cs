@@ -34,7 +34,7 @@ namespace EventPlanner.Controllers
 
         public async Task<IActionResult> Index(int Id)
         {
-            string userId = _userManager.GetUserId(User) ?? throw new UserManagementException("User not found for choosen Event display.");
+            string userId = _userManager.GetUserId(User);
 			EventViewModel retrievedEvent = await _eventService.GetEventForViewById(userId, Id);
             return View(retrievedEvent);
         }

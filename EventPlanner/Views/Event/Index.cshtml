@@ -15,7 +15,9 @@
 		}
 	</div>
 	<div class="event-page-header-container">
-		<div class="event-page-header-img"></div>
+		<div class="event-page-header-img">
+			<img src="~/img/icons/event_large.svg" />
+		</div>
 		<div class="event-page-header-info-container">
 			<div class="event-page-header-info-interaction">
 				
@@ -32,14 +34,20 @@
 			</div>
 			<div class="event-host-container">
 				<div class="event-host-avatar">
-
+					<img src="@Model.Author.ProfileImageUrl" />
 				</div>
 				<div class="event-host-text ">
-					<div class="event-host-name b1-text">
-						@Model.Name
-					</div>
+					@if (Model.Author == null)
+					{
+						<div class="event-host-name b1-text">Unknown author</div>
+					}
+					else
+					{
+						<div class="event-host-name b1-text">@Model.Author.FirstName @Model.Author.LastName </div>
+					}
 					<div class="event-host-description l1-text">
-						Type of host
+						@* Different types of event could be implemented later on (Individual, Organization etc.) *@
+						Hosted by: Individual
 					</div>
 				</div>
 			</div>
@@ -52,10 +60,15 @@
 					<img src="~/img/location_icon.svg" />
 					@Model.Street @Model.BuidingNo @Model.City
 				</div>
-				<div class="event-datils-users">
+			</div>
+			<div class="event-details-users-container">
+				<div class="event-details-users-title">Attending (@Model.UsersAttending.Count()):</div>
+				<div class="event-details-users">
 					@foreach (var user in Model.UsersAttending)
 					{
-						<img src="@user.ProfileImageUrl" />
+						<div class="event-details-user-profile">
+							<img src="@user.ProfileImageUrl" />
+						</div>
 					}
 				</div>
 			</div>

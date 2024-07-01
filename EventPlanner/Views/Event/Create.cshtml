@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create Event";
 }
 
-<form asp-controller="Event" asp-action="Create" method="post">
+<form asp-controller="Event" asp-action="Create" class="create-event-form" method="post">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="form-entry">
         <label asp-for="Name"></label>
@@ -81,4 +81,8 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+}
+
+@section Styles {
+    <link href="@Url.Content("~/css/Views/EventStyle.css")" rel="stylesheet" type="text/css" />
 }

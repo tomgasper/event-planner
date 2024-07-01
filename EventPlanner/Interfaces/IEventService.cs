@@ -8,7 +8,7 @@ namespace EventPlanner.Interfaces
 {
     public interface IEventService
     {
-        Task<EventViewModel> GetEventForViewById(string userId, int id);
+        Task<EventViewModel> GetEventForViewById(string? userId, int id);
 		public LocationViewModel GetEventLocation(Event fetchedEvent);
 		Task<bool> EventExistsAsync(Event newEvent);
         Task<Event> AddEventAsync(Event newEvent);

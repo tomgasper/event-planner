@@ -33,7 +33,6 @@ namespace EventPlanner.Services
 			var viewModel = new EventsViewModel()
 			{
 				Events = events,
-				SearchDate = DateTime.Today,
 				SearchCategories = new SelectList(categories, "Id", "Name"),
 				SearchEventTypes = new SelectList(types, "Id", "Name"),
 			};
@@ -51,9 +50,9 @@ namespace EventPlanner.Services
 			return await _context.Event.Skip(0).Take(noEntries).AsNoTracking().ToListAsync();
 		}
 
-		public async Task<IQueryable<Event>> BuildEventQuery(EventsSearchCriteria criteria)
+		public IQueryable<Event> BuildEventQuery(EventsSearchCriteria criteria)
 		{
-			var eventsQuery = _context.Event.AsQueryable();
+			var eventsQuery = _context.Event.Include(e => e.Author).AsQueryable();
 
 			if (!String.IsNullOrEmpty(criteria.SearchName))
 			{
@@ -64,15 +63,28 @@ namespace EventPlanner.Services
 			{
 				eventsQuery = eventsQuery.Where(e => e.Location.Street.City.Name == criteria.SearchCity);
 			}
-
-			// To do:
-			// Add useful range for dates like: any time, today, tomorrow, this week, next week
-			/*
-			if (criteria.SearchDate.HasValue)
+			
+			if (criteria.SearchDateOptionId.HasValue)
 			{
-				eventsQuery = eventsQuery.Where(e => e.DateTime.Date == criteria.SearchDate.Value);
+				switch (criteria.SearchDateOptionId)
+				{
+					case 0:
+						break;
+					case 1:
+						eventsQuery = eventsQuery.Where(e => e.DateTime.Date == DateTime.Today);
+						break;
+					case 2:
+						var dt = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+						eventsQuery = eventsQuery.Where(e => e.DateTime.Date >= dt && e.DateTime.Date <= dt.AddDays(6));
+						break;
+					case 3:
+						var now = DateTime.Now;
+						var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
+						var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddSeconds(-1);
+						eventsQuery = eventsQuery.Where(e => e.DateTime.Date >= firstDayOfMonth && e.DateTime.Date <= lastDayOfMonth);
+						break;
+				}
 			}
-			*/
 
 			if (criteria.SearchCategoryId.HasValue && criteria.SearchCategoryId > 0)
 			{
@@ -93,7 +105,7 @@ namespace EventPlanner.Services
 			{
 				SearchName = viewModel.SearchName,
 				SearchCity = viewModel.SearchCity,
-				SearchDate = viewModel.SearchDate,
+				SearchDateOptionId = viewModel.SearchDate.SelectedOption,
 				SearchCategoryId = viewModel.SearchCategoryId,
 				SearchEventTypeId = viewModel.SearchEventTypeId,
 			};
@@ -118,7 +130,7 @@ namespace EventPlanner.Services
 		public async Task<EventsViewModel> SearchEvents(EventsViewModel inputViewModel)
 		{
 			EventsSearchCriteria criteria = MapInputToCriteria(inputViewModel);
-			var eventsQuery = await BuildEventQuery(criteria);
+			var eventsQuery = BuildEventQuery(criteria);
 			var types = await GetEventTypesAsync();
 			var categories = await GetCategoriesAsync();
 
@@ -126,10 +138,10 @@ namespace EventPlanner.Services
 			{
 				SearchName = criteria.SearchName,
 				SearchCity = criteria.SearchCity,
-				SearchDate = criteria.SearchDate,
+				SearchDate = inputViewModel.SearchDate,
 				SearchCategories = CreateCategorySelectList(categories,criteria.SearchCategoryId),
 				SearchEventTypes = CreateTypeSelectList(types, criteria.SearchEventTypeId),
-				Events = await eventsQuery.ToListAsync()
+				Events = await eventsQuery.Include(e => e.Author).ToListAsync()
 			};
 
 			return viewModel;

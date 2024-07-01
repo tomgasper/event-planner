@@ -168,6 +168,7 @@ namespace EventPlanner.Services
         {
             var result = await _context.Event
                 .Include("Users")
+                .Include("Author")
                 .Include("Location")
                 .Include("Location.Street")
                 .Include("Location.Street.City")
@@ -177,15 +178,22 @@ namespace EventPlanner.Services
             return result;
         }
 
-        public async Task<EventViewModel> GetEventForViewById(string userId, int id)
+        public async Task<EventViewModel> GetEventForViewById(string? userId, int id)
         {
             var result = await GetFullEventAsync(id);
+
+            int? userIdInt = null;
+            if (userId != null)
+            {
+                userIdInt = Int32.Parse(userId);
+            }
 
             if (result != null)
             {
                 EventViewModel model = new();
                 model.Id = result.Id;
-                model.UserId = Int32.Parse(userId);
+                model.Author = result.Author;
+                model.UserId = userIdInt;
                 model.Name = result.Name;
                 model.IsUserAuthor = userId == (result.AuthorId.ToString());
                 model.Category = null;

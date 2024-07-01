@@ -13,8 +13,8 @@
 
 				<input asp-for="SearchCity" class="input-search" placeholder="Location" />
 
-				<label asp-for="SearchDate">Date:</label>
-				<input asp-for="SearchDate" class="input-search" placeholder="Date" />
+				<label asp-for="SearchDate.Options">Date:</label>
+				<select asp-for="SearchDate.SelectedOption" asp-items="@Model.SearchDate.Options" class="input-search-select" placeholder="Date"></select>
 
 				<label asp-for="SearchCategories">Category:</label>
 				<select asp-for="SearchCategoryId" asp-items="@Model.SearchCategories" class="input-search-select" placeholder="Date">
@@ -35,10 +35,14 @@
 		@foreach (var item in Model.Events)
 		{
 			<a asp-controller="Event" asp-action="Index" asp-route-id=@item.Id class="event-container lazy">
-				<div class="event-img-container"></div>
-				<div class="event-name">@item.Name</div>
-				<div class="event-host">Hosted by: ...</div>
-				<div class="event-date">@item.DateTime</div>
+				<div class="event-img-container">
+					<img src="~/img/icons/event_large.svg" />
+				</div>
+				<div class="event-info">
+					<div class="event-name b1-text">@item.Name</div>
+					<div class="event-host"><img src="~/img/icons/person.svg"> @item.Author.FirstName @item.Author.LastName</div>
+					<div class="event-date"><img src="~/img/icons/time.svg"> @item.DateTime</div>
+				</div>
 			</a>
 		}
 	</div>
