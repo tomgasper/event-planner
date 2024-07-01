@@ -141,7 +141,7 @@ namespace EventPlanner.Services
 				SearchDate = inputViewModel.SearchDate,
 				SearchCategories = CreateCategorySelectList(categories,criteria.SearchCategoryId),
 				SearchEventTypes = CreateTypeSelectList(types, criteria.SearchEventTypeId),
-				Events = await eventsQuery.Include(e => e.Author).ToListAsync()
+				Events = await eventsQuery.Include(e => e.Author).OrderByDescending( e => e.DateTime ).ToListAsync()
 			};
 
 			return viewModel;

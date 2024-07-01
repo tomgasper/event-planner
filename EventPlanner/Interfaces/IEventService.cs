@@ -10,7 +10,8 @@ namespace EventPlanner.Interfaces
     {
         Task<EventViewModel> GetEventForViewById(string? userId, int id);
 		public LocationViewModel GetEventLocation(Event fetchedEvent);
-		Task<bool> EventExistsAsync(Event newEvent);
+        IEnumerable<AppUser> GetNotHiddenUsers(IEnumerable<AppUser> userList);
+        Task<bool> EventExistsAsync(Event newEvent);
         Task<Event> AddEventAsync(Event newEvent);
         Task<Event> CreateEventFromInputModelAsync(AppUser user, InputEventModel model);
         Task<Location> GetOrCreateLocationAsync(InputEventModel model);

@@ -15,7 +15,8 @@ namespace EventPlanner.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Search", "Events");
+            // Show events on the app start
+            return RedirectToAction("Index", "Events");
         }
     }
 }

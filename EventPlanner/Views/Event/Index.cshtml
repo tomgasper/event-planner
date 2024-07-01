@@ -16,7 +16,7 @@
 	</div>
 	<div class="event-page-header-container">
 		<div class="event-page-header-img">
-			<img src="~/img/icons/event_large.svg" />
+			<img src="~/img/icons/event.svg" />
 		</div>
 		<div class="event-page-header-info-container">
 			<div class="event-page-header-info-interaction">
@@ -54,11 +54,11 @@
 			<div class="event-details-container">
 				<div class="event-details-date">
 					<img src="~/img/calendar_icon.svg" />
-					@Model.DateTime
+					@Model.DateTime.ToString("MM/dd/yyyy HH:mm")
 				</div>
 				<div class="event-details-address">
 					<img src="~/img/location_icon.svg" />
-					@Model.Street @Model.BuidingNo @Model.City
+					@Model.Street @Model.BuidingNo, @Model.City
 				</div>
 			</div>
 			<div class="event-details-users-container">
@@ -66,9 +66,12 @@
 				<div class="event-details-users">
 					@foreach (var user in Model.UsersAttending)
 					{
-						<div class="event-details-user-profile">
-							<img src="@user.ProfileImageUrl" />
-						</div>
+						if (user.AccountSettings == null || user.AccountSettings.AccountHidden == false)
+						{
+							<div class="event-details-user-profile">
+								<img src="@user.ProfileImageUrl" />
+							</div>
+						}
 					}
 				</div>
 			</div>
@@ -77,7 +80,7 @@
 	<div class="event-page-details">
 		<div class="event-page-details-title b1-text">Details:</div>
 		<div class="event-page-details-text m1-text">
-			Here's a description of the event
+			Sample event description.
 		</div>
 	</div>
 </div>

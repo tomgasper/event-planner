@@ -42,6 +42,15 @@
     margin-bottom: 2%;
 }
 
+.edit-user-right-side {
+    display: flex;
+    width: 100%;
+}
+
+.edit-user-container {
+    margin-left: 15%;
+}
+
 .profile-events-ownership a {
     text-decoration: none;
 }
@@ -74,7 +83,7 @@
 
 .profile-general-header {
     color: #2d2e2e;
-    margin-top: 4%;
+    margin-top: 6%;
     margin-bottom: 2%;
     font-weight: 600;
     font-size: 32px;

@@ -28,12 +28,7 @@ namespace EventPlanner.Controllers
             _eventsService = eventsService;
         }
 
-        public IActionResult Index()
-        {
-            return RedirectToAction(nameof(Search));
-        }
-
-		public async Task<IActionResult> Search(EventsViewModel input)
+		public async Task<IActionResult> Index(EventsViewModel input)
         {
 			var viewModel = await _eventsService.SearchEvents(input);
 			return View(viewModel);

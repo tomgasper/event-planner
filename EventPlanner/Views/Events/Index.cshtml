@@ -7,7 +7,7 @@
 <div class="events-container">
 	<div class="events-search-bar">
 		<div asp-validation-summary="ModelOnly"></div>
-		<form asp-action="Search" asp-controller="Events" method="get">
+		<form asp-action="Index" asp-controller="Events" method="get">
 			<div class="events-search-top">
 				<input asp-for="SearchName" class="input-search-wide" placeholder="Name of the event" />
 
@@ -36,12 +36,12 @@
 		{
 			<a asp-controller="Event" asp-action="Index" asp-route-id=@item.Id class="event-container lazy">
 				<div class="event-img-container">
-					<img src="~/img/icons/event_large.svg" />
+					<img src="~/img/icons/event.svg" />
 				</div>
 				<div class="event-info">
 					<div class="event-name b1-text">@item.Name</div>
 					<div class="event-host"><img src="~/img/icons/person.svg"> @item.Author.FirstName @item.Author.LastName</div>
-					<div class="event-date"><img src="~/img/icons/time.svg"> @item.DateTime</div>
+					<div class="event-date"><img src="~/img/icons/time.svg"> @item.DateTime.ToString("MM/dd/yyyy HH:mm")</div>
 				</div>
 			</a>
 		}

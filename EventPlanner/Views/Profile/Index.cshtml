@@ -6,17 +6,18 @@
 
 <div class="profile-general-container">
     <partial name="_ProfileNavbar" />
-    <div class="edit-user-container">
-        <div class="profile-general-header">Edit Profile</div>
-        <div asp-validation-summary="ModelOnly"></div>
-        <form asp-action="Index" method="post" class="generic-form" enctype="multipart/form-data">
-            <div class="edit-profile-picture-container">
+    <div class="edit-user-right-side">
+        <div class="edit-user-container">
+            <div class="profile-general-header">Edit Profile</div>
+            <div asp-validation-summary="ModelOnly"></div>
+            <form asp-action="Index" method="post" class="generic-form" enctype="multipart/form-data">
+                <div class="edit-profile-picture-container">
                     <div class="edit-profile-picture-label">Profile Picture</div>
                     <div class="edit-profile-picture">
                         <div class="profile-picture-container">
                             <img src="@Model.ImageUrl" />
                         </div>
-                    <label asp-for="ImageFile" class="custom-file-upload">
+                        <label asp-for="ImageFile" class="custom-file-upload">
                             Change Picture
                         </label>
                         <input asp-for="ImageFile" type="file" accept="image/*" />
@@ -28,38 +29,39 @@
                         }
                     </div>
                 </div>
-            <div class="input-fullwidth-container">
-                <label asp-for="@Model.UserName"></label>
-                <input asp-for="@Model.UserName" value="@Model.UserName" class="input-fullwidth" />
-                <span asp-validation-for="@Model.UserName"></span>
-            </div>
-            <div class="input-fullwidth-container">
-                <label asp-for="@Model.Email"></label>
-                <input asp-for="@Model.Email" value="@Model.Email" class="input-fullwidth" />
-                <span asp-validation-for="@Model.Email"></span>
-            </div>
-            <div class="input-fullwidth-container">
-                <label asp-for="@Model.FirstName"></label>
-                <input asp-for="@Model.FirstName" value="@Model.FirstName" class="input-fullwidth" />
-                <span asp-validation-for="@Model.FirstName"></span>
-            </div>
-            <div class="input-fullwidth-container">
-                <label asp-for="@Model.LastName"></label>
-                <input asp-for="@Model.LastName" value="@Model.LastName" class="input-fullwidth" />
-                <span asp-validation-for="@Model.LastName"></span>
-            </div>
-            <div class="input-fullwidth-container">
-                <input asp-for="@Model.Password" class="input-fullwidth" placeholder="Password" />
-                <span asp-validation-for="@Model.Password"></span>
-            </div>
-            <div class="input-fullwidth-container">
-                <input asp-for="@Model.ConfirmPassword" class="input-fullwidth" placeholder="Confirm password" />
-                <span asp-validation-for="@Model.ConfirmPassword"></span>
-            </div>
-            <div class="submit-form">
-                <input type="submit" value="Save" class="button-w1" />
-            </div>
-        </form>
+                <div class="input-fullwidth-container">
+                    <label asp-for="@Model.UserName"></label>
+                    <input asp-for="@Model.UserName" value="@Model.UserName" class="input-fullwidth" />
+                    <span asp-validation-for="@Model.UserName"></span>
+                </div>
+                <div class="input-fullwidth-container">
+                    <label asp-for="@Model.Email"></label>
+                    <input asp-for="@Model.Email" value="@Model.Email" class="input-fullwidth" />
+                    <span asp-validation-for="@Model.Email"></span>
+                </div>
+                <div class="input-fullwidth-container">
+                    <label asp-for="@Model.FirstName"></label>
+                    <input asp-for="@Model.FirstName" value="@Model.FirstName" class="input-fullwidth" />
+                    <span asp-validation-for="@Model.FirstName"></span>
+                </div>
+                <div class="input-fullwidth-container">
+                    <label asp-for="@Model.LastName"></label>
+                    <input asp-for="@Model.LastName" value="@Model.LastName" class="input-fullwidth" />
+                    <span asp-validation-for="@Model.LastName"></span>
+                </div>
+                <div class="input-fullwidth-container">
+                    <input asp-for="@Model.Password" class="input-fullwidth" placeholder="Password" />
+                    <span asp-validation-for="@Model.Password"></span>
+                </div>
+                <div class="input-fullwidth-container">
+                    <input asp-for="@Model.ConfirmPassword" class="input-fullwidth" placeholder="Confirm password" />
+                    <span asp-validation-for="@Model.ConfirmPassword"></span>
+                </div>
+                <div class="submit-form">
+                    <input type="submit" value="Save" class="button-w1" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

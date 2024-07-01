@@ -167,15 +167,21 @@ namespace EventPlanner.Services
         public async Task<Event?> GetFullEventAsync(int id)
         {
             var result = await _context.Event
-                .Include("Users")
-                .Include("Author")
-                .Include("Location")
-                .Include("Location.Street")
-                .Include("Location.Street.City")
-                .Include("Location.Street.City.Country")
+                .Include(e => e.Users)
+                    .ThenInclude(u => u.AccountSettings)
+                .Include(e => e.Author)
+                .Include(e => e.Location)
+                    .ThenInclude(l => l.Street)
+                        .ThenInclude(s => s.City)
+                            .ThenInclude(ci => ci.Country)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             return result;
+        }
+
+        public IEnumerable<AppUser> GetNotHiddenUsers(IEnumerable<AppUser> userList)
+        {
+            return userList.Where(u => (u.AccountSettings == null) || (u.AccountSettings.AccountHidden == false) );
         }
 
         public async Task<EventViewModel> GetEventForViewById(string? userId, int id)
@@ -193,6 +199,7 @@ namespace EventPlanner.Services
                 EventViewModel model = new();
                 model.Id = result.Id;
                 model.Author = result.Author;
+                model.DateTime = result.DateTime;
                 model.UserId = userIdInt;
                 model.Name = result.Name;
                 model.IsUserAuthor = userId == (result.AuthorId.ToString());
