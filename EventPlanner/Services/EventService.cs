@@ -3,13 +3,14 @@ using EventPlanner.Interfaces;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using System.Transactions;
-using System.Data.Common;
+
 using EventPlanner.Models.User;
 using EventPlanner.Models.Events;
 using EventPlanner.Models.Location;
+using System.Data;
+
+using System;
 
 using EventPlanner.Exceptions;
 
@@ -42,9 +43,19 @@ namespace EventPlanner.Services
         }
 
 		// To do add option for unassigning user from event
-        public async Task UnenrollUserFromEvent(int userId, int eventId)
+        public async Task UnenrollUserFromEvent(AppUser user, int eventId)
         {
+            _context.Attach(user);
+            await _context.Entry(user).Collection(u => u.Events).LoadAsync();
 
+			Event? fetchedEvent = await _context.Event.FirstOrDefaultAsync((e) => e.Id == eventId);
+            if ( fetchedEvent == null )
+            {
+				throw new NotFoundException("Event you are trying to delete couldn't be retrieved");
+			}
+            
+            user.Events.Remove(fetchedEvent);
+            await _context.SaveChangesAsync();
         }
 
 		public async Task AssignEventToUserAsync(int userId, int eventId)

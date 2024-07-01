@@ -141,11 +141,12 @@ namespace EventPlanner.Controllers
 		}
 
         [Authorize]
+		[HttpGet]
 		public async Task<IActionResult> UnenrollUserFromEvent(int id)
         {
-            var userId = _userManager.GetUserId(User) ?? throw new UserManagementException("User not found for removing from event's participants list.");
+            AppUser user = await _userManager.GetUserAsync(User) ?? throw new UserManagementException("User not found for removing from event's participants list.");
 
-            await _eventService.UnenrollUserFromEvent(Int32.Parse(userId), id);
+            await _eventService.UnenrollUserFromEvent(user, id);
 
             return RedirectToAction(nameof(Index), new { id });
 		}

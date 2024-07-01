@@ -70,7 +70,7 @@ namespace EventPlanner.Data
             base.Attach(entity);
         }
 
-        public new EntityEntry Entry<T>(T entity) where T : class
+        public new EntityEntry<T> Entry<T>(T entity) where T : class
         {
             return base.Entry(entity);
         }

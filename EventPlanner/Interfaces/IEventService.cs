@@ -27,5 +27,6 @@ namespace EventPlanner.Interfaces
         Task<SelectList> PopulateEventTypesDropDownList(object? selectedType);
         Task<IEnumerable<EventType>> GetListOfEventTypes();
         Task<InputEventModel> FillDropDownLists(InputEventModel viewModel, object selectedCategory, object selectedType);
+        Task UnenrollUserFromEvent(AppUser user, int eventId);
 	}
 }

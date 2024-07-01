@@ -46,6 +46,11 @@
     gap: 3%;
 }
 
+.event-page-header-info-container a
+{
+    text-decoration: none;
+}
+
 .event-host-container {
     display: flex;
     flex-direction: row;

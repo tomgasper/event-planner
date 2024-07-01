@@ -27,6 +27,6 @@ namespace EventPlanner.Interfaces
 		public void Attach<T>(T entity) where T : class;
 		public void Remove<T>(T entity) where T : class;
 
-		public EntityEntry Entry<T>(T entity) where T : class;
+		public EntityEntry<T> Entry<T>(T entity) where T : class;
 	}
 }
