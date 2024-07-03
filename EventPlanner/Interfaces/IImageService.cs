@@ -4,5 +4,7 @@
 	{
 		Task<string?> UploadImage(IFormFile file);
 		void DeleteImage(string imageUrl);
+
+		string? GetDefaultUserAvatar();
     }
 }

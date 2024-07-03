@@ -13,7 +13,8 @@ namespace EventPlanner.Migrations
                 table: "Event",
                 column: "CategoryId");
 
-            migrationBuilder.AddForeignKey(
+
+        migrationBuilder.AddForeignKey(
                 name: "FK_Event_Category_CategoryId",
                 table: "Event",
                 column: "CategoryId",

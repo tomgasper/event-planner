@@ -39,7 +39,7 @@ namespace EventPlanner.Controllers
                     {
                         ModelState.TryAddModelError(error.Code, error.Description);
                     }
-                    return LocalRedirect("/Home");
+                    return View(inputModel);
                 }
 
                 IdentityResult addToRoleAsync = await _accountService.AddToRoleAsync(result.Item2, "Member");

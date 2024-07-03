@@ -13,7 +13,7 @@ namespace EventPlanner.Models.User
         public string LastName { get; set; }
 
         [Display(Name = "Image")]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         [Required]
         [DataType(DataType.Text)]

@@ -17,6 +17,18 @@ namespace EventPlanner.Services
 			_fileStorageSettings = fileStorageSettings.Value;
 		}
 
+		public string? GetDefaultUserAvatar()
+		{
+            var localFilePath = Path.Combine(_fileStorageSettings.ProfileImagesPath, _fileStorageSettings.DefaultProfilePictureName);
+            var filePath = Path.Combine(_env.WebRootPath, localFilePath);
+
+			if (File.Exists(filePath))
+			{
+				return Path.Combine("/", localFilePath);
+			}
+			else { return null; }
+        }
+
 		public async Task<string?> UploadImage(IFormFile file)
 		{
 			string? localFilePath = null;
@@ -25,9 +37,10 @@ namespace EventPlanner.Services
 				var fileName = Path.GetFileName(file.FileName);
 				localFilePath = Path.Combine(_fileStorageSettings.ProfileImagesPath, fileName);
 				var filePath = Path.Combine(_env.WebRootPath, localFilePath);
-				
 
-				using (var fileStream = new FileStream(filePath, FileMode.Create))
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
 				{
 					await file.CopyToAsync(fileStream);
 				}

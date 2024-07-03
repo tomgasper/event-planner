@@ -43,6 +43,17 @@ namespace EventPlanner.Migrations
                     table.PrimaryKey("PK_Category", x => x.Id);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Category",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Concert" },
+                    { 2, "Conference" },
+                    { 3, "Workshop" },
+                    { 4, "Exhibition" }
+                });
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Event_Location_LocationId",
                 table: "Event",

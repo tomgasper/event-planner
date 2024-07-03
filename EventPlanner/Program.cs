@@ -8,11 +8,25 @@ using EventPlanner.Models.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure logging
-builder.Logging.AddEventLog(eventLogSettings =>
+var environmentName = builder.Environment.IsEnvironment("Docker") ? "Docker" : builder.Environment.EnvironmentName;
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+if (builder.Environment.IsEnvironment("Docker"))
 {
-    eventLogSettings.SourceName = "EventPlanner";
-});
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+}
+else
+{
+    builder.Logging.AddEventLog(eventLogSettings =>
+    {
+        eventLogSettings.SourceName = "EventPlanner";
+    });
+}
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -78,6 +92,19 @@ app.MapControllerRoute(
     name: "Index",
     pattern: "{controller=Event}/{id?}",
     defaults: new { controller = "Event", action = "Index"} ) ;
+
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<EventPlannerDbContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 
 // Create roles and super user
 using (var scope = app.Services.CreateScope())

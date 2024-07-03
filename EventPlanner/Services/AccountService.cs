@@ -10,6 +10,7 @@ using EventPlanner.Exceptions;
 
 using Microsoft.AspNetCore.Authorization;
 using EventPlanner.Models.User;
+using EventPlanner.Configuration;
 
 namespace EventPlanner.Services
 {
@@ -58,12 +59,10 @@ namespace EventPlanner.Services
 		{
 			string? uploadedImage = await _imageService.UploadImage(inputModel.Image);
 
-			if (uploadedImage == null) throw new ArgumentException("Error uploaing image!");
-
 			var user = new AppUser
 			{
-				ProfileImageUrl = uploadedImage,
-				UserName = inputModel.UserName,
+				ProfileImageUrl = uploadedImage ?? _imageService.GetDefaultUserAvatar(),
+                UserName = inputModel.UserName,
 				Email = inputModel.Email,
 				FirstName = inputModel.FirstName,
 				LastName = inputModel.LastName,

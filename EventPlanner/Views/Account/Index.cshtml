@@ -7,6 +7,7 @@
 <div class="account-index-container">
     <div class="edit-user-container">
         <div class="register-header b2-text">Edit Profile</div>
+        <div asp-validation-summary="All"></div>
         <form asp-action="Index" method="post" class="generic-form">
             <div class="input-fullwidth-container">
                 <label asp-for="@Model.UserName"></label>

@@ -34,7 +34,7 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("AppUserEvent");
+                    b.ToTable("AppUserEvent", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.AccountSettings", b =>
@@ -56,7 +56,7 @@ namespace EventPlanner.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("AccountSettings");
+                    b.ToTable("AccountSettings", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.AppUser", b =>
@@ -182,7 +182,7 @@ namespace EventPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.City", b =>
@@ -204,7 +204,7 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("City");
+                    b.ToTable("City", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.Country", b =>
@@ -221,7 +221,7 @@ namespace EventPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.ToTable("Country", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.Event", b =>
@@ -269,7 +269,7 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Event");
+                    b.ToTable("Event", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.EventType", b =>
@@ -286,7 +286,7 @@ namespace EventPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventType");
+                    b.ToTable("EventType", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.Location", b =>
@@ -312,7 +312,7 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("StreetId");
 
-                    b.ToTable("Location");
+                    b.ToTable("Location", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.LoginHistory", b =>
@@ -351,7 +351,7 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LoginHistory");
+                    b.ToTable("LoginHistory", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanner.Models.Street", b =>
@@ -373,7 +373,7 @@ namespace EventPlanner.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Street");
+                    b.ToTable("Street", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

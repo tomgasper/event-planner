@@ -112,20 +112,6 @@ namespace EventPlanner.Data
 
             });
 
-
-
-            
-
-            /*
-            Ignore some of the template columns in AppUser table
-            builder.Entity<AppUser>(b =>
-            {
-                b.Ignore(c => c.AccessFailedCount);
-                b.Ignore(c => c.LockoutEnabled);
-                b.Ignore(c => c.TwoFactorEnabled);
-            });
-            */
-
             builder.Entity<AppUserRole>(b =>
             {
                 b.ToTable("AppUsersRoles");
@@ -135,6 +121,30 @@ namespace EventPlanner.Data
             {
                 b.ToTable("AppUserClaims");
             });
-        }
+
+            // Populate "Category" Table
+            builder.Entity<Category>().HasData(
+                new Category
+                {
+                    Id = 1,
+                    Name = "Concert"
+                },
+                new Category
+                {
+                    Id = 2,
+                    Name = "Conference"
+                },
+                new Category
+                {
+                    Id = 3,
+                    Name = "Workshop"
+                },
+                new Category
+                {
+                    Id = 4,
+                    Name = "Exhibition"
+                }
+                );
+            }
     }
 }

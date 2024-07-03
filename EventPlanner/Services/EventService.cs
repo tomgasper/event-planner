@@ -250,8 +250,8 @@ namespace EventPlanner.Services
                     model.CountryName = location.CountryName;
                 }
 
-                IEnumerable<Category> categories = await GetListOfCategories();
-                model.CategoryList = new SelectList(categories, "Id", "Name", model.CategoryId);
+                model.CategoryList = await PopulateCategoriesDropDownList(model.CategoryId);
+                model.EventTypesList = await PopulateEventTypesDropDownList(model.EventTypeId);
 
                 return model;
             }

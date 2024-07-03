@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Some_Passw@rd123!
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+
+  webapp:
+    build: ./EventPlanner
+    environment:
+      - ConnectionStrings__AppData=Server=sqlserver,1433;Database=master;User Id=sa;Password=Some_Passw@rd123!;MultipleActiveResultSets=true;
+    ports:
+      - "8080:80"
+    depends_on:
+      - sqlserver
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
