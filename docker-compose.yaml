@@ -4,23 +4,21 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Some_Passw@rd123!
+      - SA_PASSWORD=${SQL_SERVER_PASSWORD}
     ports:
       - "1433:1433"
     networks:
       - app-network
-
   webapp:
     build: ./EventPlanner
     environment:
-      - ConnectionStrings__AppData=Server=sqlserver,1433;Database=master;User Id=sa;Password=Some_Passw@rd123!;MultipleActiveResultSets=true;
+      - ConnectionStrings__AppData=Server=sqlserver,1433;Database=master;User Id=sa;Password=${SQL_SERVER_PASSWORD};MultipleActiveResultSets=true;
     ports:
       - "8080:80"
     depends_on:
       - sqlserver
     networks:
       - app-network
-
 networks:
   app-network:
     driver: bridge
